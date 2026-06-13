@@ -1,48 +1,37 @@
-const CACHE_NAME = 'panini-wc26-offline-v2';
+const CACHE_NAME = 'panini-wc26-v4';
+const APP_SHELL = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
-const APP_SHELL = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
-];
-
-self.addEventListener('install', event => {
+self.addEventListener('install', e => {
   self.skipWaiting();
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))
+  e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(APP_SHELL)));
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys()
+      .then(keys => Promise.all(keys.map(k => k !== CACHE_NAME && caches.delete(k))))
+      .then(() => self.clients.claim())
   );
 });
 
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.map(key => {
-        if (key !== CACHE_NAME) return caches.delete(key);
-      }))
-    ).then(() => self.clients.claim())
-  );
+self.addEventListener('message', e => {
+  if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
-self.addEventListener('fetch', event => {
-  // Never intercept API calls — let them go straight to the network
-  if (event.request.url.includes('anthropic.com')) return;
-  if (event.request.method !== 'GET') return;
+self.addEventListener('fetch', e => {
+  // Never intercept API calls or non-GET requests
+  if (e.request.url.includes('anthropic.com')) return;
+  if (e.request.url.includes('fonts.googleapis.com')) return;
+  if (e.request.method !== 'GET') return;
 
-  event.respondWith(
-    caches.match(event.request).then(cached => {
+  e.respondWith(
+    caches.match(e.request).then(cached => {
       if (cached) return cached;
-
-      return fetch(event.request)
-        .then(response => {
-          const responseClone = response.clone();
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseClone);
-          });
-          return response;
-        })
-        .catch(() => caches.match('./index.html'));
+      return fetch(e.request).then(resp => {
+        const clone = resp.clone();
+        caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
+        return resp;
+      }).catch(() => caches.match('./index.html'));
     })
   );
 });
