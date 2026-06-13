@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#1a1a2e">
-<meta name="description" content="Panini FIFA World Cup 2026 Sticker Tracker">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,109 +11,91 @@
 <title>Panini WC26</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap');
-:root {
-  --bg:#0f0f1a; --surface:#1a1a2e; --surface2:#16213e;
-  --accent:#e63946; --gold:#ffd60a; --text:#f1f1f1; --muted:#888;
-  --have:#2d6a4f; --have-b:#40916c;
-  --dup:#7b4f00; --dup-b:#c87f00;
-  --cc:#6d0f3a; --cc-b:#b01f5e;
-  --miss:#1a1a2e; --miss-b:#333;
-  --radius:6px;
-}
+:root{--bg:#0f0f1a;--surface:#1a1a2e;--surface2:#16213e;--accent:#e63946;--gold:#ffd60a;--text:#f1f1f1;--muted:#888;--have:#2d6a4f;--have-b:#40916c;--dup:#7b4f00;--dup-b:#c87f00;--cc:#6d0f3a;--cc-b:#b01f5e;--r:6px;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;}
+body{background:var(--bg);color:var(--text);font-family:Inter,sans-serif;min-height:100vh;}
 header{background:var(--surface);border-bottom:2px solid var(--accent);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-.logo{font-family:'Bebas Neue',cursive;font-size:1.6rem;letter-spacing:2px;color:var(--gold);line-height:1;}
+.logo{font-family:"Bebas Neue",cursive;font-size:1.6rem;letter-spacing:2px;color:var(--gold);line-height:1;}
 .logo span{color:var(--accent);}
-.hstats{font-size:0.75rem;color:var(--muted);text-align:right;line-height:1.4;}
-.hstats strong{color:var(--gold);font-size:1rem;}
+.hs{font-size:0.75rem;color:var(--muted);text-align:right;line-height:1.4;}
+.hs strong{color:var(--gold);font-size:1rem;}
 nav{background:var(--surface2);display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid #222;gap:4px;padding:6px 8px;position:sticky;top:57px;z-index:99;}
 nav::-webkit-scrollbar{display:none;}
-.nb{background:none;border:1px solid #333;border-radius:20px;color:var(--muted);font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;padding:5px 12px;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.nb{background:none;border:1px solid #333;border-radius:20px;color:var(--muted);font-family:Inter,sans-serif;font-size:0.7rem;font-weight:600;padding:5px 12px;cursor:pointer;white-space:nowrap;flex-shrink:0;}
 .nb:hover{border-color:var(--accent);color:var(--text);}
 .nb.active{background:var(--accent);border-color:var(--accent);color:#fff;}
 main{padding:12px;max-width:700px;margin:0 auto;}
-.sh{font-family:'Bebas Neue',cursive;font-size:1.1rem;letter-spacing:1px;color:var(--gold);padding:12px 0 8px;display:flex;align-items:center;gap:8px;}
-.sh .flag{font-size:1.3rem;}
-.sh .tp{margin-left:auto;font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;color:var(--muted);}
+.sh{font-family:"Bebas Neue",cursive;font-size:1.1rem;letter-spacing:1px;color:var(--gold);padding:12px 0 8px;display:flex;align-items:center;gap:8px;}
+.sh .tp{margin-left:auto;font-family:Inter,sans-serif;font-size:0.7rem;font-weight:600;color:var(--muted);}
 .sh .tp.done{color:var(--gold);}
 .sgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:4px;}
-.sticker{border-radius:var(--radius);border:1.5px solid var(--miss-b);background:var(--miss);padding:6px 4px;text-align:center;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;position:relative;}
+.sticker{border-radius:var(--r);border:1.5px solid #333;background:var(--surface);padding:6px 4px;text-align:center;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;position:relative;}
 .sticker:active{transform:scale(0.94);}
 .sticker.have{background:var(--have);border-color:var(--have-b);}
 .sticker.dup{background:var(--dup);border-color:var(--dup-b);}
-.sticker.cchave{background:var(--cc);border-color:var(--cc-b);}
-.snum{font-size:0.6rem;font-weight:600;color:var(--muted);line-height:1;}
-.have .snum,.dup .snum,.cchave .snum{color:#95d5b2;}
-.slbl{font-size:0.62rem;font-weight:500;color:var(--text);line-height:1.2;margin-top:2px;word-break:break-word;}
-.schk{font-size:0.9rem;line-height:1;margin-top:2px;opacity:0;}
-.have .schk,.dup .schk,.cchave .schk{opacity:1;}
+.sticker.cch{background:var(--cc);border-color:var(--cc-b);}
+.sn{font-size:0.6rem;font-weight:600;color:var(--muted);line-height:1;}
+.have .sn,.dup .sn,.cch .sn{color:#95d5b2;}
+.sl{font-size:0.62rem;font-weight:500;color:var(--text);line-height:1.2;margin-top:2px;word-break:break-word;}
+.sc{font-size:0.9rem;line-height:1;margin-top:2px;opacity:0;}
+.have .sc,.dup .sc,.cch .sc{opacity:1;}
 .dbadge{position:absolute;top:2px;right:2px;background:var(--gold);color:#000;font-size:0.5rem;font-weight:700;border-radius:3px;padding:1px 3px;line-height:1;}
 .divider{height:1px;background:#222;margin:16px 0;}
-.sbar{background:var(--surface);border-radius:var(--radius);padding:10px 14px;margin-bottom:12px;display:flex;gap:16px;flex-wrap:wrap;}
+.sbar{background:var(--surface);border-radius:var(--r);padding:10px 14px;margin-bottom:12px;display:flex;gap:16px;flex-wrap:wrap;}
 .ss{text-align:center;flex:1;min-width:55px;}
-.ss .val{font-family:'Bebas Neue',cursive;font-size:1.8rem;line-height:1;color:var(--gold);}
+.ss .val{font-family:"Bebas Neue",cursive;font-size:1.8rem;line-height:1;color:var(--gold);}
 .ss .lbl{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
 .pw{background:#222;border-radius:4px;height:6px;overflow:hidden;margin:8px 0 16px;}
-.pf{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:4px;}
+.pf{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:4px;transition:width 0.3s;}
 .leg{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;font-size:0.7rem;color:var(--muted);}
 .ld{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;}
 .tv{display:none;}
 .tv.active{display:block;}
-#sb{width:100%;background:var(--surface);border:1px solid #333;border-radius:var(--radius);color:var(--text);font-family:'Inter',sans-serif;font-size:0.85rem;padding:9px 12px;margin-bottom:12px;outline:none;}
+#sb{width:100%;background:var(--surface);border:1px solid #333;border-radius:var(--r);color:var(--text);font-family:Inter,sans-serif;font-size:0.85rem;padding:9px 12px;margin-bottom:12px;outline:none;}
 #sb:focus{border-color:var(--accent);}
-.mb{margin-bottom:16px;}
-.mt{font-size:0.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
-.ml{display:flex;flex-wrap:wrap;gap:6px;}
-.mtag{background:var(--surface);border:1px solid #333;border-radius:4px;padding:3px 8px;font-size:0.7rem;font-weight:600;color:var(--muted);}
-.btn{background:var(--accent);border:none;border-radius:var(--radius);color:#fff;font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;padding:8px 16px;cursor:pointer;display:inline-block;margin:4px 4px 4px 0;}
-.btn.sec{background:var(--surface);border:1px solid #333;color:var(--muted);}
-.btn:active{opacity:0.8;}
-.tr{margin-bottom:16px;display:flex;flex-wrap:wrap;gap:6px;}
-.ia{background:var(--surface);border:1px dashed #444;border-radius:var(--radius);padding:12px;margin-top:8px;}
-.ib{width:100%;background:#111;border:1px solid #333;border-radius:4px;color:var(--text);font-family:monospace;font-size:0.7rem;padding:8px;height:80px;resize:vertical;margin-bottom:6px;}
-.swapbox{background:var(--surface);border-radius:var(--radius);padding:12px;font-family:monospace;font-size:0.72rem;white-space:pre-wrap;word-break:break-word;max-height:260px;overflow-y:auto;color:#ccc;border:1px solid #333;}
-.sp{background:var(--surface);border:1px solid #333;border-radius:var(--radius);padding:14px;margin-bottom:16px;}
-.sp h3{font-family:'Bebas Neue',cursive;font-size:1rem;color:var(--gold);letter-spacing:1px;margin-bottom:6px;}
+.sp{background:var(--surface);border:1px solid #333;border-radius:var(--r);padding:14px;margin-bottom:16px;}
+.sp h3{font-family:"Bebas Neue",cursive;font-size:1rem;color:var(--gold);letter-spacing:1px;margin-bottom:6px;}
 .sdesc{font-size:0.75rem;color:var(--muted);margin-bottom:10px;line-height:1.5;}
-.fl{background:var(--surface2);border:1px dashed #555;border-radius:var(--radius);padding:8px 14px;cursor:pointer;font-size:0.8rem;color:var(--muted);display:inline-block;}
+.akr{display:flex;gap:6px;margin-bottom:10px;}
+#aki{flex:1;background:var(--surface2);border:1px solid #333;border-radius:var(--r);color:var(--text);font-family:Inter,sans-serif;font-size:0.75rem;padding:7px 10px;outline:none;}
+#aki:focus{border-color:var(--accent);}
+.scanrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;}
+.tsel{background:var(--surface2);border:1px solid #444;border-radius:var(--r);color:var(--text);font-family:Inter,sans-serif;font-size:0.8rem;padding:7px 10px;flex:1;min-width:140px;}
+.fl{background:var(--surface2);border:1px dashed #555;border-radius:var(--r);padding:8px 14px;cursor:pointer;font-size:0.8rem;color:var(--muted);}
 .fl:hover{border-color:var(--accent);color:var(--text);}
 #sfi{display:none;}
-.akr{display:flex;gap:6px;margin-bottom:10px;}
-#aki{flex:1;background:var(--surface);border:1px solid #333;border-radius:var(--radius);color:var(--text);font-family:'Inter',sans-serif;font-size:0.75rem;padding:7px 10px;outline:none;}
-#aki:focus{border-color:var(--accent);}
-#sprev{max-width:100%;border-radius:var(--radius);margin:10px 0;display:none;max-height:220px;object-fit:contain;}
-#sload{display:none;text-align:center;padding:20px;color:var(--muted);font-size:0.85rem;}
-.spin{display:inline-block;width:20px;height:20px;border:2px solid #333;border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;margin-right:8px;vertical-align:middle;}
+#sprev{max-width:100%;border-radius:var(--r);margin:10px 0;display:none;max-height:220px;object-fit:contain;}
+#sload{display:none;text-align:center;padding:16px;color:var(--muted);font-size:0.85rem;}
+.spin{display:inline-block;width:18px;height:18px;border:2px solid #333;border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;margin-right:8px;vertical-align:middle;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:center;justify-content:center;}
-.mo.show{display:flex;}
-.md{background:var(--surface);border:1px solid #444;border-radius:12px;padding:20px;max-width:320px;width:90%;text-align:center;}
-.md h3{font-family:'Bebas Neue',cursive;font-size:1.2rem;color:var(--gold);margin-bottom:8px;letter-spacing:1px;}
-.md p{font-size:0.8rem;color:var(--muted);margin-bottom:16px;line-height:1.5;}
-.mslots{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-bottom:14px;}
-.mslot{padding:3px 7px;border-radius:3px;font-size:0.68rem;font-weight:600;}
-.mslot.f{background:var(--have);color:#95d5b2;}
-.mslot.e{background:#2a1a1a;color:var(--accent);}
-.mbtns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
-.sr{background:#0d1f14;border:1px solid #2d6a4f;border-radius:var(--radius);padding:10px;margin-top:10px;font-size:0.8rem;line-height:1.6;display:none;}
-.sr .rt{font-weight:700;color:var(--gold);margin-bottom:6px;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;}
-.ss2{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0;}
-.ss2 span{padding:2px 7px;border-radius:3px;font-size:0.7rem;font-weight:600;}
-.ss2 .f{background:var(--have);color:#95d5b2;}
-.ss2 .e{background:#2a1a1a;color:var(--accent);}
+.sres{background:#0d1f14;border:1px solid #2d6a4f;border-radius:var(--r);padding:10px;margin-top:10px;display:none;}
+.sres .rt{font-weight:700;color:var(--gold);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.srow{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0;}
+.srow .f{padding:2px 7px;border-radius:3px;font-size:0.68rem;font-weight:600;background:var(--have);color:#95d5b2;}
+.srow .e{padding:2px 7px;border-radius:3px;font-size:0.68rem;font-weight:600;background:#2a1a1a;color:var(--accent);}
+.mb2{margin-bottom:16px;}
+.mt2{font-size:0.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.ml{display:flex;flex-wrap:wrap;gap:5px;}
+.mtag{background:var(--surface);border:1px solid #333;border-radius:4px;padding:3px 8px;font-size:0.7rem;font-weight:600;color:var(--muted);}
 .di{font-size:0.75rem;color:var(--muted);margin-bottom:14px;line-height:1.5;}
-.db{margin-bottom:16px;}
-.ds{font-size:0.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
-.dl{display:flex;flex-wrap:wrap;gap:6px;}
-.dit{background:var(--dup);border:1px solid var(--dup-b);border-radius:4px;padding:3px 8px;font-size:0.7rem;font-weight:600;color:#ffd166;display:flex;align-items:center;gap:5px;}
-.dit .dc{background:rgba(255,255,255,0.15);border-radius:3px;padding:0 4px;}
-.dit .dr{cursor:pointer;opacity:0.6;font-size:0.8rem;}
-.dit .dr:hover{opacity:1;}
 .dsr{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
-#ds{flex:1;min-width:120px;background:var(--surface);border:1px solid #333;border-radius:var(--radius);color:var(--text);font-family:'Inter',sans-serif;font-size:0.8rem;padding:7px 10px;outline:none;}
+#ds{flex:1;min-width:120px;background:var(--surface);border:1px solid #333;border-radius:var(--r);color:var(--text);font-family:Inter,sans-serif;font-size:0.8rem;padding:7px 10px;outline:none;}
 #ds:focus{border-color:var(--gold);}
-#dq{width:60px;background:var(--surface);border:1px solid #333;border-radius:var(--radius);color:var(--text);font-family:'Inter',sans-serif;font-size:0.8rem;padding:7px 10px;outline:none;text-align:center;}
+#dq{width:60px;background:var(--surface);border:1px solid #333;border-radius:var(--r);color:var(--text);font-family:Inter,sans-serif;font-size:0.8rem;padding:7px 10px;outline:none;text-align:center;}
+.swapbox{background:var(--surface);border-radius:var(--r);padding:12px;font-family:monospace;font-size:0.72rem;white-space:pre-wrap;word-break:break-word;max-height:240px;overflow-y:auto;color:#ccc;border:1px solid #333;}
+.dblock{margin-bottom:14px;}
+.dtitle{font-size:0.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.dlist{display:flex;flex-wrap:wrap;gap:5px;}
+.dit{background:var(--dup);border:1px solid var(--dup-b);border-radius:4px;padding:3px 8px;font-size:0.7rem;font-weight:600;color:#ffd166;display:flex;align-items:center;gap:4px;}
+.dit .dc{background:rgba(255,255,255,0.15);border-radius:3px;padding:0 4px;}
+.dit .dr{cursor:pointer;opacity:0.6;}
+.dit .dr:hover{opacity:1;}
+.tr{margin-bottom:14px;display:flex;flex-wrap:wrap;gap:6px;}
+.btn{background:var(--accent);border:none;border-radius:var(--r);color:#fff;font-family:Inter,sans-serif;font-size:0.8rem;font-weight:600;padding:8px 16px;cursor:pointer;display:inline-block;margin:2px 2px 2px 0;}
+.btn.sec{background:var(--surface);border:1px solid #333;color:var(--muted);}
+.btn:active{opacity:0.8;}
+.ia{background:var(--surface);border:1px dashed #444;border-radius:var(--r);padding:12px;margin-top:8px;}
+.ib{width:100%;background:#111;border:1px solid #333;border-radius:4px;color:var(--text);font-family:monospace;font-size:0.7rem;padding:8px;height:80px;resize:vertical;margin-bottom:6px;}
 .es{text-align:center;color:var(--muted);padding:40px 16px;font-size:0.85rem;}
 .es .big{font-size:2.5rem;margin-bottom:8px;}
 @media(max-width:400px){.sgrid{grid-template-columns:repeat(4,1fr);}}
@@ -122,11 +103,8 @@ main{padding:12px;max-width:700px;margin:0 auto;}
 </head>
 <body>
 <header>
-  <div>
-    <div class="logo">Panini <span>WC26</span></div>
-    <div style="font-size:0.6rem;color:var(--muted);margin-top:2px;">FIFA World Cup 2026</div>
-  </div>
-  <div class="hstats"><strong id="hh">0</strong> / <span id="ht">992</span><br><span id="hp">0%</span> complete</div>
+  <div><div class="logo">Panini <span>WC26</span></div><div style="font-size:0.6rem;color:var(--muted);margin-top:2px;">FIFA World Cup 2026</div></div>
+  <div class="hs"><strong id="hh">0</strong> / <span id="ht">0</span><br><span id="hp">0%</span> complete</div>
 </header>
 <nav>
   <button class="nb active" onclick="showTab('all')" id="nav-all">All Teams</button>
@@ -136,11 +114,10 @@ main{padding:12px;max-width:700px;margin:0 auto;}
   <button class="nb" onclick="showTab('tools')" id="nav-tools">&#9881; Tools</button>
 </nav>
 <main>
-
 <div class="tv active" id="tab-all">
   <div class="sbar">
     <div class="ss"><div class="val" id="sh">0</div><div class="lbl">Have</div></div>
-    <div class="ss"><div class="val" id="sm">992</div><div class="lbl">Missing</div></div>
+    <div class="ss"><div class="val" id="sm">0</div><div class="lbl">Missing</div></div>
     <div class="ss"><div class="val" id="sd">0</div><div class="lbl">Dupes</div></div>
     <div class="ss"><div class="val" id="sp">0%</div><div class="lbl">Done</div></div>
   </div>
@@ -148,15 +125,14 @@ main{padding:12px;max-width:700px;margin:0 auto;}
   <div class="leg">
     <span><span class="ld" style="background:var(--have)"></span>Owned (1 tap)</span>
     <span><span class="ld" style="background:var(--dup)"></span>Duplicate (2 taps)</span>
-    <span><span class="ld" style="background:var(--miss-b)"></span>Missing (3 taps = reset)</span>
+    <span><span class="ld" style="background:#333"></span>Missing (3 taps resets)</span>
   </div>
   <input type="text" id="sb" placeholder="&#128269; Search team or player..." oninput="filterTeams(this.value)">
   <div id="tc"></div>
 </div>
-
 <div class="tv" id="tab-scan">
-  <div class="sh" style="padding-top:0">&#128247; Photo Scan</div>
-  <p style="font-size:0.75rem;color:var(--muted);margin-bottom:14px;line-height:1.5;">Photo any album page. Claude auto-detects the page type, reads which slots are filled, and saves player names.</p>
+  <div class="sh" style="padding-top:0">&#128247; Scan a Team Page</div>
+  <p class="sdesc" style="margin-bottom:14px;">Select the team, photograph their album page, and Claude will mark which slots are filled. FWC and Coca-Cola stickers can be tapped manually in the All Teams tab.</p>
   <div class="sp">
     <h3>API Key</h3>
     <div class="sdesc">Stored only in your browser. Never shared.</div>
@@ -167,36 +143,34 @@ main{padding:12px;max-width:700px;margin:0 auto;}
     <div id="aks" style="font-size:0.7rem;color:var(--muted);"></div>
   </div>
   <div class="sp">
-    <h3>Scan a Page</h3>
-    <div class="sdesc">Works on team pages, FWC pages, and the Coca-Cola page. Two-pass scan: first detects stickers, then reads names.</div>
-    <label class="fl" for="sfi">&#128247; Choose photo</label>
-    <input type="file" id="sfi" accept="image/*" onchange="onFile(this)">
+    <h3>Scan Page</h3>
+    <div class="sdesc">Select the team then photograph their two-page album spread. Works best with the full page visible in good light.</div>
+    <div class="scanrow">
+      <select class="tsel" id="tsel"></select>
+      <label class="fl" for="sfi">&#128247; Choose photo</label>
+      <input type="file" id="sfi" accept="image/*" onchange="onFile(this)">
+    </div>
     <img id="sprev" alt="Preview">
-    <div id="sload"><span class="spin"></span><span id="sloadt">Analysing...</span></div>
-    <div class="sr" id="sres"></div>
+    <div id="sload"><span class="spin"></span>Analysing...</div>
+    <div class="sres" id="sres"></div>
   </div>
 </div>
-
-<div class="tv" id="tab-missing">
-  <div id="mc"></div>
-</div>
-
+<div class="tv" id="tab-missing"><div id="mc"></div></div>
 <div class="tv" id="tab-dupes">
   <div class="sh" style="padding-top:0">&#128260; Duplicates</div>
-  <div class="di">Stickers you have more than one of.<br><strong>Tip:</strong> Tap once = owned, twice = duplicate, three times = reset to missing.</div>
+  <div class="di">Your swap stickers. Tap once = owned, twice = duplicate, three times = reset.</div>
   <div class="dsr">
-    <input type="text" id="ds" placeholder="e.g. ARG-3 or Argentina..." oninput="renderDupes()">
+    <input type="text" id="ds" placeholder="e.g. ARG-15 or Kane..." oninput="renderDupes()">
     <input type="number" id="dq" value="1" min="1" max="99">
-    <button class="btn" onclick="addDupManual()">+ Add</button>
+    <button class="btn" onclick="addDup()">+ Add</button>
   </div>
-  <div id="dss" style="margin-bottom:16px;display:none;">
+  <div id="dswap" style="margin-bottom:16px;display:none;">
     <div class="sh" style="padding-top:0;font-size:0.95rem;">&#128241; WhatsApp Swap Message</div>
     <div class="swapbox" id="swb"></div>
     <button class="btn" style="margin-top:8px" onclick="copySwap()">&#128203; Copy message</button>
   </div>
   <div id="dc"></div>
 </div>
-
 <div class="tv" id="tab-tools">
   <div class="sh" style="padding-top:0">&#9881; Tools</div>
   <div class="tr">
@@ -205,644 +179,1476 @@ main{padding:12px;max-width:700px;margin:0 auto;}
   </div>
   <div class="tr">
     <button class="btn" onclick="exportData()">&#11015; Export JSON</button>
-    <button class="btn sec" onclick="document.getElementById('iarea').style.display='block'">&#11014; Import JSON</button>
+    <button class="btn sec" onclick="document.getElementById('ia').style.display='block'">&#11014; Import JSON</button>
   </div>
-  <div class="ia" id="iarea" style="display:none">
+  <div class="ia" id="ia" style="display:none">
     <div style="font-size:0.75rem;color:var(--muted);margin-bottom:6px;">Paste exported JSON below:</div>
-    <textarea class="ib" id="ibox" placeholder='{"have":{},"dups":{},"names":{}}'></textarea>
+    <textarea class="ib" id="ibox"></textarea>
     <button class="btn" onclick="importData()">Import</button>
-    <button class="btn sec" onclick="document.getElementById('iarea').style.display='none'">Cancel</button>
+    <button class="btn sec" onclick="document.getElementById('ia').style.display='none'">Cancel</button>
   </div>
   <div class="divider"></div>
-  <div class="sh">&#128203; Share missing list</div>
-  <div style="font-size:0.8rem;color:var(--muted);margin-bottom:8px;">Everything you still need:</div>
+  <div class="sh">&#128203; Missing list</div>
+  <div style="font-size:0.8rem;color:var(--muted);margin-bottom:8px;">Copy to share with swap partners:</div>
   <div id="sml" class="swapbox"></div>
   <button class="btn" style="margin-top:8px" onclick="copyMissing()">&#128203; Copy</button>
 </div>
-
 </main>
-
-<div class="mo" id="cmod">
-  <div class="md">
-    <h3 id="ctitle">Confirm Scan</h3>
-    <p id="cdesc"></p>
-    <div class="mslots" id="cslots"></div>
-    <div class="mbtns">
-      <button class="btn" onclick="applyResult()">&#10003; Apply</button>
-      <button class="btn sec" onclick="closeModal()">&#10005; Cancel</button>
-    </div>
-  </div>
-</div>
-
 <script>
-var CC_KNOWN = {
-  1:'Camavinga', 2:'Gvardiol', 3:'Lamine Yamal', 4:'Kimmich',
-  5:'Valverde', 6:'Raul Jimenez', 7:'Alphonso Davies',
-  8:'Lautaro Martinez', 9:'William Saliba', 10:'Robinson', 11:'Harry Kane'
+var PLAYER_NAMES = {
+  ALB_10:'Klaus Gjasula',
+  ALB_11:'Ylber Ramadani',
+  ALB_12:'Amir Abrashi',
+  ALB_14:'Sokol Cikalleshi',
+  ALB_15:'Keidi Bare',
+  ALB_16:'Rey Manaj',
+  ALB_17:'Armando Broja',
+  ALB_18:'Mirlind Daku',
+  ALB_19:'Jasir Asani',
+  ALB_2:'Thomas Strakosha',
+  ALB_20:'Erion Sadiku',
+  ALB_3:'Etrit Berisha',
+  ALB_4:'Ardian Ismajli',
+  ALB_5:'Berat Djimsiti',
+  ALB_6:'Elseid Hysaj',
+  ALB_7:'Frederic Veseli',
+  ALB_8:'Ivan Balliu',
+  ALB_9:'Qazim Laci',
+  ALG_10:'Saphir Taider',
+  ALG_11:'Said Benrahma',
+  ALG_12:'Andy Delort',
+  ALG_14:'Sofiane Feghouli',
+  ALG_15:'Yacine Brahimi',
+  ALG_16:'Riyad Mahrez',
+  ALG_17:'Haris Belkebla',
+  ALG_18:'Hichem Boudaoui',
+  ALG_19:'Mohamed Araujo',
+  ALG_2:'Rais M\'Bolhi',
+  ALG_20:'Islam Slimani',
+  ALG_3:'Alexandre Oukidja',
+  ALG_4:'Youcef Atal',
+  ALG_5:'Aissa Mandi',
+  ALG_6:'Djamel Benlamri',
+  ALG_7:'Ramy Bensebaini',
+  ALG_8:'Mehdi Zeffane',
+  ALG_9:'Houssem Aouar',
+  ANG_10:'Herenilson',
+  ANG_11:'Fredy',
+  ANG_12:'Mabululu',
+  ANG_14:'Gelson Dala',
+  ANG_15:'Mbala Nzola',
+  ANG_16:'Buanga',
+  ANG_17:'Ze Turbo',
+  ANG_18:'Djalma',
+  ANG_19:'Mama',
+  ANG_2:'Antonio',
+  ANG_20:'Benson',
+  ANG_3:'Edy',
+  ANG_4:'Bastos',
+  ANG_5:'Yano',
+  ANG_6:'Kialonda Gaspar',
+  ANG_7:'Zuela',
+  ANG_8:'Wilson Eduardo',
+  ANG_9:'Toni',
+  ARG_10:'Leandro Paredes',
+  ARG_11:'Alexis Mac Allister',
+  ARG_12:'Angel Di Maria',
+  ARG_14:'Enzo Fernandez',
+  ARG_15:'Lautaro Martinez',
+  ARG_16:'Julian Alvarez',
+  ARG_17:'Paulo Dybala',
+  ARG_18:'Giovani Lo Celso',
+  ARG_19:'Thiago Almada',
+  ARG_2:'Franco Armani',
+  ARG_20:'Lionel Messi',
+  ARG_3:'Emiliano Martinez',
+  ARG_4:'Nahuel Molina',
+  ARG_5:'Cristian Romero',
+  ARG_6:'Nicolas Otamendi',
+  ARG_7:'Lisandro Martinez',
+  ARG_8:'Nicolas Tagliafico',
+  ARG_9:'Rodrigo De Paul',
+  AUS_10:'Milos Degenek',
+  AUS_11:'Jackson Irvine',
+  AUS_12:'Riley McGree',
+  AUS_14:'Aiden O\'Neill',
+  AUS_15:'Connor Metcalfe',
+  AUS_16:'Patrick Yazbek',
+  AUS_17:'Craig Goodwin',
+  AUS_18:'Kusini Vengi',
+  AUS_19:'Nestory Irankunda',
+  AUS_2:'Mathew Ryan',
+  AUS_20:'Mohamed Toure',
+  AUS_3:'Joe Gauci',
+  AUS_4:'Harry Souttar',
+  AUS_5:'Alessandro Circati',
+  AUS_6:'Jordan Bos',
+  AUS_7:'Aziz Behich',
+  AUS_8:'Cameron Burgess',
+  AUS_9:'Lewis Miller',
+  BEL_10:'Amadou Onana',
+  BEL_11:'Nicolas Raskin',
+  BEL_12:'Alexis Saelemaekers',
+  BEL_14:'Hans Vanaken',
+  BEL_15:'Kevin De Bruyne',
+  BEL_16:'Jeremy Doku',
+  BEL_17:'Charles De Ketelaere',
+  BEL_18:'Leandro Trossard',
+  BEL_19:'Lois Openda',
+  BEL_2:'Thibaut Courtois',
+  BEL_20:'Romelu Lukaku',
+  BEL_3:'Arthur Theate',
+  BEL_4:'Timothy Castagne',
+  BEL_5:'Zeno Debast',
+  BEL_6:'Brandon Mechele',
+  BEL_7:'Maxim De Cuyper',
+  BEL_8:'Thomas Meunier',
+  BEL_9:'Youri Tielemans',
+  BEN_10:'Romaric Yao',
+  BEN_11:'Jordan Adegnon',
+  BEN_12:'Jodel Dossou',
+  BEN_14:'Razak Farouk',
+  BEN_15:'Mickaël Hodonou',
+  BEN_16:'Cédric Hountondji',
+  BEN_17:'Mama Seibou',
+  BEN_18:'David Kiki',
+  BEN_19:'Jude Afouda',
+  BEN_2:'Saturnin Allagbe',
+  BEN_20:'Jores Okore',
+  BEN_3:'Jodel Dossou',
+  BEN_4:'Steve Mounie',
+  BEN_5:'Jhon Augusto',
+  BEN_6:'Olivier Verdon',
+  BEN_7:'Moise Adilehou',
+  BEN_8:'Khaled Adeniyi',
+  BEN_9:'Yannick Aguemon',
+  BRA_10:'Casemiro',
+  BRA_11:'Bruno Guimaraes',
+  BRA_12:'Luiz Henrique',
+  BRA_14:'Vinicius Junior',
+  BRA_15:'Rodrygo',
+  BRA_16:'Joao Pedro',
+  BRA_17:'Matheus Cunha',
+  BRA_18:'Gabriel Martinelli',
+  BRA_19:'Raphinha',
+  BRA_2:'Alisson',
+  BRA_20:'Estevao',
+  BRA_3:'Bento',
+  BRA_4:'Marquinhos',
+  BRA_5:'Eder Militao',
+  BRA_6:'Gabriel Magalhaes',
+  BRA_7:'Danilo',
+  BRA_8:'Wesley',
+  BRA_9:'Lucas Paqueta',
+  CAN_10:'Stephen Eustaquio',
+  CAN_11:'Ismael Kone',
+  CAN_12:'Jonathan Osorio',
+  CAN_14:'Jacob Shaffelburg',
+  CAN_15:'Mathieu Choiniere',
+  CAN_16:'Niko Sigur',
+  CAN_17:'Tajon Buchanan',
+  CAN_18:'Liam Millar',
+  CAN_19:'Cyle Larin',
+  CAN_2:'Dayne St.Clair',
+  CAN_20:'Jonathan David',
+  CAN_3:'Alphonso Davies',
+  CAN_4:'Alistair Johnston',
+  CAN_5:'Samuel Adekugbe',
+  CAN_6:'Riche Larvea',
+  CAN_7:'Derek Cornelius',
+  CAN_8:'Moise Bombito',
+  CAN_9:'Kamal Miller',
+  CHI_10:'Arturo Vidal',
+  CHI_11:'Marcelino Nunez',
+  CHI_12:'Victor Davila',
+  CHI_14:'Diego Valdes',
+  CHI_15:'Ben Brereton Diaz',
+  CHI_16:'Eduardo Vargas',
+  CHI_17:'Alexis Sanchez',
+  CHI_18:'Javier Correa',
+  CHI_19:'Lucas Cepeda',
+  CHI_2:'Claudio Bravo',
+  CHI_20:'Darío Osorio',
+  CHI_3:'Sebastian Vegas',
+  CHI_4:'Paulo Diaz',
+  CHI_5:'Guillermo Maripan',
+  CHI_6:'Marcos Acuna',
+  CHI_7:'Igor Lichnovsky',
+  CHI_8:'Erick Pulgar',
+  CHI_9:'Charles Aranguiz',
+  CHN_10:'Liu Yang',
+  CHN_11:'Han Jiakang',
+  CHN_12:'Tan Long',
+  CHN_14:'Xie Pengfei',
+  CHN_15:'Xu Haofan',
+  CHN_16:'Wang Shangyuan',
+  CHN_17:'Wu Lei',
+  CHN_18:'Zhang Yuning',
+  CHN_19:'Ai Kesen',
+  CHN_2:'Yan Junling',
+  CHN_20:'Bao Yaxiong',
+  CHN_3:'Wang Dalei',
+  CHN_4:'Zhang Linpeng',
+  CHN_5:'Zhu Chenjie',
+  CHN_6:'Wei Zhen',
+  CHN_7:'Luo Guofu',
+  CHN_8:'Jiang Guang-Tai',
+  CHN_9:'Lin Liangming',
+  CMR_10:'Pierre Kunde',
+  CMR_11:'Martin Hongla',
+  CMR_12:'Andre-Frank Zambo Anguissa',
+  CMR_14:'Jean-Eric Maxim Choupo-Moting',
+  CMR_15:'Karl Toko Ekambi',
+  CMR_16:'Clinton Njie',
+  CMR_17:'Vincent Aboubakar',
+  CMR_18:'Christian Bassogog',
+  CMR_19:'Jerome Ngom Mbekeli',
+  CMR_2:'Andre Onana',
+  CMR_20:'Bryan Mbeumo',
+  CMR_3:'Fabrice Ondoa',
+  CMR_4:'Michael Ngadeu',
+  CMR_5:'Jean-Charles Castelletto',
+  CMR_6:'Collins Fai',
+  CMR_7:'Harold Moukoudi',
+  CMR_8:'Nicolas Nkoulou',
+  CMR_9:'Samuel Gouet',
+  COL_10:'Jefferson Lerma',
+  COL_11:'Wilmar Barrios',
+  COL_12:'Richard Rios',
+  COL_14:'James Rodriguez',
+  COL_15:'Luis Diaz',
+  COL_16:'Juan Cuadrado',
+  COL_17:'Rafael Santos Borre',
+  COL_18:'Miguel Angel Borja',
+  COL_19:'Jhon Cordoba',
+  COL_2:'Camilo Vargas',
+  COL_20:'Falcao',
+  COL_3:'David Ospina',
+  COL_4:'Santiago Arias',
+  COL_5:'Yerry Mina',
+  COL_6:'Davinson Sanchez',
+  COL_7:'Daniel Munoz',
+  COL_8:'Carlos Cuesta',
+  COL_9:'Santiago Arias',
+  CRO_10:'Luka Modric',
+  CRO_11:'Marcelo Brozovic',
+  CRO_12:'Ivan Perisic',
+  CRO_14:'Nikola Vlasic',
+  CRO_15:'Ante Budimir',
+  CRO_16:'Bruno Petkovic',
+  CRO_17:'Andrej Kramaric',
+  CRO_18:'Marko Livaja',
+  CRO_19:'Ivan Zuzul',
+  CRO_2:'Dominik Livakovic',
+  CRO_20:'Mario Pasalic',
+  CRO_3:'Ivica Ivusic',
+  CRO_4:'Sime Vrsaljko',
+  CRO_5:'Josip Juranovic',
+  CRO_6:'Josko Gvardiol',
+  CRO_7:'Dejan Lovren',
+  CRO_8:'Domagoj Vida',
+  CRO_9:'Mateo Kovacic',
+  CZE_10:'Lukas Provod',
+  CZE_11:'Lukas Cerv',
+  CZE_12:'Tomas Soucek',
+  CZE_14:'Pavel Sulc',
+  CZE_15:'Matej Vydra',
+  CZE_16:'Vasil Kusej',
+  CZE_17:'Tomas Chory',
+  CZE_18:'Vaclav Cerny',
+  CZE_19:'Adam Hlozek',
+  CZE_2:'Matej Kovar',
+  CZE_20:'Patrik Schick',
+  CZE_3:'Jindrich Stanek',
+  CZE_4:'Ladislav Krejci',
+  CZE_5:'Vladimir Coufal',
+  CZE_6:'Jaroslav Zeleny',
+  CZE_7:'Tomas Holes',
+  CZE_8:'David Zima',
+  CZE_9:'Michal Sadilek',
+  DEN_10:'Thomas Delaney',
+  DEN_11:'Pierre-Emile Hojbjerg',
+  DEN_12:'Mathias Jensen',
+  DEN_14:'Rasmus Hojlund',
+  DEN_15:'Mikkel Damsgaard',
+  DEN_16:'Yussuf Poulsen',
+  DEN_17:'Martin Braithwaite',
+  DEN_18:'Andreas Skov Olsen',
+  DEN_19:'Jonas Wind',
+  DEN_2:'Kasper Schmeichel',
+  DEN_20:'Kasper Dolberg',
+  DEN_3:'Niclas Fullkrug',
+  DEN_4:'Joachim Andersen',
+  DEN_5:'Andreas Christensen',
+  DEN_6:'Joakim Maehle',
+  DEN_7:'Victor Nelsson',
+  DEN_8:'Jannik Vestergaard',
+  DEN_9:'Christian Eriksen',
+  ECU_10:'Alan Franco',
+  ECU_11:'Kendry Paez',
+  ECU_12:'Pedro Vite',
+  ECU_14:'John Veboah',
+  ECU_15:'Leonardo Campana',
+  ECU_16:'Gonzalo Plata',
+  ECU_17:'Nilson Angulo',
+  ECU_18:'Alan Minda',
+  ECU_19:'Kevin Rodriguez',
+  ECU_2:'Hernan Galindez',
+  ECU_20:'Enner Valencia',
+  ECU_3:'Gonzalo Valle',
+  ECU_4:'Piero Hincapie',
+  ECU_5:'Pervis Estupinian',
+  ECU_6:'Willian Pacho',
+  ECU_7:'Angelo Preciado',
+  ECU_8:'Joel Ordonez',
+  ECU_9:'Moises Caicedo',
+  EGY_10:'Marwan Attia',
+  EGY_11:'Zizo',
+  EGY_12:'Hamdy Fathy',
+  EGY_14:'Mohamed Lasheen',
+  EGY_15:'Emam Ashour',
+  EGY_16:'Osama Faisal',
+  EGY_17:'Mohamed Salah',
+  EGY_18:'Mostafa Mohamed',
+  EGY_19:'Trezeguet',
+  EGY_2:'Mohamed El Shenawy',
+  EGY_20:'Omar Marmoush',
+  EGY_3:'Mohamed Hany',
+  EGY_4:'Mohamed Hamdy',
+  EGY_5:'Yasser Ibrahim',
+  EGY_6:'Khaled Sobhi',
+  EGY_7:'Ramy Rabia',
+  EGY_8:'Hossam Abdelmaguid',
+  EGY_9:'Ahmed Fatouh',
+  ENG_10:'Jude Bellingham',
+  ENG_11:'Phil Foden',
+  ENG_12:'Bukayo Saka',
+  ENG_14:'Marcus Rashford',
+  ENG_15:'Jack Grealish',
+  ENG_16:'Cole Palmer',
+  ENG_17:'Harry Kane',
+  ENG_18:'Ivan Toney',
+  ENG_19:'Ollie Watkins',
+  ENG_2:'Jordan Pickford',
+  ENG_20:'Eberechi Eze',
+  ENG_3:'John Stones',
+  ENG_4:'Marc Guehi',
+  ENG_5:'Conor Gallagher',
+  ENG_6:'Trent Alexander-Arnold',
+  ENG_7:'Luke Shaw',
+  ENG_8:'Kieran Trippier',
+  ENG_9:'Declan Rice',
+  ESP_10:'Rodri',
+  ESP_11:'Pedri',
+  ESP_12:'Fabian Ruiz',
+  ESP_14:'Mikel Merino',
+  ESP_15:'Lamine Yamal',
+  ESP_16:'Dani Olmo',
+  ESP_17:'Nico Williams',
+  ESP_18:'Ferran Torres',
+  ESP_19:'Alvaro Morata',
+  ESP_2:'Unai Simon',
+  ESP_20:'Mikel Oyarzabal',
+  ESP_3:'Robin Le Normand',
+  ESP_4:'Aymeric Laporte',
+  ESP_5:'Dean Huijsen',
+  ESP_6:'Pedro Porro',
+  ESP_7:'Dani Carvajal',
+  ESP_8:'Marc Cucurella',
+  ESP_9:'Martin Zubimendi',
+  FRA_10:'N\'Golo Kante',
+  FRA_11:'Aurelien Tchouameni',
+  FRA_12:'Adrien Rabiot',
+  FRA_14:'Youssouf Fofana',
+  FRA_15:'Antoine Griezmann',
+  FRA_16:'Marcus Thuram',
+  FRA_17:'Kylian Mbappe',
+  FRA_18:'Kingsley Coman',
+  FRA_19:'Ousmane Dembele',
+  FRA_2:'Mike Maignan',
+  FRA_20:'Randal Kolo Muani',
+  FRA_3:'Alphonse Areola',
+  FRA_4:'Jonathan Clauss',
+  FRA_5:'Raphael Varane',
+  FRA_6:'William Saliba',
+  FRA_7:'Jules Kounde',
+  FRA_8:'Theo Hernandez',
+  FRA_9:'Eduardo Camavinga',
+  GER_10:'Joshua Kimmich',
+  GER_11:'Florian Wirtz',
+  GER_12:'Felix Nmecha',
+  GER_14:'Leon Goretzka',
+  GER_15:'Jamal Musiala',
+  GER_16:'Serge Gnabry',
+  GER_17:'Kai Havertz',
+  GER_18:'Leroy Sane',
+  GER_19:'Karim Adeyemi',
+  GER_2:'Marc-Andre ter Stegen',
+  GER_20:'Nick Woltemade',
+  GER_3:'Jonathan Tah',
+  GER_4:'David Raum',
+  GER_5:'Nico Schlotterbeck',
+  GER_6:'Antonio Rudiger',
+  GER_7:'Waldemar Anton',
+  GER_8:'Ridle Baku',
+  GER_9:'Maximilian Mittelstadt',
+  GHA_10:'Daniel-Kofi Kyereh',
+  GHA_11:'Mohammed Kudus',
+  GHA_12:'Andre Ayew',
+  GHA_14:'Jordan Ayew',
+  GHA_15:'Yaw Yeboah',
+  GHA_16:'Kamaldeen Sulemana',
+  GHA_17:'Antoine Semenyo',
+  GHA_18:'Osman Bukari',
+  GHA_19:'Ernest Nuamah',
+  GHA_2:'Richard Ofori',
+  GHA_20:'Inaki Williams',
+  GHA_3:'Joseph Wollacott',
+  GHA_4:'Daniel Amartey',
+  GHA_5:'Alexander Djiku',
+  GHA_6:'Denis Odoi',
+  GHA_7:'Gideon Mensah',
+  GHA_8:'Tariq Lamptey',
+  GHA_9:'Thomas Partey',
+  HUN_10:'Andras Schafer',
+  HUN_11:'Laszlo Kleinheisler',
+  HUN_12:'Martin Adamszki',
+  HUN_14:'Callum Styles',
+  HUN_15:'Roland Sallai',
+  HUN_16:'Kristoffer Horvath',
+  HUN_17:'Dominik Szoboszlai',
+  HUN_18:'Kevin Csoboth',
+  HUN_19:'Zsolt Nagy',
+  HUN_2:'Peter Gulacsi',
+  HUN_20:'Barnabas Varga',
+  HUN_3:'Denes Dibusz',
+  HUN_4:'Adam Lang',
+  HUN_5:'Willi Orban',
+  HUN_6:'Attila Szalai',
+  HUN_7:'Endre Botka',
+  HUN_8:'Loic Nego',
+  HUN_9:'Adam Nagy',
+  IRQ_10:'Ibrahim Bayesh',
+  IRQ_11:'Alaa Abbas',
+  IRQ_12:'Ahmed Yasin',
+  IRQ_14:'Aymen Hussein',
+  IRQ_15:'Hassan Abdul Kareem',
+  IRQ_16:'Mohanad Ali',
+  IRQ_17:'Ahmed Kareem',
+  IRQ_18:'Mohannad Abdulraheem',
+  IRQ_19:'Ali Jasim',
+  IRQ_2:'Jalal Hassan',
+  IRQ_20:'Ameer Al-Safi',
+  IRQ_3:'Mohammed Hameed',
+  IRQ_4:'Ali Adnan',
+  IRQ_5:'Mustafa Nadhim',
+  IRQ_6:'Amjad Attwan',
+  IRQ_7:'Saad Abdul Amir',
+  IRQ_8:'Hussein Ali',
+  IRQ_9:'Osama Rashid',
+  ITA_10:'Jorginho',
+  ITA_11:'Davide Frattesi',
+  ITA_12:'Bryan Cristante',
+  ITA_14:'Sandro Tonali',
+  ITA_15:'Federico Chiesa',
+  ITA_16:'Matteo Politano',
+  ITA_17:'Lorenzo Pellegrini',
+  ITA_18:'Giacomo Raspadori',
+  ITA_19:'Gianluca Scamacca',
+  ITA_2:'Gianluigi Donnarumma',
+  ITA_20:'Retegui',
+  ITA_3:'Alex Meret',
+  ITA_4:'Giovanni Di Lorenzo',
+  ITA_5:'Alessandro Bastoni',
+  ITA_6:'Federico Dimarco',
+  ITA_7:'Giorgio Scalvini',
+  ITA_8:'Destiny Udogie',
+  ITA_9:'Nicolo Barella',
+  JOR_10:'Ahmad Al-Sarireh',
+  JOR_11:'Sufian Al-Azzam',
+  JOR_12:'Yazan Al-Naimat',
+  JOR_14:'Moussa Al-Taamari',
+  JOR_15:'Ahmad Hayel',
+  JOR_16:'Yazan Qasem',
+  JOR_17:'Samer Soudani',
+  JOR_18:'Ahmad Abu Al-Haija',
+  JOR_19:'Zeid Al-Qawabeh',
+  JOR_2:'Yazeed Abo Laila',
+  JOR_20:'Hamza Al-Dardour',
+  JOR_3:'Mohammad Rababah',
+  JOR_4:'Yasser Hanandeh',
+  JOR_5:'Musa Al-Taamari',
+  JOR_6:'Ahmad Harbi',
+  JOR_7:'Mohammad Al-Dmeiri',
+  JOR_8:'Baha Faisal',
+  JOR_9:'Mohammad Abu Zema',
+  JPN_10:'Ao Tanaka',
+  JPN_11:'Daichi Kamada',
+  JPN_12:'Takefusa Kubo',
+  JPN_14:'Ritsu Doan',
+  JPN_15:'Keito Nakamura',
+  JPN_16:'Takumi Minamino',
+  JPN_17:'Shuto Machino',
+  JPN_18:'Junya Ito',
+  JPN_19:'Koki Ogawa',
+  JPN_2:'Zion Suzuki',
+  JPN_20:'Ayase Ueda',
+  JPN_3:'Henry Heroki Mochizuki',
+  JPN_4:'Ayumu Seko',
+  JPN_5:'Junnosuke Suzuki',
+  JPN_6:'Shogo Taniguchi',
+  JPN_7:'Tsuyoshi Watanabe',
+  JPN_8:'Kaishu Sano',
+  JPN_9:'Yuki Soma',
+  KOR_10:'Jae-sung Lee',
+  KOR_11:'In-beom Hwang',
+  KOR_12:'Kang-in Lee',
+  KOR_14:'Seung-ho Paik',
+  KOR_15:'Jens Castrop',
+  KOR_16:'Dongg-yeong Lee',
+  KOR_17:'Gue-sung Cho',
+  KOR_18:'Heung-min Son',
+  KOR_19:'Hee-chan Hwang',
+  KOR_2:'Hyeon-woo Jo',
+  KOR_20:'Hyeon-Gyu Oh',
+  KOR_3:'Seung-Gyu Kim',
+  KOR_4:'Min-jae Kim',
+  KOR_5:'Yu-min Cho',
+  KOR_6:'Young-woo Seol',
+  KOR_7:'Han-beom Lee',
+  KOR_8:'Tae-seok Lee',
+  KOR_9:'Myung-jae Lee',
+  MAR_10:'Sofyan Amrabat',
+  MAR_11:'Azzedine Ounahi',
+  MAR_12:'Eliesse Ben Seghir',
+  MAR_14:'Bilal El Khannouss',
+  MAR_15:'Ismael Saibari',
+  MAR_16:'Youssef En-Nesyri',
+  MAR_17:'Abde Ezzalzouli',
+  MAR_18:'Soufiane Rahimi',
+  MAR_19:'Brahim Diaz',
+  MAR_2:'Yassine Bounou',
+  MAR_20:'Ayoub El Kaabi',
+  MAR_3:'Munir El Kajoui',
+  MAR_4:'Achraf Hakimi',
+  MAR_5:'Noussair Mazraoui',
+  MAR_6:'Nayef Aguerd',
+  MAR_7:'Roman Saiss',
+  MAR_8:'Jawad El Yamio',
+  MAR_9:'Adam Masina',
+  MEX_10:'Edson Alvarez',
+  MEX_11:'Orbelin Pineda',
+  MEX_12:'Marcel Ruiz',
+  MEX_14:'Erick Sanchez',
+  MEX_15:'Hirving Lozano',
+  MEX_16:'Santiago Gimenez',
+  MEX_17:'Raul Jimenez',
+  MEX_18:'Alexis Vega',
+  MEX_19:'Roberto Alvarado',
+  MEX_2:'Luis Malagon',
+  MEX_20:'Cesar Huerta',
+  MEX_3:'Johan Vasquez',
+  MEX_4:'Jorge Sanchez',
+  MEX_5:'Cesar Montes',
+  MEX_6:'Jesus Gallardo',
+  MEX_7:'Israel Reyes',
+  MEX_8:'Diego Lainez',
+  MEX_9:'Carlos Rodriguez',
+  NED_10:'Tijjani Reijnders',
+  NED_11:'Ryan Gravenberch',
+  NED_12:'Teun Koopmeiners',
+  NED_14:'Frenkie de Jong',
+  NED_15:'Xavi Simons',
+  NED_16:'Justin Kluivert',
+  NED_17:'Memphis Depay',
+  NED_18:'Donyell Malen',
+  NED_19:'Wout Weghorst',
+  NED_2:'Bart Verbruggen',
+  NED_20:'Cody Gakpo',
+  NED_3:'Virgil van Dijk',
+  NED_4:'Micky van de Ven',
+  NED_5:'Jurrien Timber',
+  NED_6:'Denzel Dumfries',
+  NED_7:'Nathan Ake',
+  NED_8:'Jeremie Frimpong',
+  NED_9:'Jan Paul van Hecke',
+  NGA_10:'Frank Onyeka',
+  NGA_11:'Wilfred Ndidi',
+  NGA_12:'Oghenekaro Etebo',
+  NGA_14:'Samuel Chukwueze',
+  NGA_15:'Moses Simon',
+  NGA_16:'Kelechi Iheanacho',
+  NGA_17:'Victor Osimhen',
+  NGA_18:'Emmanuel Dennis',
+  NGA_19:'Taiwo Awoniyi',
+  NGA_2:'Francis Uzoho',
+  NGA_20:'Terem Moffi',
+  NGA_3:'John Obi Mikel',
+  NGA_4:'Semi Ajayi',
+  NGA_5:'William Troost-Ekong',
+  NGA_6:'Kenneth Omeruo',
+  NGA_7:'Zaidu Sanusi',
+  NGA_8:'Leon Balogun',
+  NGA_9:'Alex Iwobi',
+  NZL_10:'Joe Bell',
+  NZL_11:'Sarpreet Singh',
+  NZL_12:'Ryan Thomas',
+  NZL_14:'Matthew Garbett',
+  NZL_15:'Marko Stamenic',
+  NZL_16:'Ben Old',
+  NZL_17:'Chris Wood',
+  NZL_18:'Elijah Just',
+  NZL_19:'Callum McCowatt',
+  NZL_2:'Max Crocombe Payne',
+  NZL_20:'Kosta Barbarouses',
+  NZL_3:'Alex Paulsen',
+  NZL_4:'Michael Boxall',
+  NZL_5:'Liberato Cacace',
+  NZL_6:'Tim Payne',
+  NZL_7:'Tyler Bindon',
+  NZL_8:'Francis de Vries',
+  NZL_9:'Finn Surman',
+  PAN_10:'Anibal Godoy',
+  PAN_11:'Adalberto Carrasquilla',
+  PAN_12:'Miguel Camargo',
+  PAN_14:'Ismael Diaz',
+  PAN_15:'Gabriel Torres',
+  PAN_16:'Roderick Miller',
+  PAN_17:'Cecilio Waterman',
+  PAN_18:'Blas Perez',
+  PAN_19:'Jose Fajardo',
+  PAN_2:'Orlando Mosquera',
+  PAN_20:'Ismael Diaz',
+  PAN_3:'Carlos Vargas',
+  PAN_4:'Andres Andrade',
+  PAN_5:'Fidel Escobar',
+  PAN_6:'Erick Davis',
+  PAN_7:'Jose Cordoba',
+  PAN_8:'Cesar Blackman',
+  PAN_9:'Alberto Quintero',
+  PAR_10:'Diego Gomez',
+  PAR_11:'Damian Bobadilla',
+  PAR_12:'Andres Cubas',
+  PAR_14:'Matias Galarza Fonda',
+  PAR_15:'Julio Enciso',
+  PAR_16:'Alejandro Romero Gamarra',
+  PAR_17:'Miguel Almiron',
+  PAR_18:'Ramon Sosa',
+  PAR_19:'Angel Romero',
+  PAR_2:'Roberto Fernandez',
+  PAR_20:'Antonio Sanabria',
+  PAR_3:'Orlando Gill',
+  PAR_4:'Gustavo Gomez',
+  PAR_5:'Fabian Balbuena',
+  PAR_6:'Juan Jose Caceres',
+  PAR_7:'Omar Alderete',
+  PAR_8:'Junior Alonso',
+  PAR_9:'Mathias Villasanti',
+  PER_10:'Wilder Cartagena',
+  PER_11:'Sergio Pena',
+  PER_12:'Yoshimar Yotun',
+  PER_14:'Piero Quispe',
+  PER_15:'Edison Flores',
+  PER_16:'Andy Polo',
+  PER_17:'Christian Cueva',
+  PER_18:'Gianluca Lapadula',
+  PER_19:'Alex Valera',
+  PER_2:'Pedro Gallese',
+  PER_20:'Paolo Guerrero',
+  PER_3:'Luis Advincula',
+  PER_4:'Alexander Callens',
+  PER_5:'Miguel Araujo',
+  PER_6:'Aldo Corzo',
+  PER_7:'Carlos Zambrano',
+  PER_8:'Marcos Lopez',
+  PER_9:'Renato Tapia',
+  QAT_10:'Karim Boudiaf',
+  QAT_11:'Assim Madibo',
+  QAT_12:'Ahmed Fatehi',
+  QAT_14:'Mohammed Waad',
+  QAT_15:'Abdulaziz Hatem',
+  QAT_16:'Hassan Al-Haydos',
+  QAT_17:'Edmilson Junior',
+  QAT_18:'Akram Hassan Afif',
+  QAT_19:'Ahmed Al Ganehi',
+  QAT_2:'Meshaal Barsham',
+  QAT_20:'Almoez Ali',
+  QAT_3:'Sultan Albrake',
+  QAT_4:'Lucas Mendes',
+  QAT_5:'Homam Ahmed',
+  QAT_6:'Boualem Khoukhi',
+  QAT_7:'Pedro Miguel',
+  QAT_8:'Tarek Salman',
+  QAT_9:'Mohamed Al-Mannai',
+  RSA_10:'Nkosinathi Sibisi',
+  RSA_11:'Teboho Mokoena',
+  RSA_12:'Thalente Mbatha',
+  RSA_14:'Bathasi Aubaas',
+  RSA_15:'Yaya Sithole',
+  RSA_16:'Sipho Mbule',
+  RSA_17:'Lyle Foster',
+  RSA_18:'Iqraam Rayners',
+  RSA_19:'Mohau Nkota',
+  RSA_2:'Ronwen Williams',
+  RSA_20:'Oswin Appollis',
+  RSA_3:'Sipho Chaine',
+  RSA_4:'Aubrey Modiba',
+  RSA_5:'Samukele Kabini',
+  RSA_6:'Mbekezeli Mbokazi',
+  RSA_7:'Khulumani Ndamane',
+  RSA_8:'Siyabonga Ngezana',
+  RSA_9:'Khuliso Mudau',
+  SAU_10:'Nasser Al-Dawsari',
+  SAU_11:'Salman Al-Faraj',
+  SAU_12:'Mohamed Kanno',
+  SAU_14:'Hattan Bahebri',
+  SAU_15:'Sami Al-Najei',
+  SAU_16:'Abdullah Al-Hamdan',
+  SAU_17:'Firas Al-Buraikan',
+  SAU_18:'Mohammed Maran',
+  SAU_19:'Saleh Al-Shehri',
+  SAU_2:'Mohammed Al-Owais',
+  SAU_20:'Salem Al-Dawsari',
+  SAU_3:'Mohammed Al Rubaie',
+  SAU_4:'Ali Al-Bulayhi',
+  SAU_5:'Sultan Al-Ghannam',
+  SAU_6:'Abdulellah Al-Malki',
+  SAU_7:'Saud Abdulhamid',
+  SAU_8:'Hassan Tambakti',
+  SAU_9:'Mohammed Al-Khulaif',
+  SEN_10:'Idrissa Gana Gueye',
+  SEN_11:'Cheikhou Kouyate',
+  SEN_12:'Moustapha Name',
+  SEN_14:'Ismaila Sarr',
+  SEN_15:'Krepin Diatta',
+  SEN_16:'Boulaye Dia',
+  SEN_17:'Sadio Mane',
+  SEN_18:'Nicolas Jackson',
+  SEN_19:'Iliman Ndiaye',
+  SEN_2:'Edouard Mendy',
+  SEN_20:'Famara Diedhiou',
+  SEN_3:'Alfred Gomis',
+  SEN_4:'Pape Abou Cisse',
+  SEN_5:'Kalidou Koulibaly',
+  SEN_6:'Abdou Diallo',
+  SEN_7:'Youssouf Sabaly',
+  SEN_8:'Formose Mendy',
+  SEN_9:'Nampalys Mendy',
+  SLO_10:'Sandi Lovric',
+  SLO_11:'Adam Cerin',
+  SLO_12:'Jon Gorenc Stankovic',
+  SLO_14:'Timi Max Elsnik',
+  SLO_15:'Benjamin Sesko',
+  SLO_16:'Andraz Sporar',
+  SLO_17:'Josip Ilicic',
+  SLO_18:'Miha Blazic',
+  SLO_19:'Jan Mlakar',
+  SLO_2:'Jan Oblak',
+  SLO_20:'Luka Zahovic',
+  SLO_3:'Vid Belec',
+  SLO_4:'Miha Mevlja',
+  SLO_5:'Zan Karnicnik',
+  SLO_6:'Jaka Bijol',
+  SLO_7:'Petar Stojanovic',
+  SLO_8:'Bostjan Cesar',
+  SLO_9:'Jasmin Kurtic',
+  SUI_10:'Denis Zakaria',
+  SUI_11:'Remo Freuler',
+  SUI_12:'Fabian Rieder',
+  SUI_14:'Ardon Jashari',
+  SUI_15:'Johan Manzambi',
+  SUI_16:'Michel Aebischer',
+  SUI_17:'Breel Embolo',
+  SUI_18:'Ruben Vargas',
+  SUI_19:'Dan Ndoye',
+  SUI_2:'Gregor Kobel',
+  SUI_20:'Zeki Amdouni',
+  SUI_3:'Yvon Mvogo',
+  SUI_4:'Manuel Akanji',
+  SUI_5:'Ricardo Rodriguez',
+  SUI_6:'Nico Elvedi',
+  SUI_7:'Aurele Amenda',
+  SUI_8:'Silvan Widmer',
+  SUI_9:'Granit Xhaka',
+  TUR_10:'Ismail Yuksek',
+  TUR_11:'Hakan Calhanoglu',
+  TUR_12:'Orkun Kokcu',
+  TUR_14:'Arda Guler',
+  TUR_15:'Irfan Can Kahveci',
+  TUR_16:'Yunus Akgun',
+  TUR_17:'Can Uzun',
+  TUR_18:'Baris Alper Yilmaz',
+  TUR_19:'Kerem Akturkoglu',
+  TUR_2:'Ugurcan Cakir',
+  TUR_20:'Kenan Yildiz',
+  TUR_3:'Mert Muldur',
+  TUR_4:'Zeki Celik',
+  TUR_5:'Abdulkerim Bardakci',
+  TUR_6:'Caglar Soyuncu',
+  TUR_7:'Merih Demiral',
+  TUR_8:'Ferdi Kadioglu',
+  TUR_9:'Kaan Ayhan',
+  UKR_10:'Ruslan Malinovskyi',
+  UKR_11:'Mykhailo Mudryk',
+  UKR_12:'Viktor Tsyhankov',
+  UKR_14:'Heorhii Sudakov',
+  UKR_15:'Artem Dovbyk',
+  UKR_16:'Yukhym Konoplya',
+  UKR_17:'Dmytro Chygrynskyi',
+  UKR_18:'Oleksandr Tymchyk',
+  UKR_19:'Oleksiy Kashchuk',
+  UKR_2:'Andriy Lunin',
+  UKR_20:'Pavlo Dyminskyi',
+  UKR_3:'Georgiy Bushchan',
+  UKR_4:'Oleksandr Zinchenko',
+  UKR_5:'Mykola Matviyenko',
+  UKR_6:'Bogdan Mykhaylichenko',
+  UKR_7:'Ilya Zabarnyi',
+  UKR_8:'Vitaliy Mykolenko',
+  UKR_9:'Taras Stepanenko',
+  URU_10:'Rodrigo Bentancur',
+  URU_11:'Federico Valverde',
+  URU_12:'Manuel Ugarte',
+  URU_14:'Giorgian de Arrascaeta',
+  URU_15:'Darwin Nunez',
+  URU_16:'Luis Suarez',
+  URU_17:'Facundo Pellistri',
+  URU_18:'Maxi Gomez',
+  URU_19:'Agustin Canobbio',
+  URU_2:'Sergio Rochet',
+  URU_20:'Edinson Cavani',
+  URU_3:'Santiago Mele',
+  URU_4:'Martin Caceres',
+  URU_5:'Sebastian Coates',
+  URU_6:'Jose Maria Gimenez',
+  URU_7:'Ronald Araujo',
+  URU_8:'Nahitan Nandez',
+  URU_9:'Lucas Torreira',
+  USA_10:'Weston McKennie',
+  USA_11:'Christian Roldan',
+  USA_12:'Timothy Weah',
+  USA_14:'Diego Luna',
+  USA_15:'Malik Tillman',
+  USA_16:'Christian Pulisic',
+  USA_17:'Brenden Aaronson',
+  USA_18:'Ricardo Pepi',
+  USA_19:'Haji Wright',
+  USA_2:'Matt Freese',
+  USA_20:'Folarin Balogun',
+  USA_3:'Chris Richards',
+  USA_4:'Tim Ream',
+  USA_5:'Mark McKenzie',
+  USA_6:'Alex Freeman',
+  USA_7:'Antonee Robinson',
+  USA_8:'Tyler Adams',
+  USA_9:'Tanner Tessmann',
+  VEN_10:'Darwin Machis',
+  VEN_11:'Tomas Rincon',
+  VEN_12:'Yangel Herrera',
+  VEN_14:'Jose Martinez',
+  VEN_15:'Jefferson Savarino',
+  VEN_16:'Eduard Bello',
+  VEN_17:'Salomon Rondon',
+  VEN_18:'Jhonder Cadiz',
+  VEN_19:'Jan Hurtado',
+  VEN_2:'Wuilker Farinez',
+  VEN_20:'Eric Ramirez',
+  VEN_3:'Rafael Romo',
+  VEN_4:'Yordan Osorio',
+  VEN_5:'Christian Makoun',
+  VEN_6:'Adrian Martinez',
+  VEN_7:'Francisco La Mantia',
+  VEN_8:'Jhon Chancellor',
+  VEN_9:'Junior Moreno',
+  AUT_10:'Konrad Laimer',
+  AUT_11:'Nicolas Seiwald',
+  AUT_12:'Patrick Wimmer',
+  AUT_14:'Christoph Baumgartner',
+  AUT_15:'Florian Kainz',
+  AUT_16:'Michael Gregoritsch',
+  AUT_17:'Marcel Sabitzer',
+  AUT_18:'Marko Arnautovic',
+  AUT_19:'Andreas Weimann',
+  AUT_2:'Patrick Pentz',
+  AUT_20:'Maximilian Entrup',
+  AUT_3:'Daniel Bachmann',
+  AUT_4:'Philipp Lienhart',
+  AUT_5:'Kevin Danso',
+  AUT_6:'Stefan Posch',
+  AUT_7:'Maximilian Woeber',
+  AUT_8:'Phillip Mwene',
+  AUT_9:'Florian Grillitsch',
+  COD_10:'Yoane Wissa',
+  COD_11:'Chadrac Akolo',
+  COD_12:'Cedric Bakambu',
+  COD_14:'Fiston Mayele',
+  COD_15:'Michy Batshuayi',
+  COD_16:'Paul-Jose Mpoku',
+  COD_17:'Dieumerci Mbokani',
+  COD_18:'Merveille Bope Bokadi',
+  COD_19:'Donatien Oyongo',
+  COD_2:'Joris Kayembe',
+  COD_20:'Silas Wissa',
+  COD_3:'Ben Malango',
+  COD_4:'Chancel Mbemba',
+  COD_5:'Joris Kayembe',
+  COD_6:'Meschak Elia',
+  COD_7:'Arthur Masuaku',
+  COD_8:'Marcel Tisserand',
+  COD_9:'Neeskens Kebano',
+  NOR_10:'Morten Thorsby',
+  NOR_11:'Sander Berge',
+  NOR_12:'Patrick Berg',
+  NOR_14:'Martin Odegaard',
+  NOR_15:'Oscar Bobb',
+  NOR_16:'Antonio Nusa',
+  NOR_17:'Alexander Soerloth',
+  NOR_18:'Erling Braut Haaland',
+  NOR_19:'Jorgen Strand Larsen',
+  NOR_2:'Orjan Nyland',
+  NOR_20:'Marcus Holmgren Pedersen',
+  NOR_3:'Kristoffer Klaesson',
+  NOR_4:'Birger Meling',
+  NOR_5:'Leo Ostigard',
+  NOR_6:'Andreas Hanche-Olsen',
+  NOR_7:'Julian Ryerson',
+  NOR_8:'Kristoffer Ajer',
+  NOR_9:'Fredrik Aursnes',
+  POR_10:'Joao Palinha',
+  POR_11:'Bernardo Silva',
+  POR_12:'Bruno Fernandes',
+  POR_14:'Ruben Neves',
+  POR_15:'Rafael Leao',
+  POR_16:'Pedro Neto',
+  POR_17:'Joao Felix',
+  POR_18:'Gonçalo Ramos',
+  POR_19:'Diogo Jota',
+  POR_2:'Diogo Costa',
+  POR_20:'Cristiano Ronaldo',
+  POR_3:'Jose Sa',
+  POR_4:'Diogo Dalot',
+  POR_5:'Pepe',
+  POR_6:'Ruben Dias',
+  POR_7:'Nuno Mendes',
+  POR_8:'Joao Cancelo',
+  POR_9:'Vitinha',
+  UZB_10:'Jaloliddin Masharipov',
+  UZB_11:'Bobur Abdixoliqov',
+  UZB_12:'Otabek Shukurov',
+  UZB_14:'Eldor Shomurodov',
+  UZB_15:'Sherzod Nasrullayev',
+  UZB_16:'Odil Akhmedov',
+  UZB_17:'Akbar Tursunmurodov',
+  UZB_18:'Dostonbek Turgunboev',
+  UZB_19:'Husan Kholmatov',
+  UZB_2:'Eldorbek Suyunov',
+  UZB_20:'Rustam Yusupov',
+  UZB_3:'Islom Tukhtahujaev',
+  UZB_4:'Dostonbek Khamdamov',
+  UZB_5:'Otabek Shukurov',
+  UZB_6:'Jamshid Iskanderov',
+  UZB_7:'Sanjar Tursunov',
+  UZB_8:'Ibrokhim Zairov',
+  UZB_9:'Abbosbek Fayzullaev',
+  BIH_10:'Argin Gigovic',
+  BIH_11:'Ivan Sunjic',
+  BIH_12:'Ivan Basic',
+  BIH_14:'Dzenis Burnic',
+  BIH_15:'Esmir Bajraktarevic',
+  BIH_16:'Amar Memic',
+  BIH_17:'Ermedin Demirovic',
+  BIH_18:'Edin Dzeko',
+  BIH_19:'Samed Bazdar',
+  BIH_2:'Nikola Vasilj',
+  BIH_20:'Haris Tabakovic',
+  BIH_3:'Amer Dedic',
+  BIH_4:'Sead Kolasinac',
+  BIH_5:'Tarik Muharemovic',
+  BIH_6:'Nihad Mujakic',
+  BIH_7:'Nikola Katic',
+  BIH_8:'Amir Hadziahmetovic',
+  BIH_9:'Benjamin Tahirovic',
+  CIV_10:'Franck Kessie',
+  CIV_11:'Seko Fofana',
+  CIV_12:'Ibrahim Sangare',
+  CIV_14:'Jean-Philippe Gbamin',
+  CIV_15:'Amad Diallo',
+  CIV_16:'Sebastien Haller',
+  CIV_17:'Simon Adingra',
+  CIV_18:'Yan Diomande',
+  CIV_19:'Evann Guessand',
+  CIV_2:'Yahia Fofana',
+  CIV_20:'Oumar Diakite',
+  CIV_3:'Ghislain Konan',
+  CIV_4:'Wilfried Singo',
+  CIV_5:'Odilon Kossounou',
+  CIV_6:'Evan Ndicka',
+  CIV_7:'Willy Boly',
+  CIV_8:'Emmanuel Agbadou',
+  CIV_9:'Ousmane Diomande',
+  CPV_10:'Kevin Pina',
+  CPV_11:'Patrick Andrade',
+  CPV_12:'Jamiro Monteiro',
+  CPV_14:'Ryan Mendes',
+  CPV_15:'Garry Rodrigues',
+  CPV_16:'Dylan Tavares',
+  CPV_17:'Julio Tavares',
+  CPV_18:'Ze Luis',
+  CPV_19:'Willy Semedo',
+  CPV_2:'Vozinha',
+  CPV_20:'Gilson Tavares',
+  CPV_3:'Logan Costa',
+  CPV_4:'Pico',
+  CPV_5:'Diney',
+  CPV_6:'Steven Moreira',
+  CPV_7:'Wagner Pina',
+  CPV_8:'Joao Paulo',
+  CPV_9:'Yannick Semedo',
+  CUW_10:'Godfried Roemeratoe',
+  CUW_11:'Juninho Bacuna',
+  CUW_12:'Leandro Bacuna',
+  CUW_14:'Tahith Chong',
+  CUW_15:'Kenji Gorre',
+  CUW_16:'Jearl Margaritha',
+  CUW_17:'Jurgen Locadia',
+  CUW_18:'Jeremy Antonisse',
+  CUW_19:'Gervane Kastaneer',
+  CUW_2:'Eloy Room',
+  CUW_20:'Sontje Hansen',
+  CUW_3:'Armando Obispo',
+  CUW_4:'Sherel Floranus',
+  CUW_5:'Jurien Gaari',
+  CUW_6:'Joshua Brenet',
+  CUW_7:'Roshon Van Eijma',
+  CUW_8:'Shurandy Sambo',
+  CUW_9:'Livano Comenencia',
+  HAI_10:'Leverton Pierre',
+  HAI_11:'Danley Jean Jacques',
+  HAI_12:'Jean-Ricner Bellegarde',
+  HAI_14:'Christopher Attys',
+  HAI_15:'Derrick Etienne Jr',
+  HAI_16:'Josue Casimir',
+  HAI_17:'Ruben Providence',
+  HAI_18:'Duckens Nazon',
+  HAI_19:'Louicius Deedson',
+  HAI_2:'Johny Placide',
+  HAI_20:'Frantzdy Pierrot',
+  HAI_3:'Carlens Arcus',
+  HAI_4:'Martin Experience',
+  HAI_5:'Jean-Kevin Duverne',
+  HAI_6:'Ricardo Ade',
+  HAI_7:'Duke Lacroix',
+  HAI_8:'Garven Metusala',
+  HAI_9:'Hannes Delcroix',
+  IRN_10:'Saleh Hardani',
+  IRN_11:'Saeed Ezatolahi',
+  IRN_12:'Saman Ghoddos',
+  IRN_14:'Omid Noorafkan',
+  IRN_15:'Roozbeh Cheshmi',
+  IRN_16:'Mohammad Mohebi',
+  IRN_17:'Sardar Azmoun',
+  IRN_18:'Mehdi Taremi',
+  IRN_19:'Alireza Jahanbakhsh',
+  IRN_2:'Alireza Beiranvand',
+  IRN_20:'Ali Gholizadeh',
+  IRN_3:'Morteza Pouraliganji',
+  IRN_4:'Ehsan Hajsafi',
+  IRN_5:'Milad Mohammadi',
+  IRN_6:'Shojae Khalilzadeh',
+  IRN_7:'Ramin Rezaeian',
+  IRN_8:'Hossein Kanaani',
+  IRN_9:'Sadegh Moharrami',
+  SCO_10:'Grant Hanley',
+  SCO_11:'Scott McTominay',
+  SCO_12:'Billy Gilmour',
+  SCO_14:'Lewis Ferguson',
+  SCO_15:'Ryan Christie',
+  SCO_16:'Kenny McLean',
+  SCO_17:'John McGinn',
+  SCO_18:'Lyndon Dykes',
+  SCO_19:'Che Adams',
+  SCO_2:'Angus Gunn',
+  SCO_20:'Ben Doak',
+  SCO_3:'Jack Hendry',
+  SCO_4:'Kieran Tierney',
+  SCO_5:'Aaron Hickey',
+  SCO_6:'Andrew Robertson',
+  SCO_7:'Scott McKenna',
+  SCO_8:'John Souttar',
+  SCO_9:'Anthony Ralston',
+  SWE_10:'Jesper Karlstrom',
+  SWE_11:'Yasin Ayari',
+  SWE_12:'Mattias Svanberg',
+  SWE_14:'Daniel Svensson',
+  SWE_15:'Ken Sema',
+  SWE_16:'Roony Bardghji',
+  SWE_17:'Dejan Kulusevski',
+  SWE_18:'Anthony Elanga',
+  SWE_19:'Alexander Isak',
+  SWE_2:'Victor Johansson',
+  SWE_20:'Viktor Gyokeres',
+  SWE_3:'Isak Hien',
+  SWE_4:'Gabriel Gudmundsson',
+  SWE_5:'Emil Holm',
+  SWE_6:'Victor Nilsson Lindelof',
+  SWE_7:'Gustaf Lagerbielke',
+  SWE_8:'Lucas Bergvall',
+  SWE_9:'Hugo Larsson',
+  TUN_10:'Aissa Laidouni',
+  TUN_11:'Ferjani Sassi',
+  TUN_12:'Mohamed Ali Ben Romdhane',
+  TUN_14:'Hannibal Mejbri',
+  TUN_15:'Elias Achouri',
+  TUN_16:'Elias Saad',
+  TUN_17:'Hazem Mastouri',
+  TUN_18:'Ismael Gharbi',
+  TUN_19:'Sayfallah Ltaief',
+  TUN_2:'Bechir Ben Said',
+  TUN_20:'Naim Sliti',
+  TUN_3:'Aymen Dahmen',
+  TUN_4:'Yan Valery',
+  TUN_5:'Montassar Talbi',
+  TUN_6:'Yassine Meriah',
+  TUN_7:'Ali Abdi',
+  TUN_8:'Dylan Bronn',
+  TUN_9:'Ellyes Skhiri'
 };
 
+var CC_KNOWN = {1:'Camavinga',2:'Gvardiol',3:'Lamine Yamal',4:'Kimmich',5:'Valverde',6:'Raul Jimenez',7:'Alphonso Davies',8:'Lautaro Martinez',9:'William Saliba',10:'Robinson',11:'Harry Kane'};
+
 var TEAMS = [
-  {code:'FWC', name:'World Cup', flag:'FWC', group:'Special', slots:21},
-  {code:'USA', name:'United States', flag:'USA', group:'A', slots:20},
-  {code:'MEX', name:'Mexico', flag:'MEX', group:'A', slots:20},
-  {code:'CAN', name:'Canada', flag:'CAN', group:'A', slots:20},
-  {code:'PAN', name:'Panama', flag:'PAN', group:'A', slots:20},
-  {code:'ARG', name:'Argentina', flag:'ARG', group:'B', slots:20},
-  {code:'ECU', name:'Ecuador', flag:'ECU', group:'B', slots:20},
-  {code:'CHI', name:'Chile', flag:'CHI', group:'B', slots:20},
-  {code:'PER', name:'Peru', flag:'PER', group:'B', slots:20},
-  {code:'BRA', name:'Brazil', flag:'BRA', group:'C', slots:20},
-  {code:'COL', name:'Colombia', flag:'COL', group:'C', slots:20},
-  {code:'PAR', name:'Paraguay', flag:'PAR', group:'C', slots:20},
-  {code:'URU', name:'Uruguay', flag:'URU', group:'C', slots:20},
-  {code:'FRA', name:'France', flag:'FRA', group:'D', slots:20},
-  {code:'MAR', name:'Morocco', flag:'MAR', group:'D', slots:20},
-  {code:'BEL', name:'Belgium', flag:'BEL', group:'D', slots:20},
-  {code:'ANG', name:'Angola', flag:'ANG', group:'D', slots:20},
-  {code:'ESP', name:'Spain', flag:'ESP', group:'E', slots:20},
-  {code:'POR', name:'Portugal', flag:'POR', group:'E', slots:20},
-  {code:'NGA', name:'Nigeria', flag:'NGA', group:'E', slots:20},
-  {code:'CMR', name:'Cameroon', flag:'CMR', group:'E', slots:20},
-  {code:'GER', name:'Germany', flag:'GER', group:'F', slots:20},
-  {code:'NED', name:'Netherlands', flag:'NED', group:'F', slots:20},
-  {code:'TUR', name:'Turkiye', flag:'TUR', group:'F', slots:20},
-  {code:'HUN', name:'Hungary', flag:'HUN', group:'F', slots:20},
-  {code:'ENG', name:'England', flag:'ENG', group:'G', slots:20},
-  {code:'SEN', name:'Senegal', flag:'SEN', group:'G', slots:20},
-  {code:'ALG', name:'Algeria', flag:'ALG', group:'G', slots:20},
-  {code:'BFA', name:'Burkina Faso', flag:'BFA', group:'G', slots:20},
-  {code:'JPN', name:'Japan', flag:'JPN', group:'H', slots:20},
-  {code:'AUS', name:'Australia', flag:'AUS', group:'H', slots:20},
-  {code:'SAU', name:'Saudi Arabia', flag:'SAU', group:'H', slots:20},
-  {code:'CHN', name:'China PR', flag:'CHN', group:'H', slots:20},
-  {code:'ITA', name:'Italy', flag:'ITA', group:'I', slots:20},
-  {code:'SUI', name:'Switzerland', flag:'SUI', group:'I', slots:20},
-  {code:'UKR', name:'Ukraine', flag:'UKR', group:'I', slots:20},
-  {code:'ALB', name:'Albania', flag:'ALB', group:'I', slots:20},
-  {code:'CRO', name:'Croatia', flag:'CRO', group:'J', slots:20},
-  {code:'DEN', name:'Denmark', flag:'DEN', group:'J', slots:20},
-  {code:'SLO', name:'Slovenia', flag:'SLO', group:'J', slots:20},
-  {code:'VEN', name:'Venezuela', flag:'VEN', group:'J', slots:20},
-  {code:'KOR', name:'South Korea', flag:'KOR', group:'K', slots:20},
-  {code:'IRQ', name:'Iraq', flag:'IRQ', group:'K', slots:20},
-  {code:'JOR', name:'Jordan', flag:'JOR', group:'K', slots:20},
-  {code:'NZL', name:'New Zealand', flag:'NZL', group:'K', slots:20},
-  {code:'EGY', name:'Egypt', flag:'EGY', group:'L', slots:20},
-  {code:'GHA', name:'Ghana', flag:'GHA', group:'L', slots:20},
-  {code:'RSA', name:'South Africa', flag:'RSA', group:'L', slots:20},
-  {code:'BEN', name:'Benin', flag:'BEN', group:'L', slots:20},
-  {code:'CC',  name:'Coca-Cola Stars', flag:'CC', group:'Special', slots:11}
+  {code:'FWC',name:'World Cup',group:'Special',slots:20},
+  {code:'MEX',name:'Mexico',group:'A',slots:20},
+  {code:'RSA',name:'South Africa',group:'A',slots:20},
+  {code:'KOR',name:'South Korea',group:'A',slots:20},
+  {code:'CZE',name:'Czechia',group:'A',slots:20},
+  {code:'CAN',name:'Canada',group:'B',slots:20},
+  {code:'BIH',name:'Bosnia & Herz.',group:'B',slots:20},
+  {code:'QAT',name:'Qatar',group:'B',slots:20},
+  {code:'SUI',name:'Switzerland',group:'B',slots:20},
+  {code:'BRA',name:'Brazil',group:'C',slots:20},
+  {code:'MAR',name:'Morocco',group:'C',slots:20},
+  {code:'HAI',name:'Haiti',group:'C',slots:20},
+  {code:'SCO',name:'Scotland',group:'C',slots:20},
+  {code:'USA',name:'United States',group:'D',slots:20},
+  {code:'PAR',name:'Paraguay',group:'D',slots:20},
+  {code:'AUS',name:'Australia',group:'D',slots:20},
+  {code:'TUR',name:'Turkiye',group:'D',slots:20},
+  {code:'GER',name:'Germany',group:'E',slots:20},
+  {code:'CUW',name:'Curacao',group:'E',slots:20},
+  {code:'CIV',name:'Ivory Coast',group:'E',slots:20},
+  {code:'ECU',name:'Ecuador',group:'E',slots:20},
+  {code:'NED',name:'Netherlands',group:'F',slots:20},
+  {code:'JPN',name:'Japan',group:'F',slots:20},
+  {code:'SWE',name:'Sweden',group:'F',slots:20},
+  {code:'TUN',name:'Tunisia',group:'F',slots:20},
+  {code:'BEL',name:'Belgium',group:'G',slots:20},
+  {code:'EGY',name:'Egypt',group:'G',slots:20},
+  {code:'IRN',name:'Iran',group:'G',slots:20},
+  {code:'NZL',name:'New Zealand',group:'G',slots:20},
+  {code:'ESP',name:'Spain',group:'H',slots:20},
+  {code:'CPV',name:'Cape Verde',group:'H',slots:20},
+  {code:'SAU',name:'Saudi Arabia',group:'H',slots:20},
+  {code:'URU',name:'Uruguay',group:'H',slots:20},
+  {code:'FRA',name:'France',group:'I',slots:20},
+  {code:'SEN',name:'Senegal',group:'I',slots:20},
+  {code:'IRQ',name:'Iraq',group:'I',slots:20},
+  {code:'NOR',name:'Norway',group:'I',slots:20},
+  {code:'ARG',name:'Argentina',group:'J',slots:20},
+  {code:'ALG',name:'Algeria',group:'J',slots:20},
+  {code:'AUT',name:'Austria',group:'J',slots:20},
+  {code:'JOR',name:'Jordan',group:'J',slots:20},
+  {code:'POR',name:'Portugal',group:'K',slots:20},
+  {code:'COD',name:'Congo DR',group:'K',slots:20},
+  {code:'UZB',name:'Uzbekistan',group:'K',slots:20},
+  {code:'COL',name:'Colombia',group:'K',slots:20},
+  {code:'ENG',name:'England',group:'L',slots:20},
+  {code:'CRO',name:'Croatia',group:'L',slots:20},
+  {code:'GHA',name:'Ghana',group:'L',slots:20},
+  {code:'PAN',name:'Panama',group:'L',slots:20},
+  {code:'CC', name:'Coca-Cola Stars',group:'Special',slots:11}
 ];
 
-var TOTAL = TEAMS.reduce(function(a,t){ return a + t.slots + (t.code === 'FWC' ? 1 : 0); }, 0);
+var TOTAL = TEAMS.reduce(function(a,t){return a+t.slots+(t.code==='FWC'?1:0);},0);
 
 function slotLabel(code, n) {
   if (code === 'FWC') {
-    if (n === 0) return 'Cover (FWC 00)';
-    var fl = ['Intro','Stadium 1','Stadium 2','Stadium 3','Stadium 4','Stadium 5',
-      'Stadium 6','Host Cities 1','Host Cities 2','Ball','Trophy','Mascot',
-      'History 1','History 2','History 3','History 4','History 5','History 6','Legend','Finale'];
-    return fl[n-1] || ('FWC ' + n);
+    if (n === 0) return 'Panini Logo';
+    var fl = ['Official Emblem','Official Emblem 2','Mascots','Slogan','Ball','Canada Host','Mexico Host','USA Host','History 1','History 2','History 3','History 4','History 5','History 6','History 7','History 8','History 9','History 10','Finale','Trophy'];
+    return fl[n-1] || 'FWC '+n;
   }
-  if (code === 'CC') return CC_KNOWN[n] || ('Star ' + n);
+  if (code === 'CC') return CC_KNOWN[n] || 'Star '+n;
   if (n === 1) return 'Crest';
-  if (n === 2) return 'Goalkeeper';
   if (n === 13) return 'Team Photo';
-  return 'Player ' + (n <= 12 ? n - 2 : n - 3);
+  var k = PLAYER_NAMES[code+'_'+n];
+  if (k) return k;
+  return n === 2 ? 'Goalkeeper' : 'Player';
 }
 
-var STORE = 'panini_wc26_v4';
-var state = {have:{}, dups:{}, names:{}};
+var STORE = 'panini_wc26_v5';
+var state = {have:{}, dups:{}};
 
 function load() {
   try {
     var r = localStorage.getItem(STORE);
-    if (r) state = JSON.parse(r);
+    if (r) { state = JSON.parse(r); }
     if (!state.have) state.have = {};
     if (!state.dups) state.dups = {};
-    if (!state.names) state.names = {};
-  } catch(e) { state = {have:{}, dups:{}, names:{}}; }
+    if (!r) {
+      var old = localStorage.getItem('panini_wc26_v4');
+      if (old) { var o = JSON.parse(old); state.have=o.have||{}; state.dups=o.dups||{}; save(); }
+    }
+  } catch(e) { state={have:{},dups:{}}; }
 }
-
 function save() { localStorage.setItem(STORE, JSON.stringify(state)); }
-function sk(c, n) { return c + '-' + n; }
-function hasS(c, n) { return !!state.have[sk(c,n)]; }
-function getName(c, n) { return state.names[sk(c,n)] || null; }
+function sk(c,n) { return c+'-'+n; }
+function hasS(c,n) { return !!state.have[sk(c,n)]; }
 
-function toggleSticker(c, n) {
-  var k = sk(c, n);
-  if (!state.have[k]) { state.have[k] = true; delete state.dups[k]; }
-  else if (!state.dups[k]) { state.dups[k] = 1; }
+function toggleSticker(c,n) {
+  var k=sk(c,n);
+  if (!state.have[k]) { state.have[k]=true; delete state.dups[k]; }
+  else if (!state.dups[k]) { state.dups[k]=1; }
   else { delete state.have[k]; delete state.dups[k]; }
-  save();
-  refreshEl(c, n);
-  updateStats();
+  save(); refreshEl(c,n); updateStats();
 }
 
-function refreshEl(c, n) {
-  var el = document.getElementById('s-' + c + '-' + n);
-  if (!el) return;
-  var k = sk(c, n);
-  el.className = 'sticker';
-  var badge = el.querySelector('.dbadge');
-  if (badge) badge.remove();
-  el.querySelector('.schk').textContent = '';
-  var nm = getName(c, n) || slotLabel(c, n);
-  el.querySelector('.slbl').textContent = nm;
-  if (state.have[k] && state.dups[k]) {
-    el.classList.add(c === 'CC' ? 'cchave' : 'dup');
-    el.querySelector('.schk').textContent = '\u2713';
-    var b = document.createElement('div');
-    b.className = 'dbadge';
-    b.textContent = '+' + state.dups[k];
-    el.appendChild(b);
+function refreshEl(c,n) {
+  var el=document.getElementById('s-'+c+'-'+n); if (!el) return;
+  var k=sk(c,n);
+  el.className='sticker';
+  var bd=el.querySelector('.dbadge'); if(bd) bd.remove();
+  el.querySelector('.sc').textContent='';
+  if (state.have[k]&&state.dups[k]) {
+    el.classList.add(c==='CC'?'cch':'dup');
+    el.querySelector('.sc').textContent='✓';
+    var b=document.createElement('div'); b.className='dbadge'; b.textContent='+'+state.dups[k]; el.appendChild(b);
   } else if (state.have[k]) {
-    el.classList.add(c === 'CC' ? 'cchave' : 'have');
-    el.querySelector('.schk').textContent = '\u2713';
+    el.classList.add(c==='CC'?'cch':'have');
+    el.querySelector('.sc').textContent='✓';
   }
 }
 
 function countHave() { return Object.keys(state.have).length; }
-function countDups() { return Object.values(state.dups).reduce(function(a,b){return a+b;}, 0); }
-
-function teamHave(code) {
-  var t = TEAMS.find(function(x){ return x.code === code; });
-  var c = 0;
-  var start = (code === 'FWC') ? 0 : 1;
-  for (var n = start; n <= t.slots; n++) if (hasS(code, n)) c++;
+function countDups() { return Object.values(state.dups).reduce(function(a,b){return a+b;},0); }
+function teamTotal(t) { return t.code==='FWC'?t.slots+1:t.slots; }
+function teamHave(t) {
+  var s=t.code==='FWC'?0:1, c=0;
+  for (var n=s;n<=t.slots;n++) if(hasS(t.code,n)) c++;
   return c;
 }
 
 function updateStats() {
-  var have = countHave(), miss = TOTAL - have, dups = countDups(), pct = Math.round(have/TOTAL*100);
-  document.getElementById('hh').textContent = have;
-  document.getElementById('ht').textContent = TOTAL;
-  document.getElementById('hp').textContent = pct + '%';
-  document.getElementById('sh').textContent = have;
-  document.getElementById('sm').textContent = miss;
-  document.getElementById('sd').textContent = dups;
-  document.getElementById('sp').textContent = pct + '%';
-  document.getElementById('pb').style.width = pct + '%';
+  var have=countHave(), miss=TOTAL-have, dups=countDups(), pct=Math.round(have/TOTAL*100);
+  document.getElementById('hh').textContent=have;
+  document.getElementById('ht').textContent=TOTAL;
+  document.getElementById('hp').textContent=pct+'%';
+  document.getElementById('sh').textContent=have;
+  document.getElementById('sm').textContent=miss;
+  document.getElementById('sd').textContent=dups;
+  document.getElementById('sp').textContent=pct+'%';
+  document.getElementById('pb').style.width=pct+'%';
   TEAMS.forEach(function(t) {
-    var el = document.getElementById('tp-' + t.code);
-    if (el) {
-      var h = teamHave(t.code);
-      el.textContent = h + '/' + t.slots;
-      el.className = 'tp' + (h === t.slots ? ' done' : '');
-    }
-    for (var n = 1; n <= t.slots; n++) refreshEl(t.code, n);
+    var el=document.getElementById('tp-'+t.code);
+    if (el) { var h=teamHave(t); el.textContent=h+'/'+teamTotal(t); el.className='tp'+(h===teamTotal(t)?' done':''); }
+    var s=t.code==='FWC'?0:1;
+    for (var n=s;n<=t.slots;n++) refreshEl(t.code,n);
   });
 }
 
 function buildAllTeams() {
-  var c = document.getElementById('tc');
-  var html = '', lastG = null;
+  var c=document.getElementById('tc'), html='', lastG=null;
   TEAMS.forEach(function(t) {
-    if (t.group !== lastG) {
-      if (lastG !== null) html += '<div class="divider"></div>';
-      var grpLabel = t.group === 'Special' ? 'Special Stickers' : 'Group ' + t.group;
-      html += '<div style="font-size:0.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">' + grpLabel + '</div>';
-      lastG = t.group;
+    if (t.group!==lastG) {
+      if (lastG!==null) html+='<div class="divider"></div>';
+      html+='<div style="font-size:0.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">'+(t.group==='Special'?'Special Stickers':'Group '+t.group)+'</div>';
+      lastG=t.group;
     }
-    html += '<div id="ts-' + t.code + '">';
-    html += '<div class="sh"><span class="flag">' + t.flag + '</span><span>' + t.name + '</span><span class="tp" id="tp-' + t.code + '">0/' + t.slots + '</span></div>';
-    html += '<div class="sgrid">';
-    for (var n = (t.code === 'FWC' ? 0 : 1); n <= t.slots; n++) {
-      var k = sk(t.code, n);
-      var cls = 'sticker', chk = '', badge2 = '';
-      var nm = getName(t.code, n) || slotLabel(t.code, n);
-      if (state.have[k] && state.dups[k]) {
-        cls += (t.code === 'CC') ? ' cchave' : ' dup';
-        chk = '\u2713';
-        badge2 = '<div class="dbadge">+' + state.dups[k] + '</div>';
-      } else if (state.have[k]) {
-        cls += (t.code === 'CC') ? ' cchave' : ' have';
-        chk = '\u2713';
-      }
-      html += '<div class="' + cls + '" id="s-' + t.code + '-' + n + '" onclick="toggleSticker(\'' + t.code + '\',' + n + ')">'
-        + '<div class="snum">' + t.code + ' ' + n + '</div>'
-        + '<div class="slbl">' + nm + '</div>'
-        + '<div class="schk">' + chk + '</div>'
-        + badge2 + '</div>';
+    html+='<div id="ts-'+t.code+'"><div class="sh"><span>'+t.name+'</span><span class="tp" id="tp-'+t.code+'">0/'+teamTotal(t)+'</span></div><div class="sgrid">';
+    var s=t.code==='FWC'?0:1;
+    for (var n=s;n<=t.slots;n++) {
+      var k=sk(t.code,n), cls='sticker', chk='', badge='';
+      if (state.have[k]&&state.dups[k]) { cls+=t.code==='CC'?' cch':' dup'; chk='✓'; badge='<div class="dbadge">+'+state.dups[k]+'</div>'; }
+      else if (state.have[k]) { cls+=t.code==='CC'?' cch':' have'; chk='✓'; }
+      html+='<div class="'+cls+'" id="s-'+t.code+'-'+n+'" onclick="toggleSticker(&apos;'+t.code+'&apos;,'+n+')">'
+        +'<div class="sn">'+t.code+' '+n+'</div>'
+        +'<div class="sl">'+slotLabel(t.code,n)+'</div>'
+        +'<div class="sc">'+chk+'</div>'+badge+'</div>';
     }
-    html += '</div></div>';
+    html+='</div></div>';
   });
-  c.innerHTML = html;
-  updateStats();
+  c.innerHTML=html; updateStats();
 }
 
 function filterTeams(q) {
-  q = q.toLowerCase().trim();
+  q=q.toLowerCase().trim();
   TEAMS.forEach(function(t) {
-    var el = document.getElementById('ts-' + t.code);
-    if (!el) return;
-    var match = !q || t.name.toLowerCase().indexOf(q) >= 0 || t.code.toLowerCase().indexOf(q) >= 0;
-    if (!match && q) {
-      for (var n = 1; n <= t.slots; n++) {
-        var nm = (getName(t.code, n) || '').toLowerCase();
-        if (nm.indexOf(q) >= 0) { match = true; break; }
-      }
-    }
-    el.style.display = match ? '' : 'none';
+    var el=document.getElementById('ts-'+t.code); if(!el) return;
+    var match=!q||t.name.toLowerCase().indexOf(q)>=0||t.code.toLowerCase().indexOf(q)>=0;
+    if (!match&&q) { var s=t.code==='FWC'?0:1; for(var n=s;n<=t.slots;n++){if((PLAYER_NAMES[t.code+'_'+n]||'').toLowerCase().indexOf(q)>=0){match=true;break;}} }
+    el.style.display=match?'':'none';
   });
 }
 
-function saveKey() {
-  var k = document.getElementById('aki').value.trim();
-  if (!k) return;
-  localStorage.setItem('panini_ak', k);
-  document.getElementById('aks').textContent = '\u2713 Key saved';
-  document.getElementById('aki').value = '';
+function saveKey() { var k=document.getElementById('aki').value.trim(); if(!k) return; localStorage.setItem('panini_ak',k); document.getElementById('aks').textContent='✓ Key saved'; document.getElementById('aki').value=''; }
+function getKey() { return localStorage.getItem('panini_ak')||''; }
+
+function buildTeamSelect() {
+  var sel=document.getElementById('tsel'); sel.innerHTML='';
+  TEAMS.filter(function(t){return t.group!=='Special';}).forEach(function(t){
+    var o=document.createElement('option'); o.value=t.code; o.textContent=t.name; sel.appendChild(o);
+  });
 }
-function getKey() { return localStorage.getItem('panini_ak') || ''; }
 
 function onFile(input) {
-  var file = input.files[0];
-  if (!file) return;
-  var prev = document.getElementById('sprev');
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    prev.src = e.target.result;
-    prev.style.display = 'block';
-    doScan(e.target.result, file.type);
-  };
+  var file=input.files[0]; if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(e){ document.getElementById('sprev').src=e.target.result; document.getElementById('sprev').style.display='block'; doScan(e.target.result,file.type); };
   reader.readAsDataURL(file);
 }
 
-var pending = null;
-
-function apiCall(key, base64, mime, prompt, maxTok) {
-  return fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': key,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
-      max_tokens: maxTok || 1000,
-      messages: [{role:'user', content:[
-        {type:'image', source:{type:'base64', media_type:mime, data:base64}},
-        {type:'text', text:prompt}
-      ]}]
-    })
-  }).then(function(r) {
-    return r.json().then(function(d) {
-      if (!r.ok || d.error) throw new Error(d.error ? d.error.message : 'HTTP ' + r.status);
-      return d.content.map(function(b){ return b.text || ''; }).join('');
-    });
-  });
-}
-
-function parseJ(text) {
-  var clean = text.replace(/```json|```/g, '').trim();
-  if (clean.charAt(0) !== '{') {
-    var m = clean.match(/\{[\s\S]*\}/);
-    if (m) clean = m[0];
-  }
-  return JSON.parse(clean);
-}
-
-function setLoad(msg) {
-  var el = document.getElementById('sload');
-  el.style.display = 'block';
-  el.innerHTML = '<span class="spin"></span>' + msg;
-}
-
 async function doScan(dataUrl, mime) {
-  var key = getKey();
-  if (!key) { alert('Please enter your Anthropic API key first.'); return; }
-  var b64 = dataUrl.split(',')[1];
-  document.getElementById('sres').style.display = 'none';
+  var key=getKey(); if(!key){alert('Please enter your Anthropic API key first.');return;}
+  var teamCode=document.getElementById('tsel').value;
+  var team=TEAMS.find(function(t){return t.code===teamCode;});
+  var b64=dataUrl.split(',')[1];
+  document.getElementById('sload').style.display='block';
+  document.getElementById('sres').style.display='none';
 
-  var p1 = 'You are analysing a Panini FIFA World Cup 2026 sticker album page.\n\n'
-    + 'Identify the PAGE TYPE:\n'
-    + '- TEAM: a country team page with 20 numbered sticker slots\n'
-    + '- FWC: a FIFA World Cup general page (stadiums, host cities, trophy, history)\n'
-    + '- CC: Coca-Cola special page, red background, 11 slots coded CC1-CC11\n'
-    + '- UNKNOWN: anything else\n\n'
-    + 'For each slot determine if it is FILLED (a sticker photo card has been placed) or EMPTY (slot outline visible, no card).\n\n'
-    + 'Respond with ONLY raw JSON, no explanation:\n'
-    + '{"pageType":"TEAM","teamCode":"ENG","teamName":"England","slots":[{"n":1,"filled":true},{"n":2,"filled":false}]}\n\n'
-    + 'Include ALL 20 slots for TEAM, all visible slots for FWC, all 11 for CC.';
+  var prompt='You are looking at a page from the Panini FIFA World Cup 2026 sticker album for '+team.name+' (code: '+teamCode+'). The page has exactly 20 sticker slots numbered 1 to 20. Slot 1 = team crest, slot 13 = team photo, slots 2-12 and 14-20 = player photos. For each slot determine ONLY whether it is FILLED (a sticker card is physically stuck in the slot) or EMPTY (the slot outline/background is visible with no card). Respond with ONLY raw JSON - no explanation: {\"filled\":[1,3,6],\"empty\":[2,4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20]} Every number 1-20 must appear in exactly one array.';
 
   try {
-    setLoad('Pass 1 of 2 - detecting stickers...');
-    var t1 = await apiCall(key, b64, mime, p1, 800);
-    var pass1;
-    try { pass1 = parseJ(t1); } catch(e) { throw new Error('Pass 1 parse failed: ' + t1.substring(0,150)); }
-
-    var ptype = pass1.pageType || 'UNKNOWN';
-    var slots1 = pass1.slots || [];
-    if (ptype === 'UNKNOWN' || !slots1.length) {
-      throw new Error('Could not identify this page. Try a clearer photo with the full page visible.');
-    }
-
-    var names = {};
-    if (ptype === 'TEAM' || ptype === 'CC') {
-      setLoad('Pass 2 of 2 - reading player names...');
-      var isCC = ptype === 'CC';
-      var p2 = 'You are looking at a Panini FIFA World Cup 2026 sticker album page for '
-        + (pass1.teamName || pass1.teamCode) + '.\n\n'
-        + 'Player names/surnames are printed in small text inside each slot shape on the page background. '
-        + 'This text exists whether or not a sticker card has been placed there.\n\n'
-        + (isCC
-          ? 'This is the Coca-Cola page with 11 slots. Read the name printed in each slot.\n\n'
-          : 'SLOT LAYOUT:\n'
-          + 'Slot 1 = Club Crest, no name, always null\n'
-          + 'Slot 2 = Goalkeeper, surname printed\n'
-          + 'Slots 3-12 = Outfield players, surname printed\n'
-          + 'Slot 13 = Team Photo, no name, always null\n'
-          + 'Slots 14-20 = Outfield players, surname printed\n\n'
-        )
-        + 'RULES:\n'
-        + '1. ONLY return names you can literally read as printed text on this image\n'
-        + '2. Do NOT guess or use football knowledge\n'
-        + '3. If you cannot clearly read the text in a slot, use null\n'
-        + '4. Slot 1 and slot 13 must always be null\n\n'
-        + 'Respond with ONLY raw JSON:\n'
-        + '{"names":{"2":"PICKFORD","3":"STONES","4":"TRIPPIER","5":null,"13":null}}\n\n'
-        + 'Use slot number as key. Include every slot 1 to ' + (isCC ? '11' : '20') + '.';
-
-      try {
-        var t2 = await apiCall(key, b64, mime, p2, 600);
-        var pass2 = parseJ(t2);
-        names = pass2.names || {};
-      } catch(e) {
-        console.warn('Pass 2 failed (non-fatal):', e.message);
-      }
-    }
-
-    document.getElementById('sload').style.display = 'none';
-
-    var team = TEAMS.find(function(t){ return t.code === (pass1.teamCode || 'FWC'); });
-    if (!team && pass1.teamName) {
-      var tn = pass1.teamName.toLowerCase();
-      team = TEAMS.find(function(t){ return t.name.toLowerCase().indexOf(tn) >= 0; });
-    }
-    var teamCode = team ? team.code : (pass1.teamCode || 'FWC');
-    var maxSlot = team ? team.slots : 20;
-
-    var merged = slots1
-      .filter(function(s){ return s.n >= 1 && s.n <= maxSlot; })
-      .map(function(s) {
-        var nm = (s.n === 1 || s.n === 13) ? null : (names[String(s.n)] || null);
-        return {n:s.n, filled:s.filled, name:nm};
-      });
-
-    pending = {ptype:ptype, teamCode:teamCode, team:team, slots:merged};
-
-    var filled = merged.filter(function(s){ return s.filled; });
-    var empty = merged.filter(function(s){ return !s.filled; });
-    var tname = team ? team.name : (pass1.teamName || teamCode);
-
-    document.getElementById('ctitle').textContent = ptype === 'CC' ? 'Coca-Cola Stars' : ptype === 'FWC' ? 'FWC Page' : tname;
-    document.getElementById('cdesc').textContent = filled.length + ' filled, ' + empty.length + ' empty slots found. Apply to your collection?';
-
-    var sh = '';
-    merged.forEach(function(s) {
-      sh += '<span class="mslot ' + (s.filled ? 'f' : 'e') + '">'
-        + teamCode + ' ' + s.n
-        + (s.name && s.filled ? ' - ' + s.name.substring(0,10) : '')
-        + ' ' + (s.filled ? '\u2713' : '\u2717') + '</span>';
+    var resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:300,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mime,data:b64}},{type:'text',text:prompt}]}]})
     });
-    document.getElementById('cslots').innerHTML = sh;
-    document.getElementById('cmod').classList.add('show');
-
-  } catch(err) {
-    document.getElementById('sload').style.display = 'none';
-    alert('Scan failed:\n\n' + err.message);
-  }
-}
-
-function applyResult() {
-  if (!pending) { closeModal(); return; }
-  var r = pending;
-  var added = 0, named = 0;
-  var maxSlot = r.team ? r.team.slots : 20;
-  r.slots.forEach(function(s) {
-    if (s.n < 1 || s.n > maxSlot) return;
-    var k = sk(r.teamCode, s.n);
-    if (s.filled && !state.have[k]) { state.have[k] = true; added++; }
-    if (s.name && s.n !== 1 && s.n !== 13) {
-      var nm = String(s.name).trim();
-      if (nm && !nm.match(/^(Crest|Goalkeeper|Team Photo|Player \d+|Star \d+)$/i)) {
-        state.names[k] = nm; named++;
-      }
-    }
-  });
-  save(); buildAllTeams(); updateStats();
-  closeModal();
-
-  var filled = r.slots.filter(function(s){ return s.filled; });
-  var empty = r.slots.filter(function(s){ return !s.filled; });
-  var res = document.getElementById('sres');
-  var h = '<div class="rt">' + r.teamCode + ' - Scan applied</div>';
-  h += '<div style="font-size:0.75rem;color:var(--muted);margin-bottom:8px;">' + added + ' new stickers marked. ' + named + ' names saved.</div>';
-  h += '<div style="font-size:0.7rem;font-weight:600;color:#95d5b2;margin-bottom:4px;">FILLED (' + filled.length + '):</div>';
-  h += '<div class="ss2">';
-  filled.forEach(function(s){ h += '<span class="f">' + r.teamCode + ' ' + s.n + (s.name ? ' - ' + s.name.substring(0,12) : '') + '</span>'; });
-  h += '</div>';
-  h += '<div style="font-size:0.7rem;font-weight:600;color:var(--accent);margin:8px 0 4px;">EMPTY (' + empty.length + '):</div>';
-  h += '<div class="ss2">';
-  empty.forEach(function(s){ h += '<span class="e">' + r.teamCode + ' ' + s.n + (s.name ? ' - ' + s.name.substring(0,12) : '') + '</span>'; });
-  h += '</div>';
-  res.innerHTML = h; res.style.display = 'block';
-  pending = null;
-}
-
-function closeModal() {
-  document.getElementById('cmod').classList.remove('show');
-  pending = null;
+    var data=await resp.json();
+    document.getElementById('sload').style.display='none';
+    if (!resp.ok||data.error) throw new Error(data.error?data.error.message:'HTTP '+resp.status);
+    var text=data.content.map(function(b){return b.text||'';}).join('');
+    var parsed; try { var clean=text.replace(/```json|```/g,'').trim(); if(clean.charAt(0)!=='{'){var m=clean.match(/[{][^]*[}]/);if(m)clean=m[0];} parsed=JSON.parse(clean); } catch(e){throw new Error('Parse failed: '+text.substring(0,120));}
+    var filled=(parsed.filled||[]).filter(function(n){return n>=1&&n<=20;});
+    var empty=(parsed.empty||[]).filter(function(n){return n>=1&&n<=20;});
+    var added=0;
+    filled.forEach(function(n){var k=sk(teamCode,n); if(!state.have[k]){state.have[k]=true;added++;}});
+    save(); updateStats();
+    var res=document.getElementById('sres');
+    var h='<div class="rt">'+team.name+' - '+added+' new sticker'+(added!==1?'s':'')+' marked</div>';
+    h+='<div style="font-size:0.7rem;font-weight:600;color:#95d5b2;margin:6px 0 3px">FILLED ('+filled.length+'):</div><div class="srow">';
+    filled.forEach(function(n){h+='<span class="f">'+teamCode+' '+n+' - '+slotLabel(teamCode,n)+'</span>';});
+    h+='</div><div style="font-size:0.7rem;font-weight:600;color:var(--accent);margin:6px 0 3px">EMPTY ('+empty.length+'):</div><div class="srow">';
+    empty.forEach(function(n){h+='<span class="e">'+teamCode+' '+n+' - '+slotLabel(teamCode,n)+'</span>';});
+    h+='</div>'; res.innerHTML=h; res.style.display='block';
+  } catch(err) { document.getElementById('sload').style.display='none'; alert('Scan failed: '+err.message); }
 }
 
 function updateMissing() {
-  var c = document.getElementById('mc');
-  var rows = [];
-  TEAMS.forEach(function(t) {
-    var miss = [];
-    for (var n = 1; n <= t.slots; n++) {
-      if (!hasS(t.code, n)) {
-        var nm = getName(t.code, n);
-        miss.push(t.code + '-' + n + (nm ? ' (' + nm + ')' : ''));
-      }
-    }
-    if (miss.length) rows.push({team:t, miss:miss});
+  var c=document.getElementById('mc'), rows=[];
+  TEAMS.forEach(function(t){
+    var s=t.code==='FWC'?0:1, miss=[];
+    for(var n=s;n<=t.slots;n++) if(!hasS(t.code,n)) miss.push({n:n,label:slotLabel(t.code,n)});
+    if(miss.length) rows.push({team:t,miss:miss});
   });
-  if (!rows.length) { c.innerHTML = '<div class="es"><div class="big">&#127942;</div>Collection complete!</div>'; return; }
-  var h = '<div class="sh" style="padding-top:0">&#9888; Missing Stickers</div>';
-  rows.forEach(function(row) {
-    h += '<div class="mb"><div class="mt">' + row.team.flag + ' ' + row.team.name + ' - ' + row.miss.length + ' missing</div><div class="ml">';
-    row.miss.forEach(function(m){ h += '<span class="mtag">' + m + '</span>'; });
-    h += '</div></div>';
+  if(!rows.length){c.innerHTML='<div class="es"><div class="big">&#127942;</div>Collection complete!</div>';return;}
+  var h='<div class="sh" style="padding-top:0">&#9888; Missing Stickers</div>';
+  rows.forEach(function(row){
+    h+='<div class="mb2"><div class="mt2">'+row.team.name+' - '+row.miss.length+' missing</div><div class="ml">';
+    row.miss.forEach(function(s){h+='<span class="mtag">'+row.team.code+' '+s.n+' - '+s.label+'</span>';});
+    h+='</div></div>';
   });
-  c.innerHTML = h;
+  c.innerHTML=h;
 }
 
 function renderDupes() {
-  var q = (document.getElementById('ds').value || '').toLowerCase().trim();
-  var rows = [];
-  TEAMS.forEach(function(t) {
-    var dups = [];
-    for (var n = 1; n <= t.slots; n++) {
-      var k = sk(t.code, n);
-      if (state.dups[k]) dups.push({n:n, count:state.dups[k]});
-    }
-    if (dups.length) {
-      var match = !q || t.name.toLowerCase().indexOf(q) >= 0 || t.code.toLowerCase().indexOf(q) >= 0
-        || dups.some(function(d){ return (t.code+'-'+d.n).toLowerCase().indexOf(q) >= 0 || (getName(t.code,d.n)||'').toLowerCase().indexOf(q) >= 0; });
-      if (match) rows.push({team:t, dups:dups});
+  var q=(document.getElementById('ds').value||'').toLowerCase().trim(), rows=[];
+  TEAMS.forEach(function(t){
+    var s=t.code==='FWC'?0:1, dups=[];
+    for(var n=s;n<=t.slots;n++){var k=sk(t.code,n); if(state.dups[k]) dups.push({n:n,count:state.dups[k],label:slotLabel(t.code,n)});}
+    if(dups.length){
+      var match=!q||t.name.toLowerCase().indexOf(q)>=0||t.code.toLowerCase().indexOf(q)>=0||dups.some(function(d){return (t.code+'-'+d.n).toLowerCase().indexOf(q)>=0||d.label.toLowerCase().indexOf(q)>=0;});
+      if(match) rows.push({team:t,dups:dups});
     }
   });
-
-  var dss = document.getElementById('dss');
-  if (rows.length) { dss.style.display = 'block'; buildSwap(); } else { dss.style.display = 'none'; }
-
-  var c = document.getElementById('dc');
-  if (!rows.length) {
-    c.innerHTML = q ? '<div class="es">No duplicates match.</div>' : '<div class="es"><div class="big">&#128260;</div>No duplicates yet.<br>Double-tap any sticker to mark as duplicate.</div>';
-    return;
-  }
-  var h = '';
-  rows.forEach(function(row) {
-    h += '<div class="db"><div class="ds2">' + row.team.flag + ' ' + row.team.name + '</div><div class="dl">';
-    row.dups.forEach(function(d) {
-      var k = sk(row.team.code, d.n);
-      var nm = getName(row.team.code, d.n);
-      h += '<div class="dit">' + row.team.code + '-' + d.n + (nm ? ' ' + nm.substring(0,12) : '');
-      if (d.count > 1) h += ' <span class="dc">x' + (d.count+1) + '</span>';
-      h += ' <span class="dr" onclick="removeDup(\'' + k + '\')">&#10005;</span></div>';
+  document.getElementById('dswap').style.display=rows.length?'block':'none';
+  if(rows.length) buildSwap();
+  var c=document.getElementById('dc');
+  if(!rows.length){c.innerHTML=q?'<div class="es">No duplicates match.</div>':'<div class="es"><div class="big">&#128260;</div>No duplicates yet.<br>Double-tap any sticker to mark as duplicate.</div>';return;}
+  var h='';
+  rows.forEach(function(row){
+    h+='<div class="dblock"><div class="dtitle">'+row.team.name+'</div><div class="dlist">';
+    row.dups.forEach(function(d){
+      var k=sk(row.team.code,d.n);
+      h+='<div class="dit">'+row.team.code+'-'+d.n+' '+d.label;
+      if(d.count>1) h+=' <span class="dc">x'+(d.count+1)+'</span>';
+      h+=' <span class="dr" data-key="'+k+'" onclick="removeDup(this.dataset.key)">&#10005;</span></div>';
     });
-    h += '</div></div>';
+    h+='</div></div>';
   });
-  c.innerHTML = h;
+  c.innerHTML=h;
 }
 
-function removeDup(k) {
-  delete state.dups[k]; save();
-  var p = k.split('-');
-  if (p.length >= 2) refreshEl(p[0], parseInt(p[1]));
-  updateStats(); renderDupes();
+function removeDup(k){delete state.dups[k];save();var p=k.split('-');if(p.length>=2)refreshEl(p[0],parseInt(p[1]));updateStats();renderDupes();}
+
+function addDup(){
+  var q=(document.getElementById('ds').value||'').trim().toUpperCase();
+  var qty=parseInt(document.getElementById('dq').value)||1;
+  var m=q.match(/^([A-Z]+)[\s\-](\d+)$/);
+  if(!m){alert('Enter a code like ARG-15 or ENG 10');return;}
+  var code=m[1],n=parseInt(m[2]);
+  var team=TEAMS.find(function(t){return t.code===code;});
+  if(!team||n<1||n>team.slots){alert('Unknown sticker: '+code+' '+n);return;}
+  var k=sk(code,n); state.have[k]=true; state.dups[k]=(state.dups[k]||0)+qty;
+  save();refreshEl(code,n);updateStats();renderDupes();
 }
 
-function addDupManual() {
-  var q = (document.getElementById('ds').value || '').trim().toUpperCase();
-  var qty = parseInt(document.getElementById('dq').value) || 1;
-  var m = q.match(/^([A-Z0-9]+)[\s\-](\d+)$/);
-  if (!m) { alert('Enter a code like ARG-3 or MEX 7'); return; }
-  var code = m[1], n = parseInt(m[2]);
-  var team = TEAMS.find(function(t){ return t.code === code; });
-  if (!team || n < 1 || n > team.slots) { alert('Unknown sticker: ' + code + ' ' + n); return; }
-  var k = sk(code, n);
-  state.have[k] = true;
-  state.dups[k] = (state.dups[k] || 0) + qty;
-  save(); refreshEl(code, n); updateStats(); renderDupes();
-}
-
-function buildSwap() {
-  var lines = ['\u26bd *Panini WC26 - My Swaps* \u26bd', ''];
-  TEAMS.forEach(function(t) {
-    var dups = [];
-    for (var n = 1; n <= t.slots; n++) {
-      var k = sk(t.code, n);
-      if (state.dups[k]) {
-        var nm = getName(t.code, n);
-        var cnt = state.dups[k];
-        dups.push(t.code + '-' + n + (nm ? ' (' + nm + ')' : '') + (cnt > 1 ? ' x' + (cnt+1) : ''));
-      }
-    }
-    if (dups.length) lines.push(t.flag + ' *' + t.name + ':* ' + dups.join(', '));
+function buildSwap(){
+  var lines=['⚽ *Panini WC26 - My Swaps* ⚽',''];
+  TEAMS.forEach(function(t){
+    var s=t.code==='FWC'?0:1, dups=[];
+    for(var n=s;n<=t.slots;n++){var k=sk(t.code,n);if(state.dups[k])dups.push(t.code+'-'+n+' '+slotLabel(t.code,n)+(state.dups[k]>1?' x'+(state.dups[k]+1):''));}
+    if(dups.length) lines.push('*'+t.name+':* '+dups.join(', '));
   });
-  lines.push(''); lines.push('\ud83d\udcac Reply with your missing list and let\'s swap!');
-  document.getElementById('swb').textContent = lines.join('\n');
+  lines.push('');lines.push('Reply with your missing list - lets swap!');
+  document.getElementById('swb').textContent=lines.join('\n');
 }
 
-function copySwap() {
-  navigator.clipboard.writeText(document.getElementById('swb').textContent)
-    .then(function(){ alert('Copied! Paste into WhatsApp.'); })
-    .catch(function(){ alert('Copy failed - please select and copy manually.'); });
-}
+function copySwap(){navigator.clipboard.writeText(document.getElementById('swb').textContent).then(function(){alert('Copied!');}).catch(function(){alert('Select and copy manually.');});}
 
-function updateMissingList() {
-  var lines = [];
-  TEAMS.forEach(function(t) {
-    var miss = [];
-    for (var n = 1; n <= t.slots; n++) {
-      if (!hasS(t.code, n)) {
-        var nm = getName(t.code, n);
-        miss.push(t.code + '-' + n + (nm ? ' (' + nm + ')' : ''));
-      }
-    }
-    if (miss.length) lines.push(miss.join(', '));
+function updateMissingList(){
+  var lines=[];
+  TEAMS.forEach(function(t){
+    var s=t.code==='FWC'?0:1, miss=[];
+    for(var n=s;n<=t.slots;n++) if(!hasS(t.code,n)) miss.push(t.code+'-'+n+' '+slotLabel(t.code,n));
+    if(miss.length) lines.push(miss.join(', '));
   });
-  document.getElementById('sml').textContent = lines.join('\n') || 'No missing stickers!';
+  document.getElementById('sml').textContent=lines.join('\n')||'No missing stickers!';
 }
 
-function copyMissing() {
-  navigator.clipboard.writeText(document.getElementById('sml').textContent)
-    .then(function(){ alert('Copied!'); })
-    .catch(function(){ alert('Copy failed.'); });
+function copyMissing(){navigator.clipboard.writeText(document.getElementById('sml').textContent).then(function(){alert('Copied!');}).catch(function(){alert('Select and copy manually.');});}
+
+function showTab(name){
+  document.querySelectorAll('.tv').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('tab-'+name).classList.add('active');
+  document.getElementById('nav-'+name).classList.add('active');
+  if(name==='missing') updateMissing();
+  if(name==='dupes') renderDupes();
+  if(name==='tools') updateMissingList();
 }
 
-function showTab(name) {
-  document.querySelectorAll('.tv').forEach(function(t){ t.classList.remove('active'); });
-  document.querySelectorAll('.nb').forEach(function(b){ b.classList.remove('active'); });
-  document.getElementById('tab-' + name).classList.add('active');
-  document.getElementById('nav-' + name).classList.add('active');
-  if (name === 'missing') updateMissing();
-  if (name === 'dupes') renderDupes();
-  if (name === 'tools') updateMissingList();
-}
+function resetAll(){if(!confirm('Reset all data?'))return;state={have:{},dups:{}};save();buildAllTeams();updateMissing();renderDupes();updateMissingList();}
+function markAll(){if(!confirm('Mark all as owned?'))return;TEAMS.forEach(function(t){var s=t.code==='FWC'?0:1;for(var n=s;n<=t.slots;n++)state.have[sk(t.code,n)]=true;});save();buildAllTeams();}
+function exportData(){var b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='panini-wc26-backup.json';a.click();}
+function importData(){try{var p=JSON.parse(document.getElementById('ibox').value.trim());if(!p.have)throw new Error('Invalid');state=p;if(!state.dups)state.dups={};save();buildAllTeams();updateMissing();renderDupes();updateMissingList();document.getElementById('ia').style.display='none';alert('Imported!');}catch(e){alert('Import failed: '+e.message);}}
 
-function resetAll() {
-  if (!confirm('Reset all data? This cannot be undone.')) return;
-  state = {have:{}, dups:{}, names:{}}; save(); buildAllTeams(); updateMissing(); renderDupes(); updateMissingList();
-}
+load();buildAllTeams();buildTeamSelect();
+if(getKey()) document.getElementById('aks').textContent='✓ Key saved';
 
-function markAll() {
-  if (!confirm('Mark all ' + TOTAL + ' stickers as owned?')) return;
-  TEAMS.forEach(function(t){ for (var n = 1; n <= t.slots; n++) state.have[sk(t.code,n)] = true; });
-  save(); buildAllTeams();
-}
-
-function exportData() {
-  var blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'panini-wc26-backup.json';
-  a.click();
-}
-
-function importData() {
-  try {
-    var p = JSON.parse(document.getElementById('ibox').value.trim());
-    if (!p.have) throw new Error('Invalid format');
-    state = p;
-    if (!state.dups) state.dups = {};
-    if (!state.names) state.names = {};
-    save(); buildAllTeams(); updateMissing(); renderDupes(); updateMissingList();
-    document.getElementById('iarea').style.display = 'none';
-    alert('Imported!');
-  } catch(e) { alert('Import failed: ' + e.message); }
-}
-
-load();
-buildAllTeams();
-if (getKey()) document.getElementById('aks').textContent = '\u2713 Key saved';
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').then(function(reg) {
-    reg.addEventListener('updatefound', function() {
-      reg.installing.addEventListener('statechange', function() {
-        if (this.state === 'installed' && navigator.serviceWorker.controller) {
-          this.postMessage({type:'SKIP_WAITING'});
-        }
-      });
-    });
-  }).catch(function(e){ console.log('SW failed:', e); });
-  navigator.serviceWorker.addEventListener('controllerchange', function(){ window.location.reload(); });
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js').then(function(reg){
+    reg.addEventListener('updatefound',function(){reg.installing.addEventListener('statechange',function(){if(this.state==='installed'&&navigator.serviceWorker.controller)this.postMessage({type:'SKIP_WAITING'});});});
+  }).catch(function(e){console.log('SW:',e);});
+  navigator.serviceWorker.addEventListener('controllerchange',function(){window.location.reload();});
 }
 </script>
 </body>
