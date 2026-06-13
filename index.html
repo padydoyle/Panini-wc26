@@ -15,917 +15,834 @@
 :root {
   --bg:#0f0f1a; --surface:#1a1a2e; --surface2:#16213e;
   --accent:#e63946; --gold:#ffd60a; --text:#f1f1f1; --muted:#888;
-  --have:#2d6a4f; --have-b:#40916c; --dup:#7b4f00; --dup-b:#c87f00;
+  --have:#2d6a4f; --have-b:#40916c;
+  --dup:#7b4f00; --dup-b:#c87f00;
   --cc:#6d0f3a; --cc-b:#b01f5e;
-  --miss:#1a1a2e; --miss-b:#333; --radius:6px;
+  --miss:#1a1a2e; --miss-b:#333;
+  --radius:6px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;}
 header{background:var(--surface);border-bottom:2px solid var(--accent);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .logo{font-family:'Bebas Neue',cursive;font-size:1.6rem;letter-spacing:2px;color:var(--gold);line-height:1;}
 .logo span{color:var(--accent);}
-.header-stats{font-size:0.75rem;color:var(--muted);text-align:right;line-height:1.4;}
-.header-stats strong{color:var(--gold);font-size:1rem;}
+.hstats{font-size:0.75rem;color:var(--muted);text-align:right;line-height:1.4;}
+.hstats strong{color:var(--gold);font-size:1rem;}
 nav{background:var(--surface2);display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid #222;gap:4px;padding:6px 8px;position:sticky;top:57px;z-index:99;}
 nav::-webkit-scrollbar{display:none;}
-.nav-btn{background:none;border:1px solid #333;border-radius:20px;color:var(--muted);font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;padding:5px 12px;cursor:pointer;white-space:nowrap;transition:all 0.15s;flex-shrink:0;}
-.nav-btn:hover{border-color:var(--accent);color:var(--text);}
-.nav-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
-.nav-btn .cnt{background:rgba(255,255,255,0.15);border-radius:10px;padding:1px 5px;margin-left:4px;font-size:0.65rem;}
+.nb{background:none;border:1px solid #333;border-radius:20px;color:var(--muted);font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;padding:5px 12px;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.nb:hover{border-color:var(--accent);color:var(--text);}
+.nb.active{background:var(--accent);border-color:var(--accent);color:#fff;}
 main{padding:12px;max-width:700px;margin:0 auto;}
-.sec-hdr{font-family:'Bebas Neue',cursive;font-size:1.1rem;letter-spacing:1px;color:var(--gold);padding:12px 0 8px;display:flex;align-items:center;gap:8px;}
-.sec-hdr .flag{font-size:1.3rem;}
-.sec-hdr .tprog{margin-left:auto;font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;color:var(--muted);}
-.sec-hdr .tprog.done{color:var(--gold);}
+.sh{font-family:'Bebas Neue',cursive;font-size:1.1rem;letter-spacing:1px;color:var(--gold);padding:12px 0 8px;display:flex;align-items:center;gap:8px;}
+.sh .flag{font-size:1.3rem;}
+.sh .tp{margin-left:auto;font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;color:var(--muted);}
+.sh .tp.done{color:var(--gold);}
 .sgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:4px;}
-.sticker{border-radius:var(--radius);border:1.5px solid var(--miss-b);background:var(--miss);padding:6px 4px;text-align:center;cursor:pointer;transition:all 0.12s;user-select:none;-webkit-tap-highlight-color:transparent;position:relative;}
+.sticker{border-radius:var(--radius);border:1.5px solid var(--miss-b);background:var(--miss);padding:6px 4px;text-align:center;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;position:relative;}
 .sticker:active{transform:scale(0.94);}
 .sticker.have{background:var(--have);border-color:var(--have-b);}
 .sticker.dup{background:var(--dup);border-color:var(--dup-b);}
-.sticker.cc-have{background:var(--cc);border-color:var(--cc-b);}
-.sticker .snum{font-size:0.6rem;font-weight:600;color:var(--muted);line-height:1;}
-.sticker.have .snum,.sticker.dup .snum,.sticker.cc-have .snum{color:#95d5b2;}
-.sticker .slbl{font-size:0.62rem;font-weight:500;color:var(--text);line-height:1.2;margin-top:2px;word-break:break-word;}
-.sticker .schk{font-size:0.9rem;line-height:1;margin-top:2px;opacity:0;}
-.sticker.have .schk,.sticker.dup .schk,.sticker.cc-have .schk{opacity:1;}
-.dup-badge{position:absolute;top:2px;right:2px;background:var(--gold);color:#000;font-size:0.5rem;font-weight:700;border-radius:3px;padding:1px 3px;line-height:1;}
+.sticker.cchave{background:var(--cc);border-color:var(--cc-b);}
+.snum{font-size:0.6rem;font-weight:600;color:var(--muted);line-height:1;}
+.have .snum,.dup .snum,.cchave .snum{color:#95d5b2;}
+.slbl{font-size:0.62rem;font-weight:500;color:var(--text);line-height:1.2;margin-top:2px;word-break:break-word;}
+.schk{font-size:0.9rem;line-height:1;margin-top:2px;opacity:0;}
+.have .schk,.dup .schk,.cchave .schk{opacity:1;}
+.dbadge{position:absolute;top:2px;right:2px;background:var(--gold);color:#000;font-size:0.5rem;font-weight:700;border-radius:3px;padding:1px 3px;line-height:1;}
 .divider{height:1px;background:#222;margin:16px 0;}
-.summary-bar{background:var(--surface);border-radius:var(--radius);padding:10px 14px;margin-bottom:12px;display:flex;gap:16px;flex-wrap:wrap;}
-.sstat{text-align:center;flex:1;min-width:55px;}
-.sstat .val{font-family:'Bebas Neue',cursive;font-size:1.8rem;line-height:1;color:var(--gold);}
-.sstat .lbl{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
-.prog-wrap{background:#222;border-radius:4px;height:6px;overflow:hidden;margin:8px 0 16px;}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:4px;transition:width 0.3s ease;}
-.leg-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;font-size:0.7rem;color:var(--muted);}
-.leg-dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;}
-.tab-view{display:none;}
-.tab-view.active{display:block;}
-#search-box{width:100%;background:var(--surface);border:1px solid #333;border-radius:var(--radius);color:var(--text);font-family:'Inter',sans-serif;font-size:0.85rem;padding:9px 12px;margin-bottom:12px;outline:none;}
-#search-box:focus{border-color:var(--accent);}
-.miss-block{margin-bottom:16px;}
-.miss-title{font-size:0.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
-.miss-list{display:flex;flex-wrap:wrap;gap:6px;}
-.miss-tag{background:var(--surface);border:1px solid #333;border-radius:4px;padding:3px 8px;font-size:0.7rem;font-weight:600;color:var(--muted);}
+.sbar{background:var(--surface);border-radius:var(--radius);padding:10px 14px;margin-bottom:12px;display:flex;gap:16px;flex-wrap:wrap;}
+.ss{text-align:center;flex:1;min-width:55px;}
+.ss .val{font-family:'Bebas Neue',cursive;font-size:1.8rem;line-height:1;color:var(--gold);}
+.ss .lbl{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
+.pw{background:#222;border-radius:4px;height:6px;overflow:hidden;margin:8px 0 16px;}
+.pf{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:4px;}
+.leg{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;font-size:0.7rem;color:var(--muted);}
+.ld{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;}
+.tv{display:none;}
+.tv.active{display:block;}
+#sb{width:100%;background:var(--surface);border:1px solid #333;border-radius:var(--radius);color:var(--text);font-family:'Inter',sans-serif;font-size:0.85rem;padding:9px 12px;margin-bottom:12px;outline:none;}
+#sb:focus{border-color:var(--accent);}
+.mb{margin-bottom:16px;}
+.mt{font-size:0.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.ml{display:flex;flex-wrap:wrap;gap:6px;}
+.mtag{background:var(--surface);border:1px solid #333;border-radius:4px;padding:3px 8px;font-size:0.7rem;font-weight:600;color:var(--muted);}
 .btn{background:var(--accent);border:none;border-radius:var(--radius);color:#fff;font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;padding:8px 16px;cursor:pointer;display:inline-block;margin:4px 4px 4px 0;}
 .btn.sec{background:var(--surface);border:1px solid #333;color:var(--muted);}
-.btn.gold{background:#7a6000;border:1px solid var(--gold);color:var(--gold);}
 .btn:active{opacity:0.8;}
-.tools-row{margin-bottom:16px;display:flex;flex-wrap:wrap;gap:6px;}
-.import-area{background:var(--surface);border:1px dashed #444;border-radius:var(--radius);padding:12px;margin-top:8px;}
-textarea.ibox{width:100%;background:#111;border:1px solid #333;border-radius:4px;color:var(--text);font-family:monospace;font-size:0.7rem;padding:8px;height:80px;resize:vertical;margin-bottom:6px;}
-.swap-box{background:var(--surface);border-radius:var(--radius);padding:12px;font-family:monospace;font-size:0.72rem;white-space:pre-wrap;word-break:break-word;max-height:260px;overflow-y:auto;color:#ccc;border:1px solid #333;}
-/* ── SCAN ── */
-.scan-panel{background:var(--surface);border:1px solid #333;border-radius:var(--radius);padding:14px;margin-bottom:16px;}
-.scan-panel h3{font-family:'Bebas Neue',cursive;font-size:1rem;color:var(--gold);letter-spacing:1px;margin-bottom:6px;}
-.scan-desc{font-size:0.75rem;color:var(--muted);margin-bottom:10px;line-height:1.5;}
-.file-label{background:var(--surface2);border:1px dashed #555;border-radius:var(--radius);padding:8px 14px;cursor:pointer;font-size:0.8rem;color:var(--muted);transition:border-color 0.15s;display:inline-block;}
-.file-label:hover{border-color:var(--accent);color:var(--text);}
-#scan-file-input{display:none;}
-.apikey-row{display:flex;gap:6px;margin-bottom:10px;}
-#api-key-input{flex:1;background:var(--surface);border:1px solid #333;border-radius:var(--radius);color:var(--text);font-family:'Inter',sans-serif;font-size:0.75rem;padding:7px 10px;outline:none;}
-#api-key-input:focus{border-color:var(--accent);}
-#scan-preview{max-width:100%;border-radius:var(--radius);margin:10px 0;display:none;max-height:220px;object-fit:contain;}
-#scan-loading{display:none;text-align:center;padding:20px;color:var(--muted);font-size:0.85rem;}
-.spinner{display:inline-block;width:20px;height:20px;border:2px solid #333;border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;margin-right:8px;vertical-align:middle;}
+.tr{margin-bottom:16px;display:flex;flex-wrap:wrap;gap:6px;}
+.ia{background:var(--surface);border:1px dashed #444;border-radius:var(--radius);padding:12px;margin-top:8px;}
+.ib{width:100%;background:#111;border:1px solid #333;border-radius:4px;color:var(--text);font-family:monospace;font-size:0.7rem;padding:8px;height:80px;resize:vertical;margin-bottom:6px;}
+.swapbox{background:var(--surface);border-radius:var(--radius);padding:12px;font-family:monospace;font-size:0.72rem;white-space:pre-wrap;word-break:break-word;max-height:260px;overflow-y:auto;color:#ccc;border:1px solid #333;}
+.sp{background:var(--surface);border:1px solid #333;border-radius:var(--radius);padding:14px;margin-bottom:16px;}
+.sp h3{font-family:'Bebas Neue',cursive;font-size:1rem;color:var(--gold);letter-spacing:1px;margin-bottom:6px;}
+.sdesc{font-size:0.75rem;color:var(--muted);margin-bottom:10px;line-height:1.5;}
+.fl{background:var(--surface2);border:1px dashed #555;border-radius:var(--radius);padding:8px 14px;cursor:pointer;font-size:0.8rem;color:var(--muted);display:inline-block;}
+.fl:hover{border-color:var(--accent);color:var(--text);}
+#sfi{display:none;}
+.akr{display:flex;gap:6px;margin-bottom:10px;}
+#aki{flex:1;background:var(--surface);border:1px solid #333;border-radius:var(--radius);color:var(--text);font-family:'Inter',sans-serif;font-size:0.75rem;padding:7px 10px;outline:none;}
+#aki:focus{border-color:var(--accent);}
+#sprev{max-width:100%;border-radius:var(--radius);margin:10px 0;display:none;max-height:220px;object-fit:contain;}
+#sload{display:none;text-align:center;padding:20px;color:var(--muted);font-size:0.85rem;}
+.spin{display:inline-block;width:20px;height:20px;border:2px solid #333;border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;margin-right:8px;vertical-align:middle;}
 @keyframes spin{to{transform:rotate(360deg);}}
-/* Confirm modal */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:center;justify-content:center;}
-.modal-overlay.show{display:flex;}
-.modal{background:var(--surface);border:1px solid #444;border-radius:12px;padding:20px;max-width:320px;width:90%;text-align:center;}
-.modal h3{font-family:'Bebas Neue',cursive;font-size:1.2rem;color:var(--gold);margin-bottom:8px;letter-spacing:1px;}
-.modal p{font-size:0.8rem;color:var(--muted);margin-bottom:16px;line-height:1.5;}
-.modal .modal-slots{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-bottom:14px;}
-.modal .mslot{padding:3px 7px;border-radius:3px;font-size:0.68rem;font-weight:600;}
-.modal .mslot.filled{background:var(--have);color:#95d5b2;}
-.modal .mslot.empty{background:#2a1a1a;color:var(--accent);}
-.modal-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
-.scan-result{background:#0d1f14;border:1px solid #2d6a4f;border-radius:var(--radius);padding:10px;margin-top:10px;font-size:0.8rem;line-height:1.6;display:none;}
-.scan-result .rtitle{font-weight:700;color:var(--gold);margin-bottom:6px;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;}
-.scan-slots{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0;}
-.sslot{padding:2px 7px;border-radius:3px;font-size:0.7rem;font-weight:600;}
-.sslot.filled{background:var(--have);color:#95d5b2;}
-.sslot.empty{background:#2a1a1a;color:var(--accent);}
-/* DUPES */
-.dup-intro{font-size:0.75rem;color:var(--muted);margin-bottom:14px;line-height:1.5;}
-.dup-block{margin-bottom:16px;}
-.dup-stitle{font-size:0.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
-.dup-list{display:flex;flex-wrap:wrap;gap:6px;}
-.dup-item{background:var(--dup);border:1px solid var(--dup-b);border-radius:4px;padding:3px 8px;font-size:0.7rem;font-weight:600;color:#ffd166;display:flex;align-items:center;gap:5px;}
-.dup-item .dc{background:rgba(255,255,255,0.15);border-radius:3px;padding:0 4px;}
-.dup-item .dr{cursor:pointer;opacity:0.6;font-size:0.8rem;}
-.dup-item .dr:hover{opacity:1;}
-.dup-srow{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
-#dup-search{flex:1;min-width:120px;background:var(--surface);border:1px solid #333;border-radius:var(--radius);color:var(--text);font-family:'Inter',sans-serif;font-size:0.8rem;padding:7px 10px;outline:none;}
-#dup-search:focus{border-color:var(--gold);}
-#dup-qty{width:60px;background:var(--surface);border:1px solid #333;border-radius:var(--radius);color:var(--text);font-family:'Inter',sans-serif;font-size:0.8rem;padding:7px 10px;outline:none;text-align:center;}
-.empty-state{text-align:center;color:var(--muted);padding:40px 16px;font-size:0.85rem;}
-.empty-state .big{font-size:2.5rem;margin-bottom:8px;}
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:center;justify-content:center;}
+.mo.show{display:flex;}
+.md{background:var(--surface);border:1px solid #444;border-radius:12px;padding:20px;max-width:320px;width:90%;text-align:center;}
+.md h3{font-family:'Bebas Neue',cursive;font-size:1.2rem;color:var(--gold);margin-bottom:8px;letter-spacing:1px;}
+.md p{font-size:0.8rem;color:var(--muted);margin-bottom:16px;line-height:1.5;}
+.mslots{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-bottom:14px;}
+.mslot{padding:3px 7px;border-radius:3px;font-size:0.68rem;font-weight:600;}
+.mslot.f{background:var(--have);color:#95d5b2;}
+.mslot.e{background:#2a1a1a;color:var(--accent);}
+.mbtns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.sr{background:#0d1f14;border:1px solid #2d6a4f;border-radius:var(--radius);padding:10px;margin-top:10px;font-size:0.8rem;line-height:1.6;display:none;}
+.sr .rt{font-weight:700;color:var(--gold);margin-bottom:6px;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;}
+.ss2{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0;}
+.ss2 span{padding:2px 7px;border-radius:3px;font-size:0.7rem;font-weight:600;}
+.ss2 .f{background:var(--have);color:#95d5b2;}
+.ss2 .e{background:#2a1a1a;color:var(--accent);}
+.di{font-size:0.75rem;color:var(--muted);margin-bottom:14px;line-height:1.5;}
+.db{margin-bottom:16px;}
+.ds{font-size:0.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.dl{display:flex;flex-wrap:wrap;gap:6px;}
+.dit{background:var(--dup);border:1px solid var(--dup-b);border-radius:4px;padding:3px 8px;font-size:0.7rem;font-weight:600;color:#ffd166;display:flex;align-items:center;gap:5px;}
+.dit .dc{background:rgba(255,255,255,0.15);border-radius:3px;padding:0 4px;}
+.dit .dr{cursor:pointer;opacity:0.6;font-size:0.8rem;}
+.dit .dr:hover{opacity:1;}
+.dsr{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+#ds{flex:1;min-width:120px;background:var(--surface);border:1px solid #333;border-radius:var(--radius);color:var(--text);font-family:'Inter',sans-serif;font-size:0.8rem;padding:7px 10px;outline:none;}
+#ds:focus{border-color:var(--gold);}
+#dq{width:60px;background:var(--surface);border:1px solid #333;border-radius:var(--radius);color:var(--text);font-family:'Inter',sans-serif;font-size:0.8rem;padding:7px 10px;outline:none;text-align:center;}
+.es{text-align:center;color:var(--muted);padding:40px 16px;font-size:0.85rem;}
+.es .big{font-size:2.5rem;margin-bottom:8px;}
 @media(max-width:400px){.sgrid{grid-template-columns:repeat(4,1fr);}}
 </style>
 </head>
 <body>
-
 <header>
   <div>
     <div class="logo">Panini <span>WC26</span></div>
-    <div style="font-size:0.6rem;color:var(--muted);margin-top:2px;">FIFA World Cup 2026™</div>
+    <div style="font-size:0.6rem;color:var(--muted);margin-top:2px;">FIFA World Cup 2026</div>
   </div>
-  <div class="header-stats"><strong id="h-have">0</strong> / <span id="h-total">991</span><br><span id="h-pct">0%</span> complete</div>
+  <div class="hstats"><strong id="hh">0</strong> / <span id="ht">992</span><br><span id="hp">0%</span> complete</div>
 </header>
-
-<nav id="team-nav">
-  <button class="nav-btn active" onclick="showTab('all')" id="nav-all">All Teams</button>
-  <button class="nav-btn" onclick="showTab('scan')" id="nav-scan">📷 Scan</button>
-  <button class="nav-btn" onclick="showTab('missing')" id="nav-missing">⚠ Missing</button>
-  <button class="nav-btn" onclick="showTab('dupes')" id="nav-dupes">🔁 Dupes</button>
-  <button class="nav-btn" onclick="showTab('tools')" id="nav-tools">⚙ Tools</button>
+<nav>
+  <button class="nb active" onclick="showTab('all')" id="nav-all">All Teams</button>
+  <button class="nb" onclick="showTab('scan')" id="nav-scan">&#128247; Scan</button>
+  <button class="nb" onclick="showTab('missing')" id="nav-missing">&#9888; Missing</button>
+  <button class="nb" onclick="showTab('dupes')" id="nav-dupes">&#128260; Dupes</button>
+  <button class="nb" onclick="showTab('tools')" id="nav-tools">&#9881; Tools</button>
 </nav>
-
 <main>
 
-<!-- ALL TEAMS -->
-<div class="tab-view active" id="tab-all">
-  <div class="summary-bar">
-    <div class="sstat"><div class="val" id="s-have">0</div><div class="lbl">Have</div></div>
-    <div class="sstat"><div class="val" id="s-miss">991</div><div class="lbl">Missing</div></div>
-    <div class="sstat"><div class="val" id="s-dups">0</div><div class="lbl">Dupes</div></div>
-    <div class="sstat"><div class="val" id="s-pct">0%</div><div class="lbl">Done</div></div>
+<div class="tv active" id="tab-all">
+  <div class="sbar">
+    <div class="ss"><div class="val" id="sh">0</div><div class="lbl">Have</div></div>
+    <div class="ss"><div class="val" id="sm">992</div><div class="lbl">Missing</div></div>
+    <div class="ss"><div class="val" id="sd">0</div><div class="lbl">Dupes</div></div>
+    <div class="ss"><div class="val" id="sp">0%</div><div class="lbl">Done</div></div>
   </div>
-  <div class="prog-wrap"><div class="prog-fill" id="prog-bar" style="width:0%"></div></div>
-  <div class="leg-row">
-    <span><span class="leg-dot" style="background:var(--have)"></span>Owned (1 tap)</span>
-    <span><span class="leg-dot" style="background:var(--dup)"></span>Duplicate (2 taps)</span>
-    <span><span class="leg-dot" style="background:var(--miss-b)"></span>Missing (3 taps = reset)</span>
+  <div class="pw"><div class="pf" id="pb" style="width:0%"></div></div>
+  <div class="leg">
+    <span><span class="ld" style="background:var(--have)"></span>Owned (1 tap)</span>
+    <span><span class="ld" style="background:var(--dup)"></span>Duplicate (2 taps)</span>
+    <span><span class="ld" style="background:var(--miss-b)"></span>Missing (3 taps = reset)</span>
   </div>
-  <input type="text" id="search-box" placeholder="🔍 Search team or player…" oninput="filterTeams(this.value)">
-  <div id="teams-container"></div>
+  <input type="text" id="sb" placeholder="&#128269; Search team or player..." oninput="filterTeams(this.value)">
+  <div id="tc"></div>
 </div>
 
-<!-- SCAN -->
-<div class="tab-view" id="tab-scan">
-  <div class="sec-hdr" style="padding-top:0">📷 Photo Scan</div>
-  <p style="font-size:0.75rem;color:var(--muted);margin-bottom:14px;line-height:1.5;">
-    Photograph any page of your album. Claude will detect the page type, identify which slots are filled, read player names, and update your collection automatically.
-  </p>
-
-  <div class="scan-panel">
+<div class="tv" id="tab-scan">
+  <div class="sh" style="padding-top:0">&#128247; Photo Scan</div>
+  <p style="font-size:0.75rem;color:var(--muted);margin-bottom:14px;line-height:1.5;">Photo any album page. Claude auto-detects the page type, reads which slots are filled, and saves player names.</p>
+  <div class="sp">
     <h3>API Key</h3>
-    <div class="scan-desc">Stored only in your browser. Never shared.</div>
-    <div class="apikey-row">
-      <input type="password" id="api-key-input" placeholder="sk-ant-…">
-      <button class="btn sec" onclick="saveApiKey()">Save</button>
+    <div class="sdesc">Stored only in your browser. Never shared.</div>
+    <div class="akr">
+      <input type="password" id="aki" placeholder="sk-ant-...">
+      <button class="btn sec" onclick="saveKey()">Save</button>
     </div>
-    <div id="api-key-status" style="font-size:0.7rem;color:var(--muted);"></div>
+    <div id="aks" style="font-size:0.7rem;color:var(--muted);"></div>
   </div>
-
-  <div class="scan-panel">
+  <div class="sp">
     <h3>Scan a Page</h3>
-    <div class="scan-desc">Take a clear photo of any album page — team pages, FWC pages, or the Coca-Cola page. Claude will work out what it is automatically.</div>
-    <label class="file-label" for="scan-file-input">📷 Choose photo</label>
-    <input type="file" id="scan-file-input" accept="image/*" onchange="onScanFile(this)">
-    <img id="scan-preview" alt="Page preview">
-    <div id="scan-loading"><span class="spinner"></span>Analysing page…</div>
-    <div class="scan-result" id="scan-result"></div>
+    <div class="sdesc">Works on team pages, FWC pages, and the Coca-Cola page. Two-pass scan: first detects stickers, then reads names.</div>
+    <label class="fl" for="sfi">&#128247; Choose photo</label>
+    <input type="file" id="sfi" accept="image/*" onchange="onFile(this)">
+    <img id="sprev" alt="Preview">
+    <div id="sload"><span class="spin"></span><span id="sloadt">Analysing...</span></div>
+    <div class="sr" id="sres"></div>
   </div>
 </div>
 
-<!-- MISSING -->
-<div class="tab-view" id="tab-missing">
-  <div id="missing-container"></div>
+<div class="tv" id="tab-missing">
+  <div id="mc"></div>
 </div>
 
-<!-- DUPES -->
-<div class="tab-view" id="tab-dupes">
-  <div class="sec-hdr" style="padding-top:0">🔁 Duplicates</div>
-  <div class="dup-intro">
-    Stickers you have more than one of — your swap currency.<br>
-    <strong>Tip:</strong> In All Teams, tap once = owned, twice = duplicate, three times = reset.
-  </div>
-  <div class="dup-srow">
-    <input type="text" id="dup-search" placeholder="e.g. ARG-3 or Argentina…" oninput="renderDupesTab()">
-    <input type="number" id="dup-qty" value="1" min="1" max="99">
+<div class="tv" id="tab-dupes">
+  <div class="sh" style="padding-top:0">&#128260; Duplicates</div>
+  <div class="di">Stickers you have more than one of.<br><strong>Tip:</strong> Tap once = owned, twice = duplicate, three times = reset to missing.</div>
+  <div class="dsr">
+    <input type="text" id="ds" placeholder="e.g. ARG-3 or Argentina..." oninput="renderDupes()">
+    <input type="number" id="dq" value="1" min="1" max="99">
     <button class="btn" onclick="addDupManual()">+ Add</button>
   </div>
-  <div id="dup-swap-section" style="margin-bottom:16px;display:none;">
-    <div class="sec-hdr" style="padding-top:0;font-size:0.95rem;">📱 WhatsApp Swap Message</div>
-    <div class="swap-box" id="swap-wa-box"></div>
-    <button class="btn" style="margin-top:8px" onclick="copySwapMsg()">📋 Copy message</button>
+  <div id="dss" style="margin-bottom:16px;display:none;">
+    <div class="sh" style="padding-top:0;font-size:0.95rem;">&#128241; WhatsApp Swap Message</div>
+    <div class="swapbox" id="swb"></div>
+    <button class="btn" style="margin-top:8px" onclick="copySwap()">&#128203; Copy message</button>
   </div>
-  <div id="dupes-container"></div>
+  <div id="dc"></div>
 </div>
 
-<!-- TOOLS -->
-<div class="tab-view" id="tab-tools">
-  <div class="sec-hdr" style="padding-top:0">⚙ Tools &amp; Data</div>
-  <div class="tools-row">
-    <button class="btn sec" onclick="resetAll()">🗑 Reset all</button>
-    <button class="btn sec" onclick="markAllHave()">✅ Mark all owned</button>
+<div class="tv" id="tab-tools">
+  <div class="sh" style="padding-top:0">&#9881; Tools</div>
+  <div class="tr">
+    <button class="btn sec" onclick="resetAll()">&#128465; Reset all</button>
+    <button class="btn sec" onclick="markAll()">&#9989; Mark all owned</button>
   </div>
-  <div class="tools-row">
-    <button class="btn" onclick="exportData()">⬇ Export JSON</button>
-    <button class="btn sec" onclick="document.getElementById('import-area').style.display='block'">⬆ Import JSON</button>
+  <div class="tr">
+    <button class="btn" onclick="exportData()">&#11015; Export JSON</button>
+    <button class="btn sec" onclick="document.getElementById('iarea').style.display='block'">&#11014; Import JSON</button>
   </div>
-  <div class="import-area" id="import-area" style="display:none">
+  <div class="ia" id="iarea" style="display:none">
     <div style="font-size:0.75rem;color:var(--muted);margin-bottom:6px;">Paste exported JSON below:</div>
-    <textarea class="ibox" id="import-box" placeholder='{"have":{},"dups":{},"names":{}}'></textarea>
+    <textarea class="ib" id="ibox" placeholder='{"have":{},"dups":{},"names":{}}'></textarea>
     <button class="btn" onclick="importData()">Import</button>
-    <button class="btn sec" onclick="document.getElementById('import-area').style.display='none'">Cancel</button>
+    <button class="btn sec" onclick="document.getElementById('iarea').style.display='none'">Cancel</button>
   </div>
   <div class="divider"></div>
-  <div class="sec-hdr">📋 Share missing list</div>
+  <div class="sh">&#128203; Share missing list</div>
   <div style="font-size:0.8rem;color:var(--muted);margin-bottom:8px;">Everything you still need:</div>
-  <div id="share-missing-list" class="swap-box"></div>
-  <button class="btn" style="margin-top:8px" onclick="copyMissingList()">📋 Copy to clipboard</button>
+  <div id="sml" class="swapbox"></div>
+  <button class="btn" style="margin-top:8px" onclick="copyMissing()">&#128203; Copy</button>
 </div>
 
 </main>
 
-<!-- CONFIRM MODAL -->
-<div class="modal-overlay" id="scan-modal">
-  <div class="modal">
-    <h3 id="modal-title">Confirm Scan</h3>
-    <p id="modal-desc"></p>
-    <div class="modal-slots" id="modal-slots"></div>
-    <div class="modal-btns">
-      <button class="btn" onclick="applyScanResult()">✓ Apply</button>
-      <button class="btn sec" onclick="closeScanModal()">✕ Cancel</button>
+<div class="mo" id="cmod">
+  <div class="md">
+    <h3 id="ctitle">Confirm Scan</h3>
+    <p id="cdesc"></p>
+    <div class="mslots" id="cslots"></div>
+    <div class="mbtns">
+      <button class="btn" onclick="applyResult()">&#10003; Apply</button>
+      <button class="btn sec" onclick="closeModal()">&#10005; Cancel</button>
     </div>
   </div>
 </div>
 
 <script>
-// ─── TEAMS ────────────────────────────────────────────────────────────────────
-// CC section
-const CC_PLAYERS = [
-  'CC1','CC2','CC3','CC4','CC5','CC6','CC7','CC8','CC9','CC10','CC11'
-];
-
-const CC_KNOWN = {
-  'CC1':'Camavinga','CC2':'Gvardiol','CC3':'Lamine Yamal','CC4':'Kimmich',
-  'CC5':'Valverde','CC6':'Raul Jimenez','CC7':'Alphonso Davies',
-  'CC8':'Lautaro Martinez','CC9':'William Saliba','CC10':'Robinson','CC11':'Harry Kane'
+var CC_KNOWN = {
+  1:'Camavinga', 2:'Gvardiol', 3:'Lamine Yamal', 4:'Kimmich',
+  5:'Valverde', 6:'Raul Jimenez', 7:'Alphonso Davies',
+  8:'Lautaro Martinez', 9:'William Saliba', 10:'Robinson', 11:'Harry Kane'
 };
 
-const TEAMS = [
-  {code:'FWC',name:'World Cup',flag:'🏆',group:'Special',slots:20},
-  // Group A
-  {code:'USA',name:'United States',flag:'🇺🇸',group:'A',slots:20},
-  {code:'MEX',name:'Mexico',flag:'🇲🇽',group:'A',slots:20},
-  {code:'CAN',name:'Canada',flag:'🇨🇦',group:'A',slots:20},
-  {code:'PAN',name:'Panama',flag:'🇵🇦',group:'A',slots:20},
-  // Group B
-  {code:'ARG',name:'Argentina',flag:'🇦🇷',group:'B',slots:20},
-  {code:'ECU',name:'Ecuador',flag:'🇪🇨',group:'B',slots:20},
-  {code:'CHI',name:'Chile',flag:'🇨🇱',group:'B',slots:20},
-  {code:'PER',name:'Peru',flag:'🇵🇪',group:'B',slots:20},
-  // Group C
-  {code:'BRA',name:'Brazil',flag:'🇧🇷',group:'C',slots:20},
-  {code:'COL',name:'Colombia',flag:'🇨🇴',group:'C',slots:20},
-  {code:'PAR',name:'Paraguay',flag:'🇵🇾',group:'C',slots:20},
-  {code:'URU',name:'Uruguay',flag:'🇺🇾',group:'C',slots:20},
-  // Group D
-  {code:'FRA',name:'France',flag:'🇫🇷',group:'D',slots:20},
-  {code:'MAR',name:'Morocco',flag:'🇲🇦',group:'D',slots:20},
-  {code:'BEL',name:'Belgium',flag:'🇧🇪',group:'D',slots:20},
-  {code:'ANG',name:'Angola',flag:'🇦🇴',group:'D',slots:20},
-  // Group E
-  {code:'ESP',name:'Spain',flag:'🇪🇸',group:'E',slots:20},
-  {code:'POR',name:'Portugal',flag:'🇵🇹',group:'E',slots:20},
-  {code:'NGA',name:'Nigeria',flag:'🇳🇬',group:'E',slots:20},
-  {code:'CMR',name:'Cameroon',flag:'🇨🇲',group:'E',slots:20},
-  // Group F
-  {code:'GER',name:'Germany',flag:'🇩🇪',group:'F',slots:20},
-  {code:'NED',name:'Netherlands',flag:'🇳🇱',group:'F',slots:20},
-  {code:'TUR',name:'Türkiye',flag:'🇹🇷',group:'F',slots:20},
-  {code:'HUN',name:'Hungary',flag:'🇭🇺',group:'F',slots:20},
-  // Group G
-  {code:'ENG',name:'England',flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',group:'G',slots:20},
-  {code:'SEN',name:'Senegal',flag:'🇸🇳',group:'G',slots:20},
-  {code:'ALG',name:'Algeria',flag:'🇩🇿',group:'G',slots:20},
-  {code:'BFA',name:'Burkina Faso',flag:'🇧🇫',group:'G',slots:20},
-  // Group H
-  {code:'JPN',name:'Japan',flag:'🇯🇵',group:'H',slots:20},
-  {code:'AUS',name:'Australia',flag:'🇦🇺',group:'H',slots:20},
-  {code:'SAU',name:'Saudi Arabia',flag:'🇸🇦',group:'H',slots:20},
-  {code:'CHN',name:'China PR',flag:'🇨🇳',group:'H',slots:20},
-  // Group I
-  {code:'ITA',name:'Italy',flag:'🇮🇹',group:'I',slots:20},
-  {code:'GER2',name:'Germany B',flag:'🇩🇪',group:'I',slots:20},
-  {code:'UKR',name:'Ukraine',flag:'🇺🇦',group:'I',slots:20},
-  {code:'ALB',name:'Albania',flag:'🇦🇱',group:'I',slots:20},
-  // Group J
-  {code:'CRO',name:'Croatia',flag:'🇭🇷',group:'J',slots:20},
-  {code:'DEN',name:'Denmark',flag:'🇩🇰',group:'J',slots:20},
-  {code:'SUI',name:'Switzerland',flag:'🇨🇭',group:'J',slots:20},
-  {code:'SLO',name:'Slovenia',flag:'🇸🇮',group:'J',slots:20},
-  // Group K
-  {code:'KOR',name:'South Korea',flag:'🇰🇷',group:'K',slots:20},
-  {code:'IRQ',name:'Iraq',flag:'🇮🇶',group:'K',slots:20},
-  {code:'JOR',name:'Jordan',flag:'🇯🇴',group:'K',slots:20},
-  {code:'NZL',name:'New Zealand',flag:'🇳🇿',group:'K',slots:20},
-  // Group L
-  {code:'EGY',name:'Egypt',flag:'🇪🇬',group:'L',slots:20},
-  {code:'GHA',name:'Ghana',flag:'🇬🇭',group:'L',slots:20},
-  {code:'RSA',name:'South Africa',flag:'🇿🇦',group:'L',slots:20},
-  {code:'BEN',name:'Benin',flag:'🇧🇯',group:'L',slots:20},
-  // Coca-Cola special
-  {code:'CC',name:'Coca-Cola Stars',flag:'🥤',group:'Special',slots:11},
+var TEAMS = [
+  {code:'FWC', name:'World Cup', flag:'FWC', group:'Special', slots:21},
+  {code:'USA', name:'United States', flag:'USA', group:'A', slots:20},
+  {code:'MEX', name:'Mexico', flag:'MEX', group:'A', slots:20},
+  {code:'CAN', name:'Canada', flag:'CAN', group:'A', slots:20},
+  {code:'PAN', name:'Panama', flag:'PAN', group:'A', slots:20},
+  {code:'ARG', name:'Argentina', flag:'ARG', group:'B', slots:20},
+  {code:'ECU', name:'Ecuador', flag:'ECU', group:'B', slots:20},
+  {code:'CHI', name:'Chile', flag:'CHI', group:'B', slots:20},
+  {code:'PER', name:'Peru', flag:'PER', group:'B', slots:20},
+  {code:'BRA', name:'Brazil', flag:'BRA', group:'C', slots:20},
+  {code:'COL', name:'Colombia', flag:'COL', group:'C', slots:20},
+  {code:'PAR', name:'Paraguay', flag:'PAR', group:'C', slots:20},
+  {code:'URU', name:'Uruguay', flag:'URU', group:'C', slots:20},
+  {code:'FRA', name:'France', flag:'FRA', group:'D', slots:20},
+  {code:'MAR', name:'Morocco', flag:'MAR', group:'D', slots:20},
+  {code:'BEL', name:'Belgium', flag:'BEL', group:'D', slots:20},
+  {code:'ANG', name:'Angola', flag:'ANG', group:'D', slots:20},
+  {code:'ESP', name:'Spain', flag:'ESP', group:'E', slots:20},
+  {code:'POR', name:'Portugal', flag:'POR', group:'E', slots:20},
+  {code:'NGA', name:'Nigeria', flag:'NGA', group:'E', slots:20},
+  {code:'CMR', name:'Cameroon', flag:'CMR', group:'E', slots:20},
+  {code:'GER', name:'Germany', flag:'GER', group:'F', slots:20},
+  {code:'NED', name:'Netherlands', flag:'NED', group:'F', slots:20},
+  {code:'TUR', name:'Turkiye', flag:'TUR', group:'F', slots:20},
+  {code:'HUN', name:'Hungary', flag:'HUN', group:'F', slots:20},
+  {code:'ENG', name:'England', flag:'ENG', group:'G', slots:20},
+  {code:'SEN', name:'Senegal', flag:'SEN', group:'G', slots:20},
+  {code:'ALG', name:'Algeria', flag:'ALG', group:'G', slots:20},
+  {code:'BFA', name:'Burkina Faso', flag:'BFA', group:'G', slots:20},
+  {code:'JPN', name:'Japan', flag:'JPN', group:'H', slots:20},
+  {code:'AUS', name:'Australia', flag:'AUS', group:'H', slots:20},
+  {code:'SAU', name:'Saudi Arabia', flag:'SAU', group:'H', slots:20},
+  {code:'CHN', name:'China PR', flag:'CHN', group:'H', slots:20},
+  {code:'ITA', name:'Italy', flag:'ITA', group:'I', slots:20},
+  {code:'SUI', name:'Switzerland', flag:'SUI', group:'I', slots:20},
+  {code:'UKR', name:'Ukraine', flag:'UKR', group:'I', slots:20},
+  {code:'ALB', name:'Albania', flag:'ALB', group:'I', slots:20},
+  {code:'CRO', name:'Croatia', flag:'CRO', group:'J', slots:20},
+  {code:'DEN', name:'Denmark', flag:'DEN', group:'J', slots:20},
+  {code:'SLO', name:'Slovenia', flag:'SLO', group:'J', slots:20},
+  {code:'VEN', name:'Venezuela', flag:'VEN', group:'J', slots:20},
+  {code:'KOR', name:'South Korea', flag:'KOR', group:'K', slots:20},
+  {code:'IRQ', name:'Iraq', flag:'IRQ', group:'K', slots:20},
+  {code:'JOR', name:'Jordan', flag:'JOR', group:'K', slots:20},
+  {code:'NZL', name:'New Zealand', flag:'NZL', group:'K', slots:20},
+  {code:'EGY', name:'Egypt', flag:'EGY', group:'L', slots:20},
+  {code:'GHA', name:'Ghana', flag:'GHA', group:'L', slots:20},
+  {code:'RSA', name:'South Africa', flag:'RSA', group:'L', slots:20},
+  {code:'BEN', name:'Benin', flag:'BEN', group:'L', slots:20},
+  {code:'CC',  name:'Coca-Cola Stars', flag:'CC', group:'Special', slots:11}
 ];
 
-const TOTAL = TEAMS.reduce(function(a,t){return a+t.slots;},0); // 48*20+11 = 971 + FWC20 = 991
+var TOTAL = TEAMS.reduce(function(a,t){ return a + t.slots + (t.code === 'FWC' ? 1 : 0); }, 0);
 
-function stickerLabel(code, n) {
+function slotLabel(code, n) {
   if (code === 'FWC') {
-    var l=['Cover','Stadium 1','Stadium 2','Stadium 3','Stadium 4','Stadium 5','Stadium 6',
-      'Host Cities 1','Host Cities 2','Ball','Trophy','Mascot','History 1','History 2',
-      'History 3','History 4','History 5','History 6','Legend','Finale'];
-    return l[n-1]||('FWC '+n);
+    if (n === 0) return 'Cover (FWC 00)';
+    var fl = ['Intro','Stadium 1','Stadium 2','Stadium 3','Stadium 4','Stadium 5',
+      'Stadium 6','Host Cities 1','Host Cities 2','Ball','Trophy','Mascot',
+      'History 1','History 2','History 3','History 4','History 5','History 6','Legend','Finale'];
+    return fl[n-1] || ('FWC ' + n);
   }
-  if (code === 'CC') {
-    return CC_KNOWN['CC'+n] || ('Star '+n);
-  }
-  if (n===1) return 'Crest';
-  if (n===2) return 'Goalkeeper';
-  if (n===13) return 'Team Photo';
-  return 'Player '+(n<=12 ? n-2 : n-3);
+  if (code === 'CC') return CC_KNOWN[n] || ('Star ' + n);
+  if (n === 1) return 'Crest';
+  if (n === 2) return 'Goalkeeper';
+  if (n === 13) return 'Team Photo';
+  return 'Player ' + (n <= 12 ? n - 2 : n - 3);
 }
 
-// ─── STATE ────────────────────────────────────────────────────────────────────
-var STORE_KEY = 'panini_wc26_v4';
+var STORE = 'panini_wc26_v4';
 var state = {have:{}, dups:{}, names:{}};
-// names: { 'ARG-3': 'Lionel Messi', ... } — populated by scan
 
 function load() {
   try {
-    var raw = localStorage.getItem(STORE_KEY);
-    if (raw) state = JSON.parse(raw);
+    var r = localStorage.getItem(STORE);
+    if (r) state = JSON.parse(r);
     if (!state.have) state.have = {};
     if (!state.dups) state.dups = {};
     if (!state.names) state.names = {};
-
-  } catch(e){ state={have:{},dups:{},names:{}}; }
+  } catch(e) { state = {have:{}, dups:{}, names:{}}; }
 }
-function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
-function sk(code,n){ return code+'-'+n; }
-function hasS(code,n){ return !!state.have[sk(code,n)]; }
-function isDup(code,n){ return (state.dups[sk(code,n)]||0)>0; }
-function getName(code,n){ return state.names[sk(code,n)]||null; }
 
-function toggleSticker(code,n) {
-  var k = sk(code,n);
-  if (!state.have[k]) { state.have[k]=true; delete state.dups[k]; }
-  else if (!state.dups[k]) { state.dups[k]=1; }
+function save() { localStorage.setItem(STORE, JSON.stringify(state)); }
+function sk(c, n) { return c + '-' + n; }
+function hasS(c, n) { return !!state.have[sk(c,n)]; }
+function getName(c, n) { return state.names[sk(c,n)] || null; }
+
+function toggleSticker(c, n) {
+  var k = sk(c, n);
+  if (!state.have[k]) { state.have[k] = true; delete state.dups[k]; }
+  else if (!state.dups[k]) { state.dups[k] = 1; }
   else { delete state.have[k]; delete state.dups[k]; }
-  save(); refreshStickerEl(code,n); updateStats();
-}
-
-function refreshStickerEl(code,n) {
-  var el = document.getElementById('s-'+code+'-'+n);
-  if (!el) return;
-  var k = sk(code,n);
-  el.classList.remove('have','dup','cc-have');
-  var badge = el.querySelector('.dup-badge');
-  if (badge) badge.remove();
-  el.querySelector('.schk').textContent='';
-  var name = getName(code,n) || stickerLabel(code,n);
-  el.querySelector('.slbl').textContent = name;
-  if (state.have[k] && state.dups[k]) {
-    el.classList.add(code==='CC'?'cc-have':'dup');
-    el.querySelector('.schk').textContent='✓';
-    var b=document.createElement('div'); b.className='dup-badge'; b.textContent='+'+state.dups[k]; el.appendChild(b);
-  } else if (state.have[k]) {
-    el.classList.add(code==='CC'?'cc-have':'have');
-    el.querySelector('.schk').textContent='✓';
-  }
-}
-
-// ─── STATS ────────────────────────────────────────────────────────────────────
-function countHave(){ return Object.keys(state.have).length; }
-function countDups(){ return Object.values(state.dups).reduce(function(a,b){return a+b;},0); }
-function teamHave(code){
-  var t=TEAMS.find(function(x){return x.code===code;}); var c=0;
-  for(var n=1;n<=t.slots;n++) if(hasS(code,n)) c++;
-  return c;
-}
-
-function updateStats(){
-  var have=countHave(), miss=TOTAL-have, dups=countDups(), pct=Math.round(have/TOTAL*100);
-  document.getElementById('h-have').textContent=have;
-  document.getElementById('h-total').textContent=TOTAL;
-  document.getElementById('h-pct').textContent=pct+'%';
-  document.getElementById('s-have').textContent=have;
-  document.getElementById('s-miss').textContent=miss;
-  document.getElementById('s-dups').textContent=dups;
-  document.getElementById('s-pct').textContent=pct+'%';
-  document.getElementById('prog-bar').style.width=pct+'%';
-  TEAMS.forEach(function(t){
-    var el=document.getElementById('tp-'+t.code);
-    if(el){var h=teamHave(t.code);el.textContent=h+'/'+t.slots;el.className='tprog'+(h===t.slots?' done':'');}
-    for(var n=1;n<=t.slots;n++) refreshStickerEl(t.code,n);
-  });
-}
-
-// ─── BUILD ALL TEAMS ─────────────────────────────────────────────────────────
-function buildAllTeams(){
-  var c=document.getElementById('teams-container'), html='', lastG=null;
-  TEAMS.forEach(function(t){
-    if(t.group!==lastG){
-      if(lastG!==null) html+='<div class="divider"></div>';
-      if(t.group==='Special') html+='<div style="font-size:0.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Special Stickers</div>';
-      else html+='<div style="font-size:0.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Group '+t.group+'</div>';
-      lastG=t.group;
-    }
-    html+='<div id="ts-'+t.code+'">';
-    html+='<div class="sec-hdr"><span class="flag">'+t.flag+'</span><span>'+t.name+'</span><span class="tprog" id="tp-'+t.code+'">0/'+t.slots+'</span></div>';
-    html+='<div class="sgrid">';
-    for(var n=1;n<=t.slots;n++){
-      var k=sk(t.code,n);
-      var cls='sticker', chk='', badge='';
-      var nm=getName(t.code,n)||stickerLabel(t.code,n);
-      if(state.have[k]&&state.dups[k]){
-        cls+=(t.code==='CC')?' cc-have':' dup'; chk='✓';
-        badge='<div class="dup-badge">+'+state.dups[k]+'</div>';
-      } else if(state.have[k]){
-        cls+=(t.code==='CC')?' cc-have':' have'; chk='✓';
-      }
-      html+='<div class="'+cls+'" id="s-'+t.code+'-'+n+'" onclick="toggleSticker(\''+t.code+'\','+n+')">'
-        +'<div class="snum">'+t.code+' '+n+'</div>'
-        +'<div class="slbl">'+nm+'</div>'
-        +'<div class="schk">'+chk+'</div>'
-        +badge+'</div>';
-    }
-    html+='</div></div>';
-  });
-  c.innerHTML=html;
+  save();
+  refreshEl(c, n);
   updateStats();
 }
 
-function filterTeams(q){
-  q=q.toLowerCase().trim();
-  TEAMS.forEach(function(t){
-    var el=document.getElementById('ts-'+t.code);
-    if(!el) return;
-    var match=!q||t.name.toLowerCase().includes(q)||t.code.toLowerCase().includes(q);
-    // Also check player names
-    if(!match && q){
-      for(var n=1;n<=t.slots;n++){
-        var nm=(getName(t.code,n)||'').toLowerCase();
-        if(nm.includes(q)){match=true;break;}
-      }
+function refreshEl(c, n) {
+  var el = document.getElementById('s-' + c + '-' + n);
+  if (!el) return;
+  var k = sk(c, n);
+  el.className = 'sticker';
+  var badge = el.querySelector('.dbadge');
+  if (badge) badge.remove();
+  el.querySelector('.schk').textContent = '';
+  var nm = getName(c, n) || slotLabel(c, n);
+  el.querySelector('.slbl').textContent = nm;
+  if (state.have[k] && state.dups[k]) {
+    el.classList.add(c === 'CC' ? 'cchave' : 'dup');
+    el.querySelector('.schk').textContent = '\u2713';
+    var b = document.createElement('div');
+    b.className = 'dbadge';
+    b.textContent = '+' + state.dups[k];
+    el.appendChild(b);
+  } else if (state.have[k]) {
+    el.classList.add(c === 'CC' ? 'cchave' : 'have');
+    el.querySelector('.schk').textContent = '\u2713';
+  }
+}
+
+function countHave() { return Object.keys(state.have).length; }
+function countDups() { return Object.values(state.dups).reduce(function(a,b){return a+b;}, 0); }
+
+function teamHave(code) {
+  var t = TEAMS.find(function(x){ return x.code === code; });
+  var c = 0;
+  var start = (code === 'FWC') ? 0 : 1;
+  for (var n = start; n <= t.slots; n++) if (hasS(code, n)) c++;
+  return c;
+}
+
+function updateStats() {
+  var have = countHave(), miss = TOTAL - have, dups = countDups(), pct = Math.round(have/TOTAL*100);
+  document.getElementById('hh').textContent = have;
+  document.getElementById('ht').textContent = TOTAL;
+  document.getElementById('hp').textContent = pct + '%';
+  document.getElementById('sh').textContent = have;
+  document.getElementById('sm').textContent = miss;
+  document.getElementById('sd').textContent = dups;
+  document.getElementById('sp').textContent = pct + '%';
+  document.getElementById('pb').style.width = pct + '%';
+  TEAMS.forEach(function(t) {
+    var el = document.getElementById('tp-' + t.code);
+    if (el) {
+      var h = teamHave(t.code);
+      el.textContent = h + '/' + t.slots;
+      el.className = 'tp' + (h === t.slots ? ' done' : '');
     }
-    el.style.display=match?'':'none';
+    for (var n = 1; n <= t.slots; n++) refreshEl(t.code, n);
   });
 }
 
-// ─── SCAN ─────────────────────────────────────────────────────────────────────
-function saveApiKey(){
-  var k=document.getElementById('api-key-input').value.trim();
-  if(!k) return;
-  localStorage.setItem('panini_ak',k);
-  document.getElementById('api-key-status').textContent='✓ Key saved';
-  document.getElementById('api-key-input').value='';
+function buildAllTeams() {
+  var c = document.getElementById('tc');
+  var html = '', lastG = null;
+  TEAMS.forEach(function(t) {
+    if (t.group !== lastG) {
+      if (lastG !== null) html += '<div class="divider"></div>';
+      var grpLabel = t.group === 'Special' ? 'Special Stickers' : 'Group ' + t.group;
+      html += '<div style="font-size:0.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">' + grpLabel + '</div>';
+      lastG = t.group;
+    }
+    html += '<div id="ts-' + t.code + '">';
+    html += '<div class="sh"><span class="flag">' + t.flag + '</span><span>' + t.name + '</span><span class="tp" id="tp-' + t.code + '">0/' + t.slots + '</span></div>';
+    html += '<div class="sgrid">';
+    for (var n = (t.code === 'FWC' ? 0 : 1); n <= t.slots; n++) {
+      var k = sk(t.code, n);
+      var cls = 'sticker', chk = '', badge2 = '';
+      var nm = getName(t.code, n) || slotLabel(t.code, n);
+      if (state.have[k] && state.dups[k]) {
+        cls += (t.code === 'CC') ? ' cchave' : ' dup';
+        chk = '\u2713';
+        badge2 = '<div class="dbadge">+' + state.dups[k] + '</div>';
+      } else if (state.have[k]) {
+        cls += (t.code === 'CC') ? ' cchave' : ' have';
+        chk = '\u2713';
+      }
+      html += '<div class="' + cls + '" id="s-' + t.code + '-' + n + '" onclick="toggleSticker(\'' + t.code + '\',' + n + ')">'
+        + '<div class="snum">' + t.code + ' ' + n + '</div>'
+        + '<div class="slbl">' + nm + '</div>'
+        + '<div class="schk">' + chk + '</div>'
+        + badge2 + '</div>';
+    }
+    html += '</div></div>';
+  });
+  c.innerHTML = html;
+  updateStats();
 }
-function getApiKey(){ return localStorage.getItem('panini_ak')||''; }
 
-function onScanFile(input){
-  var file=input.files[0]; if(!file) return;
-  var prev=document.getElementById('scan-preview');
-  var reader=new FileReader();
-  reader.onload=function(e){ prev.src=e.target.result; prev.style.display='block'; analysePhoto(e.target.result,file.type); };
+function filterTeams(q) {
+  q = q.toLowerCase().trim();
+  TEAMS.forEach(function(t) {
+    var el = document.getElementById('ts-' + t.code);
+    if (!el) return;
+    var match = !q || t.name.toLowerCase().indexOf(q) >= 0 || t.code.toLowerCase().indexOf(q) >= 0;
+    if (!match && q) {
+      for (var n = 1; n <= t.slots; n++) {
+        var nm = (getName(t.code, n) || '').toLowerCase();
+        if (nm.indexOf(q) >= 0) { match = true; break; }
+      }
+    }
+    el.style.display = match ? '' : 'none';
+  });
+}
+
+function saveKey() {
+  var k = document.getElementById('aki').value.trim();
+  if (!k) return;
+  localStorage.setItem('panini_ak', k);
+  document.getElementById('aks').textContent = '\u2713 Key saved';
+  document.getElementById('aki').value = '';
+}
+function getKey() { return localStorage.getItem('panini_ak') || ''; }
+
+function onFile(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var prev = document.getElementById('sprev');
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    prev.src = e.target.result;
+    prev.style.display = 'block';
+    doScan(e.target.result, file.type);
+  };
   reader.readAsDataURL(file);
 }
 
-var pendingScanResult = null;
+var pending = null;
 
-async function callClaude(apiKey, base64, mimeType, prompt, maxTokens) {
-  var resp = await fetch('https://api.anthropic.com/v1/messages', {
+function apiCall(key, base64, mime, prompt, maxTok) {
+  return fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': apiKey,
+      'x-api-key': key,
       'anthropic-version': '2023-06-01',
       'anthropic-dangerous-direct-browser-access': 'true'
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-6',
-      max_tokens: maxTokens || 1000,
+      max_tokens: maxTok || 1000,
       messages: [{role:'user', content:[
-        {type:'image', source:{type:'base64', media_type:mimeType, data:base64}},
+        {type:'image', source:{type:'base64', media_type:mime, data:base64}},
         {type:'text', text:prompt}
       ]}]
     })
+  }).then(function(r) {
+    return r.json().then(function(d) {
+      if (!r.ok || d.error) throw new Error(d.error ? d.error.message : 'HTTP ' + r.status);
+      return d.content.map(function(b){ return b.text || ''; }).join('');
+    });
   });
-  if (!resp.ok) { var ed = await resp.json(); throw new Error('API error: '+(ed.error?ed.error.message:'HTTP '+resp.status)); }
-  var data = await resp.json();
-  if (data.error) throw new Error(data.error.message);
-  return data.content.map(function(b){return b.text||'';}).join('');
 }
 
-function parseJSON(text) {
-  var clean = text.replace(/```json|```/g,'').trim();
-  if (!clean.startsWith('{')) { var m = clean.match(/\{[\s\S]*\}/); if (m) clean = m[0]; }
+function parseJ(text) {
+  var clean = text.replace(/```json|```/g, '').trim();
+  if (clean.charAt(0) !== '{') {
+    var m = clean.match(/\{[\s\S]*\}/);
+    if (m) clean = m[0];
+  }
   return JSON.parse(clean);
 }
 
-async function analysePhoto(dataUrl, mimeType){
-  var apiKey = getApiKey();
-  if (!apiKey) { alert('Please enter your Anthropic API key first.'); return; }
-  var base64 = dataUrl.split(',')[1];
-  var loadEl = document.getElementById('scan-loading');
-  document.getElementById('scan-result').style.display = 'none';
+function setLoad(msg) {
+  var el = document.getElementById('sload');
+  el.style.display = 'block';
+  el.innerHTML = '<span class="spin"></span>' + msg;
+}
+
+async function doScan(dataUrl, mime) {
+  var key = getKey();
+  if (!key) { alert('Please enter your Anthropic API key first.'); return; }
+  var b64 = dataUrl.split(',')[1];
+  document.getElementById('sres').style.display = 'none';
+
+  var p1 = 'You are analysing a Panini FIFA World Cup 2026 sticker album page.\n\n'
+    + 'Identify the PAGE TYPE:\n'
+    + '- TEAM: a country team page with 20 numbered sticker slots\n'
+    + '- FWC: a FIFA World Cup general page (stadiums, host cities, trophy, history)\n'
+    + '- CC: Coca-Cola special page, red background, 11 slots coded CC1-CC11\n'
+    + '- UNKNOWN: anything else\n\n'
+    + 'For each slot determine if it is FILLED (a sticker photo card has been placed) or EMPTY (slot outline visible, no card).\n\n'
+    + 'Respond with ONLY raw JSON, no explanation:\n'
+    + '{"pageType":"TEAM","teamCode":"ENG","teamName":"England","slots":[{"n":1,"filled":true},{"n":2,"filled":false}]}\n\n'
+    + 'Include ALL 20 slots for TEAM, all visible slots for FWC, all 11 for CC.';
 
   try {
-    // ── PASS 1: page type + filled/empty ──
-    loadEl.style.display = 'block';
-    loadEl.innerHTML = '<span class="spinner"></span>Pass 1 — detecting stickers…';
-
-    var p1 = 'You are analysing a Panini FIFA World Cup 2026 sticker album page.
-
-'
-      +'Identify the PAGE TYPE:
-'
-      +'- TEAM: a country team page. Has exactly 20 numbered slots.
-'
-      +'- FWC: a FIFA World Cup general page (stadiums, host cities, trophy, history etc).
-'
-      +'- CC: Coca-Cola special page — red background, 11 slots coded CC1-CC11.
-'
-      +'- UNKNOWN: anything else.
-
-'
-      +'For each slot determine ONLY whether it is FILLED (sticker photo card placed in it) or EMPTY (slot outline visible, no photo card).
-
-'
-      +'RESPOND WITH ONLY RAW JSON, no explanation, no markdown:
-'
-      +'{"pageType":"TEAM","teamCode":"ENG","teamName":"England","slots":[{"n":1,"filled":true},{"n":2,"filled":false}]}
-
-'
-      +'Include ALL 20 slots for TEAM pages. For FWC/CC include all visible slots.';
-
-    var t1 = await callClaude(apiKey, base64, mimeType, p1, 800);
+    setLoad('Pass 1 of 2 - detecting stickers...');
+    var t1 = await apiCall(key, b64, mime, p1, 800);
     var pass1;
-    try { pass1 = parseJSON(t1); }
-    catch(e) { throw new Error('Pass 1 parse failed: ' + t1.substring(0,200)); }
+    try { pass1 = parseJ(t1); } catch(e) { throw new Error('Pass 1 parse failed: ' + t1.substring(0,150)); }
 
-    var pageType = pass1.pageType || 'UNKNOWN';
+    var ptype = pass1.pageType || 'UNKNOWN';
     var slots1 = pass1.slots || [];
-    if (pageType === 'UNKNOWN' || slots1.length === 0) {
+    if (ptype === 'UNKNOWN' || !slots1.length) {
       throw new Error('Could not identify this page. Try a clearer photo with the full page visible.');
     }
 
-    // ── PASS 2: read printed names (TEAM and CC pages only) ──
     var names = {};
-    if (pageType === 'TEAM' || pageType === 'CC') {
-      loadEl.innerHTML = '<span class="spinner"></span>Pass 2 — reading player names…';
-      var isCC = pageType === 'CC';
-
+    if (ptype === 'TEAM' || ptype === 'CC') {
+      setLoad('Pass 2 of 2 - reading player names...');
+      var isCC = ptype === 'CC';
       var p2 = 'You are looking at a Panini FIFA World Cup 2026 sticker album page for '
-        + (pass1.teamName || pass1.teamCode) + '.
-
-'
-        + 'Each slot has a player NAME or SURNAME printed in small text inside the slot shape. '
-        + 'This text is printed on the page itself and is visible whether or not a sticker card has been placed there.
-
-'
+        + (pass1.teamName || pass1.teamCode) + '.\n\n'
+        + 'Player names/surnames are printed in small text inside each slot shape on the page background. '
+        + 'This text exists whether or not a sticker card has been placed there.\n\n'
         + (isCC
-          ? 'This is the Coca-Cola page with 11 slots. Read the name printed in each slot.
-
-'
-          : 'SLOT LAYOUT:
-'
-            + '- Slot 1: Club Crest — always null, no name
-'
-            + '- Slot 2: Goalkeeper — surname printed in slot
-'
-            + '- Slots 3-12: Outfield players — surname printed in slot
-'
-            + '- Slot 13: Team Photo — always null, no name
-'
-            + '- Slots 14-20: Outfield players — surname printed in slot
-
-'
+          ? 'This is the Coca-Cola page with 11 slots. Read the name printed in each slot.\n\n'
+          : 'SLOT LAYOUT:\n'
+          + 'Slot 1 = Club Crest, no name, always null\n'
+          + 'Slot 2 = Goalkeeper, surname printed\n'
+          + 'Slots 3-12 = Outfield players, surname printed\n'
+          + 'Slot 13 = Team Photo, no name, always null\n'
+          + 'Slots 14-20 = Outfield players, surname printed\n\n'
         )
-        + 'RULES:
-'
-        + '1. ONLY return names you can LITERALLY SEE as printed text on this image. Do not use football knowledge.
-'
-        + '2. If you cannot clearly read the text in a slot, set it to null.
-'
-        + '3. Return surnames exactly as printed — usually in CAPITALS.
-'
-        + '4. Slot 1 and slot 13 must ALWAYS be null.
-
-'
-        + 'RESPOND WITH ONLY RAW JSON, no explanation, no markdown:
-'
-        + '{"names":{"2":"PICKFORD","3":"STONES","4":"TRIPPIER","5":null,"6":"WALKER","13":null}}
-
-'
-        + 'Use the slot number as the key. Include every slot from 1 to ' + (isCC ? '11' : '20') + '.';
+        + 'RULES:\n'
+        + '1. ONLY return names you can literally read as printed text on this image\n'
+        + '2. Do NOT guess or use football knowledge\n'
+        + '3. If you cannot clearly read the text in a slot, use null\n'
+        + '4. Slot 1 and slot 13 must always be null\n\n'
+        + 'Respond with ONLY raw JSON:\n'
+        + '{"names":{"2":"PICKFORD","3":"STONES","4":"TRIPPIER","5":null,"13":null}}\n\n'
+        + 'Use slot number as key. Include every slot 1 to ' + (isCC ? '11' : '20') + '.';
 
       try {
-        var t2 = await callClaude(apiKey, base64, mimeType, p2, 600);
-        var pass2 = parseJSON(t2);
+        var t2 = await apiCall(key, b64, mime, p2, 600);
+        var pass2 = parseJ(t2);
         names = pass2.names || {};
       } catch(e) {
-        console.warn('Pass 2 name reading failed (non-fatal):', e.message);
+        console.warn('Pass 2 failed (non-fatal):', e.message);
       }
     }
 
-    loadEl.style.display = 'none';
-    loadEl.innerHTML = '<span class="spinner"></span>Analysing page…';
+    document.getElementById('sload').style.display = 'none';
 
-    // Merge: slots from pass1 + names from pass2
-    var merged = slots1.map(function(s) {
-      var name = (s.n === 1 || s.n === 13) ? null : (names[String(s.n)] || null);
-      return { n: s.n, filled: s.filled, name: name };
+    var team = TEAMS.find(function(t){ return t.code === (pass1.teamCode || 'FWC'); });
+    if (!team && pass1.teamName) {
+      var tn = pass1.teamName.toLowerCase();
+      team = TEAMS.find(function(t){ return t.name.toLowerCase().indexOf(tn) >= 0; });
+    }
+    var teamCode = team ? team.code : (pass1.teamCode || 'FWC');
+    var maxSlot = team ? team.slots : 20;
+
+    var merged = slots1
+      .filter(function(s){ return s.n >= 1 && s.n <= maxSlot; })
+      .map(function(s) {
+        var nm = (s.n === 1 || s.n === 13) ? null : (names[String(s.n)] || null);
+        return {n:s.n, filled:s.filled, name:nm};
+      });
+
+    pending = {ptype:ptype, teamCode:teamCode, team:team, slots:merged};
+
+    var filled = merged.filter(function(s){ return s.filled; });
+    var empty = merged.filter(function(s){ return !s.filled; });
+    var tname = team ? team.name : (pass1.teamName || teamCode);
+
+    document.getElementById('ctitle').textContent = ptype === 'CC' ? 'Coca-Cola Stars' : ptype === 'FWC' ? 'FWC Page' : tname;
+    document.getElementById('cdesc').textContent = filled.length + ' filled, ' + empty.length + ' empty slots found. Apply to your collection?';
+
+    var sh = '';
+    merged.forEach(function(s) {
+      sh += '<span class="mslot ' + (s.filled ? 'f' : 'e') + '">'
+        + teamCode + ' ' + s.n
+        + (s.name && s.filled ? ' - ' + s.name.substring(0,10) : '')
+        + ' ' + (s.filled ? '\u2713' : '\u2717') + '</span>';
     });
-
-    handleScanResult({ pageType:pageType, teamCode:pass1.teamCode, teamName:pass1.teamName, slots:merged });
+    document.getElementById('cslots').innerHTML = sh;
+    document.getElementById('cmod').classList.add('show');
 
   } catch(err) {
-    loadEl.style.display = 'none';
-    loadEl.innerHTML = '<span class="spinner"></span>Analysing page…';
-    alert('Scan failed:
-
-' + err.message);
+    document.getElementById('sload').style.display = 'none';
+    alert('Scan failed:\n\n' + err.message);
   }
 }
 
-function handleScanResult(parsed){
-  var pt=parsed.pageType||'UNKNOWN';
-  var slots=parsed.slots||[];
+function applyResult() {
+  if (!pending) { closeModal(); return; }
+  var r = pending;
+  var added = 0, named = 0;
+  var maxSlot = r.team ? r.team.slots : 20;
+  r.slots.forEach(function(s) {
+    if (s.n < 1 || s.n > maxSlot) return;
+    var k = sk(r.teamCode, s.n);
+    if (s.filled && !state.have[k]) { state.have[k] = true; added++; }
+    if (s.name && s.n !== 1 && s.n !== 13) {
+      var nm = String(s.name).trim();
+      if (nm && !nm.match(/^(Crest|Goalkeeper|Team Photo|Player \d+|Star \d+)$/i)) {
+        state.names[k] = nm; named++;
+      }
+    }
+  });
+  save(); buildAllTeams(); updateStats();
+  closeModal();
 
-  if(pt==='UNKNOWN'||slots.length===0){
-    alert('Could not identify this page type. Try a clearer photo with the full page visible.');
+  var filled = r.slots.filter(function(s){ return s.filled; });
+  var empty = r.slots.filter(function(s){ return !s.filled; });
+  var res = document.getElementById('sres');
+  var h = '<div class="rt">' + r.teamCode + ' - Scan applied</div>';
+  h += '<div style="font-size:0.75rem;color:var(--muted);margin-bottom:8px;">' + added + ' new stickers marked. ' + named + ' names saved.</div>';
+  h += '<div style="font-size:0.7rem;font-weight:600;color:#95d5b2;margin-bottom:4px;">FILLED (' + filled.length + '):</div>';
+  h += '<div class="ss2">';
+  filled.forEach(function(s){ h += '<span class="f">' + r.teamCode + ' ' + s.n + (s.name ? ' - ' + s.name.substring(0,12) : '') + '</span>'; });
+  h += '</div>';
+  h += '<div style="font-size:0.7rem;font-weight:600;color:var(--accent);margin:8px 0 4px;">EMPTY (' + empty.length + '):</div>';
+  h += '<div class="ss2">';
+  empty.forEach(function(s){ h += '<span class="e">' + r.teamCode + ' ' + s.n + (s.name ? ' - ' + s.name.substring(0,12) : '') + '</span>'; });
+  h += '</div>';
+  res.innerHTML = h; res.style.display = 'block';
+  pending = null;
+}
+
+function closeModal() {
+  document.getElementById('cmod').classList.remove('show');
+  pending = null;
+}
+
+function updateMissing() {
+  var c = document.getElementById('mc');
+  var rows = [];
+  TEAMS.forEach(function(t) {
+    var miss = [];
+    for (var n = 1; n <= t.slots; n++) {
+      if (!hasS(t.code, n)) {
+        var nm = getName(t.code, n);
+        miss.push(t.code + '-' + n + (nm ? ' (' + nm + ')' : ''));
+      }
+    }
+    if (miss.length) rows.push({team:t, miss:miss});
+  });
+  if (!rows.length) { c.innerHTML = '<div class="es"><div class="big">&#127942;</div>Collection complete!</div>'; return; }
+  var h = '<div class="sh" style="padding-top:0">&#9888; Missing Stickers</div>';
+  rows.forEach(function(row) {
+    h += '<div class="mb"><div class="mt">' + row.team.flag + ' ' + row.team.name + ' - ' + row.miss.length + ' missing</div><div class="ml">';
+    row.miss.forEach(function(m){ h += '<span class="mtag">' + m + '</span>'; });
+    h += '</div></div>';
+  });
+  c.innerHTML = h;
+}
+
+function renderDupes() {
+  var q = (document.getElementById('ds').value || '').toLowerCase().trim();
+  var rows = [];
+  TEAMS.forEach(function(t) {
+    var dups = [];
+    for (var n = 1; n <= t.slots; n++) {
+      var k = sk(t.code, n);
+      if (state.dups[k]) dups.push({n:n, count:state.dups[k]});
+    }
+    if (dups.length) {
+      var match = !q || t.name.toLowerCase().indexOf(q) >= 0 || t.code.toLowerCase().indexOf(q) >= 0
+        || dups.some(function(d){ return (t.code+'-'+d.n).toLowerCase().indexOf(q) >= 0 || (getName(t.code,d.n)||'').toLowerCase().indexOf(q) >= 0; });
+      if (match) rows.push({team:t, dups:dups});
+    }
+  });
+
+  var dss = document.getElementById('dss');
+  if (rows.length) { dss.style.display = 'block'; buildSwap(); } else { dss.style.display = 'none'; }
+
+  var c = document.getElementById('dc');
+  if (!rows.length) {
+    c.innerHTML = q ? '<div class="es">No duplicates match.</div>' : '<div class="es"><div class="big">&#128260;</div>No duplicates yet.<br>Double-tap any sticker to mark as duplicate.</div>';
     return;
   }
-
-  // Validate team code exists
-  var teamCode=parsed.teamCode||'FWC';
-  var team=TEAMS.find(function(t){return t.code===teamCode;});
-  if(!team && pt==='TEAM'){
-    // Try to find by name
-    var tn=(parsed.teamName||'').toLowerCase();
-    team=TEAMS.find(function(t){return t.name.toLowerCase().includes(tn)||tn.includes(t.name.toLowerCase());});
-    if(team) teamCode=team.code;
-  }
-  if(!team) team=TEAMS.find(function(t){return t.code==='FWC';});
-
-  var filled=slots.filter(function(s){return s.filled;});
-  var empty=slots.filter(function(s){return !s.filled;});
-
-  // Store pending result for apply
-  pendingScanResult={teamCode:teamCode, team:team, slots:slots, pageType:pt, parsed:parsed};
-
-  // Show modal
-  var title, desc;
-  if(pt==='CC'){ title='Coca-Cola Stars Page'; desc='Found '+filled.length+' filled and '+empty.length+' empty slots on the Coca-Cola page.'; }
-  else if(pt==='FWC'){ title='FWC Page'; desc='Found '+slots.length+' FWC slots. '+filled.length+' filled, '+empty.length+' empty.'; }
-  else { title=(team?team.flag+' '+team.name:'Team Page'); desc='Detected as '+(parsed.teamName||teamCode)+'. '+filled.length+' filled, '+empty.length+' empty slots.'; }
-
-  document.getElementById('modal-title').textContent=title;
-  document.getElementById('modal-desc').textContent=desc+'\n\nApply these changes to your collection?';
-
-  var slotsHtml='';
-  slots.forEach(function(s){
-    slotsHtml+='<span class="mslot '+(s.filled?'filled':'empty')+'">'
-      +teamCode+' '+s.n+(s.name&&s.filled?' — '+s.name.substring(0,12):'')+' '+(s.filled?'✓':'✗')+'</span>';
-  });
-  document.getElementById('modal-slots').innerHTML=slotsHtml;
-  document.getElementById('scan-modal').classList.add('show');
-}
-
-function applyScanResult(){
-  if(!pendingScanResult){ closeScanModal(); return; }
-  var r=pendingScanResult;
-  var added=0, named=0;
-
-  var maxSlot = r.team ? r.team.slots : 20;
-  r.slots.forEach(function(s){
-    // Never save slot numbers outside valid range
-    if(s.n < 1 || s.n > maxSlot) return;
-    var k=sk(r.teamCode, s.n);
-    if(s.filled){
-      if(!state.have[k]){ state.have[k]=true; added++; }
-    }
-    // Save name for any slot (filled or empty) except slot 1 (crest) and slot 13 (team photo)
-    if(s.name && s.n!==1 && s.n!==13 && !s.name.match(/^(Badge|Team Photo|Crest|Goalkeeper|Player\s*\d+|Star\s*\d+)$/i)){
-      state.names[k]=s.name; named++;
-    }
-  });
-
-  save(); buildAllTeams(); updateStats();
-  closeScanModal();
-
-  // Show result
-  var res=document.getElementById('scan-result');
-  var filled=r.slots.filter(function(s){return s.filled;});
-  var empty=r.slots.filter(function(s){return !s.filled;});
-  var html='<div class="rtitle">'+(r.team?r.team.flag+' ':'')+r.teamCode+' — Scan applied</div>';
-  html+='<div style="font-size:0.75rem;color:var(--muted);margin-bottom:8px;">'+added+' new sticker(s) marked. '+named+' player name(s) saved.</div>';
-  html+='<div style="font-size:0.7rem;font-weight:600;color:#95d5b2;margin-bottom:4px;">FILLED ('+filled.length+'):</div>';
-  html+='<div class="scan-slots">';
-  filled.forEach(function(s){ html+='<span class="sslot filled">'+r.teamCode+' '+s.n+(s.name?' — '+s.name.substring(0,14):'')+'</span>'; });
-  html+='</div>';
-  html+='<div style="font-size:0.7rem;font-weight:600;color:var(--accent);margin-bottom:4px;margin-top:8px;">EMPTY ('+empty.length+'):</div>';
-  html+='<div class="scan-slots">';
-  empty.forEach(function(s){ html+='<span class="sslot empty">'+r.teamCode+' '+s.n+'</span>'; });
-  html+='</div>';
-  res.innerHTML=html; res.style.display='block';
-  pendingScanResult=null;
-}
-
-function closeScanModal(){
-  document.getElementById('scan-modal').classList.remove('show');
-  pendingScanResult=null;
-}
-
-// ─── MISSING TAB ─────────────────────────────────────────────────────────────
-function updateMissingTab(){
-  var c=document.getElementById('missing-container');
-  var byTeam=[];
-  TEAMS.forEach(function(t){
-    var miss=[];
-    for(var n=1;n<=t.slots;n++){ if(!hasS(t.code,n)) miss.push(n); }
-    if(miss.length) byTeam.push({team:t,miss:miss});
-  });
-  if(!byTeam.length){ c.innerHTML='<div class="empty-state"><div class="big">🏆</div>Collection complete! Legend.</div>'; return; }
-  var html='<div class="sec-hdr" style="padding-top:0">⚠ Missing Stickers</div>';
-  byTeam.forEach(function(item){
-    html+='<div class="miss-block"><div class="miss-title">'+item.team.flag+' '+item.team.name+' — '+item.miss.length+' missing</div><div class="miss-list">';
-    item.miss.forEach(function(n){
-      var nm=getName(item.team.code,n);
-      html+='<span class="miss-tag">'+item.team.code+' '+n+(nm?' — '+nm:'')+'</span>';
+  var h = '';
+  rows.forEach(function(row) {
+    h += '<div class="db"><div class="ds2">' + row.team.flag + ' ' + row.team.name + '</div><div class="dl">';
+    row.dups.forEach(function(d) {
+      var k = sk(row.team.code, d.n);
+      var nm = getName(row.team.code, d.n);
+      h += '<div class="dit">' + row.team.code + '-' + d.n + (nm ? ' ' + nm.substring(0,12) : '');
+      if (d.count > 1) h += ' <span class="dc">x' + (d.count+1) + '</span>';
+      h += ' <span class="dr" onclick="removeDup(\'' + k + '\')">&#10005;</span></div>';
     });
-    html+='</div></div>';
+    h += '</div></div>';
   });
-  c.innerHTML=html;
+  c.innerHTML = h;
 }
 
-// ─── DUPES TAB ────────────────────────────────────────────────────────────────
-function renderDupesTab(){
-  var q=(document.getElementById('dup-search').value||'').toLowerCase().trim();
-  var byTeam=[];
-  TEAMS.forEach(function(t){
-    var dups=[];
-    for(var n=1;n<=t.slots;n++){
-      var k=sk(t.code,n);
-      if(state.dups[k]) dups.push({n:n,count:state.dups[k]});
-    }
-    if(dups.length){
-      var match=!q||t.name.toLowerCase().includes(q)||t.code.toLowerCase().includes(q)||
-        dups.some(function(d){return (t.code+'-'+d.n).toLowerCase().includes(q)||(getName(t.code,d.n)||'').toLowerCase().includes(q);});
-      if(match) byTeam.push({team:t,dups:dups});
-    }
-  });
-
-  var ss=document.getElementById('dup-swap-section');
-  if(byTeam.length){ ss.style.display='block'; buildSwapMsg(); } else { ss.style.display='none'; }
-
-  var c=document.getElementById('dupes-container');
-  if(!byTeam.length&&!q){ c.innerHTML='<div class="empty-state"><div class="big">🔁</div>No duplicates yet.<br>Double-tap any sticker to mark as duplicate.</div>'; return; }
-  if(!byTeam.length){ c.innerHTML='<div class="empty-state">No duplicates match your search.</div>'; return; }
-
-  var html='';
-  byTeam.forEach(function(item){
-    html+='<div class="dup-block"><div class="dup-stitle">'+item.team.flag+' '+item.team.name+'</div><div class="dup-list">';
-    item.dups.forEach(function(d){
-      var k=sk(item.team.code,d.n);
-      var nm=getName(item.team.code,d.n);
-      html+='<div class="dup-item">'+item.team.code+' '+d.n+(nm?' — '+nm.substring(0,12):'');
-      if(d.count>1) html+=' <span class="dc">x'+(d.count+1)+'</span>';
-      html+=' <span class="dr" onclick="removeDup(\''+k+'\')">✕</span></div>';
-    });
-    html+='</div></div>';
-  });
-  c.innerHTML=html;
-}
-
-function removeDup(k){
+function removeDup(k) {
   delete state.dups[k]; save();
-  var parts=k.split('-'); if(parts.length>=2){ refreshStickerEl(parts[0],parseInt(parts[1])); }
-  updateStats(); renderDupesTab();
+  var p = k.split('-');
+  if (p.length >= 2) refreshEl(p[0], parseInt(p[1]));
+  updateStats(); renderDupes();
 }
 
-function addDupManual(){
-  var q=(document.getElementById('dup-search').value||'').trim().toUpperCase();
-  var qty=parseInt(document.getElementById('dup-qty').value)||1;
-  var m=q.match(/^([A-Z0-9]+)[\s\-](\d+)$/);
-  if(!m){ alert('Enter a sticker code like ARG-3 or MEX 7'); return; }
-  var code=m[1], n=parseInt(m[2]);
-  var team=TEAMS.find(function(t){return t.code===code;});
-  if(!team||n<1||n>team.slots){ alert('Unknown sticker: '+code+' '+n); return; }
-  var k=sk(code,n);
-  state.have[k]=true; state.dups[k]=(state.dups[k]||0)+qty;
-  save(); refreshStickerEl(code,n); updateStats(); renderDupesTab();
+function addDupManual() {
+  var q = (document.getElementById('ds').value || '').trim().toUpperCase();
+  var qty = parseInt(document.getElementById('dq').value) || 1;
+  var m = q.match(/^([A-Z0-9]+)[\s\-](\d+)$/);
+  if (!m) { alert('Enter a code like ARG-3 or MEX 7'); return; }
+  var code = m[1], n = parseInt(m[2]);
+  var team = TEAMS.find(function(t){ return t.code === code; });
+  if (!team || n < 1 || n > team.slots) { alert('Unknown sticker: ' + code + ' ' + n); return; }
+  var k = sk(code, n);
+  state.have[k] = true;
+  state.dups[k] = (state.dups[k] || 0) + qty;
+  save(); refreshEl(code, n); updateStats(); renderDupes();
 }
 
-function buildSwapMsg(){
-  var lines=['⚽ *Panini WC26 — My Swaps* ⚽',''];
-  TEAMS.forEach(function(t){
-    var dups=[];
-    for(var n=1;n<=t.slots;n++){
-      var k=sk(t.code,n);
-      if(state.dups[k]){
-        var nm=getName(t.code,n);
-        var label=t.code+'-'+n+(nm?' ('+nm+')':'');
-        var cnt=state.dups[k];
-        dups.push(label+(cnt>1?' x'+(cnt+1):''));
+function buildSwap() {
+  var lines = ['\u26bd *Panini WC26 - My Swaps* \u26bd', ''];
+  TEAMS.forEach(function(t) {
+    var dups = [];
+    for (var n = 1; n <= t.slots; n++) {
+      var k = sk(t.code, n);
+      if (state.dups[k]) {
+        var nm = getName(t.code, n);
+        var cnt = state.dups[k];
+        dups.push(t.code + '-' + n + (nm ? ' (' + nm + ')' : '') + (cnt > 1 ? ' x' + (cnt+1) : ''));
       }
     }
-    if(dups.length) lines.push(t.flag+' *'+t.name+':* '+dups.join(', '));
+    if (dups.length) lines.push(t.flag + ' *' + t.name + ':* ' + dups.join(', '));
   });
-  lines.push(''); lines.push('💬 Reply with your missing list and let\'s swap!');
-  document.getElementById('swap-wa-box').textContent=lines.join('\n');
+  lines.push(''); lines.push('\ud83d\udcac Reply with your missing list and let\'s swap!');
+  document.getElementById('swb').textContent = lines.join('\n');
 }
 
-function copySwapMsg(){
-  var t=document.getElementById('swap-wa-box').textContent;
-  navigator.clipboard.writeText(t).then(function(){alert('Copied! Paste into WhatsApp.');}).catch(function(){alert('Copy failed — select and copy manually.');});
+function copySwap() {
+  navigator.clipboard.writeText(document.getElementById('swb').textContent)
+    .then(function(){ alert('Copied! Paste into WhatsApp.'); })
+    .catch(function(){ alert('Copy failed - please select and copy manually.'); });
 }
 
-// ─── TOOLS ────────────────────────────────────────────────────────────────────
-function updateShareList(){
-  var el=document.getElementById('share-missing-list'); if(!el) return;
-  var lines=[];
-  TEAMS.forEach(function(t){
-    var m=[];
-    for(var n=1;n<=t.slots;n++){
-      if(!hasS(t.code,n)){
-        var nm=getName(t.code,n);
-        m.push(t.code+'-'+n+(nm?' ('+nm+')':''));
+function updateMissingList() {
+  var lines = [];
+  TEAMS.forEach(function(t) {
+    var miss = [];
+    for (var n = 1; n <= t.slots; n++) {
+      if (!hasS(t.code, n)) {
+        var nm = getName(t.code, n);
+        miss.push(t.code + '-' + n + (nm ? ' (' + nm + ')' : ''));
       }
     }
-    if(m.length) lines.push(m.join(', '));
+    if (miss.length) lines.push(miss.join(', '));
   });
-  el.textContent=lines.join('\n')||'No missing stickers!';
+  document.getElementById('sml').textContent = lines.join('\n') || 'No missing stickers!';
 }
 
-function copyMissingList(){
-  var t=document.getElementById('share-missing-list').textContent;
-  navigator.clipboard.writeText(t).then(function(){alert('Copied!');}).catch(function(){alert('Copy failed.');});
+function copyMissing() {
+  navigator.clipboard.writeText(document.getElementById('sml').textContent)
+    .then(function(){ alert('Copied!'); })
+    .catch(function(){ alert('Copy failed.'); });
 }
 
-function resetAll(){
-  if(!confirm('Reset all data? This cannot be undone.')) return;
-  state={have:{},dups:{},names:{}}; save(); buildAllTeams(); updateMissingTab(); renderDupesTab(); updateShareList();
+function showTab(name) {
+  document.querySelectorAll('.tv').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.nb').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('tab-' + name).classList.add('active');
+  document.getElementById('nav-' + name).classList.add('active');
+  if (name === 'missing') updateMissing();
+  if (name === 'dupes') renderDupes();
+  if (name === 'tools') updateMissingList();
 }
-function markAllHave(){
-  if(!confirm('Mark all '+TOTAL+' stickers as owned?')) return;
-  TEAMS.forEach(function(t){ for(var n=1;n<=t.slots;n++) state.have[sk(t.code,n)]=true; });
+
+function resetAll() {
+  if (!confirm('Reset all data? This cannot be undone.')) return;
+  state = {have:{}, dups:{}, names:{}}; save(); buildAllTeams(); updateMissing(); renderDupes(); updateMissingList();
+}
+
+function markAll() {
+  if (!confirm('Mark all ' + TOTAL + ' stickers as owned?')) return;
+  TEAMS.forEach(function(t){ for (var n = 1; n <= t.slots; n++) state.have[sk(t.code,n)] = true; });
   save(); buildAllTeams();
 }
-function exportData(){
-  var json=JSON.stringify(state,null,2);
-  var blob=new Blob([json],{type:'application/json'});
-  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='panini-wc26-backup.json'; a.click();
+
+function exportData() {
+  var blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'panini-wc26-backup.json';
+  a.click();
 }
-function importData(){
+
+function importData() {
   try {
-    var raw=document.getElementById('import-box').value.trim();
-    var p=JSON.parse(raw);
-    if(!p.have) throw new Error('Invalid format');
-    state=p; if(!state.dups) state.dups={}; if(!state.names) state.names={};
-    save(); buildAllTeams(); updateMissingTab(); renderDupesTab(); updateShareList();
-    document.getElementById('import-area').style.display='none';
-    alert('Imported successfully!');
-  } catch(e){ alert('Import failed: '+e.message); }
+    var p = JSON.parse(document.getElementById('ibox').value.trim());
+    if (!p.have) throw new Error('Invalid format');
+    state = p;
+    if (!state.dups) state.dups = {};
+    if (!state.names) state.names = {};
+    save(); buildAllTeams(); updateMissing(); renderDupes(); updateMissingList();
+    document.getElementById('iarea').style.display = 'none';
+    alert('Imported!');
+  } catch(e) { alert('Import failed: ' + e.message); }
 }
 
-// ─── TABS ─────────────────────────────────────────────────────────────────────
-function showTab(name){
-  document.querySelectorAll('.tab-view').forEach(function(t){t.classList.remove('active');});
-  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
-  document.getElementById('tab-'+name).classList.add('active');
-  document.getElementById('nav-'+name).classList.add('active');
-  if(name==='missing') updateMissingTab();
-  if(name==='dupes') renderDupesTab();
-  if(name==='tools') updateShareList();
-}
-
-// ─── INIT ─────────────────────────────────────────────────────────────────────
 load();
 buildAllTeams();
-if(getApiKey()) document.getElementById('api-key-status').textContent='✓ Key saved';
+if (getKey()) document.getElementById('aks').textContent = '\u2713 Key saved';
 
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js')
-    .then(function(reg){
-      reg.addEventListener('updatefound',function(){
-        reg.installing.addEventListener('statechange',function(){
-          if(this.state==='installed'&&navigator.serviceWorker.controller){
-            // New version available — activate immediately
-            this.postMessage({type:'SKIP_WAITING'});
-          }
-        });
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').then(function(reg) {
+    reg.addEventListener('updatefound', function() {
+      reg.installing.addEventListener('statechange', function() {
+        if (this.state === 'installed' && navigator.serviceWorker.controller) {
+          this.postMessage({type:'SKIP_WAITING'});
+        }
       });
-    })
-    .catch(function(e){console.log('SW registration failed:',e);});
-  navigator.serviceWorker.addEventListener('controllerchange',function(){
-    window.location.reload();
-  });
+    });
+  }).catch(function(e){ console.log('SW failed:', e); });
+  navigator.serviceWorker.addEventListener('controllerchange', function(){ window.location.reload(); });
 }
 </script>
 </body>
