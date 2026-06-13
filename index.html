@@ -351,7 +351,7 @@ function stickerLabel(code, n) {
 }
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
-var STORE_KEY = 'panini_wc26_v3';
+var STORE_KEY = 'panini_wc26_v4';
 var state = {have:{}, dups:{}, names:{}};
 // names: { 'ARG-3': 'Lionel Messi', ... } — populated by scan
 
@@ -362,13 +362,7 @@ function load() {
     if (!state.have) state.have = {};
     if (!state.dups) state.dups = {};
     if (!state.names) state.names = {};
-    // Migrate from v2
-    var old = localStorage.getItem('panini_wc26_v2');
-    if (old && !raw) {
-      var o = JSON.parse(old);
-      state.have = o.have||{}; state.dups = o.dups||{};
-      save();
-    }
+
   } catch(e){ state={have:{},dups:{},names:{}}; }
 }
 function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
@@ -511,27 +505,33 @@ async function analysePhoto(dataUrl, mimeType){
   document.getElementById('scan-loading').style.display='block';
   document.getElementById('scan-result').style.display='none';
 
-  var prompt = 'You are analysing a page from the Panini FIFA World Cup 2026 sticker album.\n\n'
-    +'First, identify the PAGE TYPE:\n'
-    +'- TEAM: a standard country team page (e.g. Mexico, Argentina, England). Has 20 slots.\n'
-    +'- FWC: a FIFA World Cup general page (stadiums, host cities, trophy, history etc). Sticker codes start with FWC.\n'
-    +'- CC: the Coca-Cola special page — red background, 11 stickers coded CC1-CC11 with star players.\n'
+  var prompt = 'You are analysing a photo of a Panini FIFA World Cup 2026 sticker album page.\n\n'
+    +'STEP 1 — Identify PAGE TYPE:\n'
+    +'- TEAM: a country team page (e.g. Mexico, Argentina, England). Has 20 numbered slots.\n'
+    +'- FWC: a FIFA World Cup general page (stadiums, host cities, trophy, history). Slots start with FWC.\n'
+    +'- CC: Coca-Cola special page — red background, 11 slots coded CC1-CC11.\n'
     +'- UNKNOWN: anything else.\n\n'
-    +'TEAM PAGE LAYOUT (consistent across all countries):\n'
-    +'- Slot 1: Club Crest (no player name)\n'
-    +'- Slot 2: Goalkeeper (name printed in slot)\n'
-    +'- Slots 3-12: Outfield players (name printed in slot even when empty)\n'
-    +'- Slot 13: Team Photo group shot (no individual player name)\n'
-    +'- Slots 14-20: More outfield players (name printed in slot even when empty)\n\n'
-    +'CRITICAL: Read the player name text printed in EVERY slot, whether the slot is FILLED or EMPTY.\n'
-    +'Names are always printed in the slot even when no sticker has been placed yet.\n'
-    +'Only skip the name for slot 1 (Crest) and slot 13 (Team Photo).\n\n'
-    +'RESPOND WITH ONLY RAW JSON, no explanation, no markdown, no backticks:\n'
-    +'{"pageType":"TEAM","teamCode":"COL","teamName":"Colombia","confidence":"high",'
-    +'"slots":[{"n":1,"filled":true,"name":null},{"n":2,"filled":false,"name":"Camilo Vargas"},{"n":3,"filled":false,"name":"Daniel Munoz"},{"n":13,"filled":true,"name":null}]}\n\n'
-    +'For FWC pages, use pageType:"FWC" and include only slot numbers visible on this page.\n'
-    +'For CC page, use pageType:"CC", teamCode:"CC".\n'
-    +'For UNKNOWN, use pageType:"UNKNOWN" and slots:[].';
+    +'STEP 2 — For TEAM pages, read every slot. The layout is ALWAYS:\n'
+    +'- Slot 1: Club Crest — name is null\n'
+    +'- Slot 2: Goalkeeper — surname printed in the empty slot background\n'
+    +'- Slots 3-12: Outfield players — surname printed in slot background\n'
+    +'- Slot 13: Team Photo — name is null\n'
+    +'- Slots 14-20: Outfield players — surname printed in slot background\n\n'
+    +'CRITICAL RULES FOR NAMES:\n'
+    +'1. ONLY include a name if you can LITERALLY READ the text printed in that slot on the page.\n'
+    +'2. Do NOT use your football knowledge to guess or infer player names.\n'
+    +'3. If a slot is empty and you cannot clearly read the printed surname, set name to null.\n'
+    +'4. Names are printed in small text inside the slot shape — look carefully at empty slots.\n'
+    +'5. Slot 1 and slot 13 always have name: null regardless of what you see.\n\n'
+    +'RESPOND WITH ONLY RAW JSON — no explanation, no markdown, no backticks:\n'
+    +'{"pageType":"TEAM","teamCode":"ENG","teamName":"England","slots":['
+    +'{"n":1,"filled":true,"name":null},'
+    +'{"n":2,"filled":false,"name":"Pickford"},'
+    +'{"n":3,"filled":false,"name":"Stones"},'
+    +'{"n":4,"filled":false,"name":null},'
+    +'{"n":13,"filled":true,"name":null},'
+    +'{"n":14,"filled":true,"name":"Rashford"}]}\n\n'
+    +'Include ALL 20 slots for TEAM pages. For FWC include only visible slots. For CC include all 11.';
 
   try {
     var resp;
@@ -627,13 +627,17 @@ function applyScanResult(){
   var r=pendingScanResult;
   var added=0, named=0;
 
+  var maxSlot = r.team ? r.team.slots : 20;
   r.slots.forEach(function(s){
+    // Never save slot numbers outside valid range
+    if(s.n < 1 || s.n > maxSlot) return;
     var k=sk(r.teamCode, s.n);
     if(s.filled){
       if(!state.have[k]){ state.have[k]=true; added++; }
-      if(s.name && s.n!==1 && s.n!==13 && !s.name.match(/^(Badge|Team Photo|Crest|Player\s*\d+|Star\s*\d+)$/i)){
-        state.names[k]=s.name; named++;
-      }
+    }
+    // Save name for any slot (filled or empty) except slot 1 (crest) and slot 13 (team photo)
+    if(s.name && s.n!==1 && s.n!==13 && !s.name.match(/^(Badge|Team Photo|Crest|Goalkeeper|Player\s*\d+|Star\s*\d+)$/i)){
+      state.names[k]=s.name; named++;
     }
   });
 
