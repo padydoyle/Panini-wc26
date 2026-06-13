@@ -605,12 +605,17 @@ async function analysePagePhoto(dataUrl, mimeType) {
   document.getElementById('scan-loading').style.display = 'block';
   document.getElementById('scan-result').style.display = 'none';
 
-  const prompt = 'Analyse this Panini FIFA World Cup 2026 sticker album page for ' + team.name + ' (' + teamCode + '). It has 20 slots numbered 1-20. Determine which slots have a sticker placed in them (FILLED) vs empty slots showing just the background/outline (EMPTY).\n\nRespond with ONLY a raw JSON object. No explanation, no markdown, no backticks, no text before or after. Just the JSON:\n{"filled":[1,2,5,7],"empty":[3,4,6,8,9,10,11,12,13,14,15,16,17,18,19,20]}\n\nEvery number 1-20 must appear in exactly one of the two arrays.';
+  const prompt = 'Analyse this Panini FIFA World Cup 2026 sticker album page for ' + team.name + ' (' + teamCode + '). It has 20 slots numbered 1-20. Determine which slots are FILLED (sticker present) vs EMPTY (background visible).\n\nRESPOND WITH ONLY RAW JSON. No words, no explanation, no markdown, no backticks. Just this exact format:\n{"filled":[1,2,5,7],"empty":[3,4,6,8,9,10,11,12,13,14,15,16,17,18,19,20]}\n\nAll numbers 1-20 must appear in exactly one array.';
 
   try {
     const resp = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
         max_tokens: 500,
@@ -632,17 +637,16 @@ async function analysePagePhoto(dataUrl, mimeType) {
     }
 
     const text = data.content.map(function(b) { return b.text || ''; }).join('');
-    showScanLog('Raw response: ' + text.substring(0, 120));
     let parsed;
     try {
       let clean = text.replace(/```json|```/g, '').trim();
       if (!clean.startsWith('{')) {
-        const jsonMatch = clean.match(/\{[\s\S]*\}/);
-        if (jsonMatch) clean = jsonMatch[0];
+        const m = clean.match(/\{[\s\S]*?\}/);
+        if (m) clean = m[0];
       }
       parsed = JSON.parse(clean);
     } catch(e) {
-      throw new Error('Could not parse JSON. Raw response was: ' + text.substring(0, 300));
+      throw new Error('JSON parse failed. Claude said: ' + text.substring(0, 150));
     }
 
     const filled = parsed.filled || [];
@@ -678,7 +682,7 @@ async function analysePagePhoto(dataUrl, mimeType) {
 
   } catch(err) {
     document.getElementById('scan-loading').style.display = 'none';
-    alert('Scan failed: ' + err.message);
+    alert('Scan failed:\n\n' + err.message);
   }
 }
 
