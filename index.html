@@ -497,84 +497,159 @@ function onScanFile(input){
 
 var pendingScanResult = null;
 
+async function callClaude(apiKey, base64, mimeType, prompt, maxTokens) {
+  var resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: maxTokens || 1000,
+      messages: [{role:'user', content:[
+        {type:'image', source:{type:'base64', media_type:mimeType, data:base64}},
+        {type:'text', text:prompt}
+      ]}]
+    })
+  });
+  if (!resp.ok) { var ed = await resp.json(); throw new Error('API error: '+(ed.error?ed.error.message:'HTTP '+resp.status)); }
+  var data = await resp.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.content.map(function(b){return b.text||'';}).join('');
+}
+
+function parseJSON(text) {
+  var clean = text.replace(/```json|```/g,'').trim();
+  if (!clean.startsWith('{')) { var m = clean.match(/\{[\s\S]*\}/); if (m) clean = m[0]; }
+  return JSON.parse(clean);
+}
+
 async function analysePhoto(dataUrl, mimeType){
-  var apiKey=getApiKey();
-  if(!apiKey){ alert('Please enter your Anthropic API key first.'); return; }
-  var base64=dataUrl.split(',')[1];
-
-  document.getElementById('scan-loading').style.display='block';
-  document.getElementById('scan-result').style.display='none';
-
-  var prompt = 'You are analysing a photo of a Panini FIFA World Cup 2026 sticker album page.\n\n'
-    +'STEP 1 — Identify PAGE TYPE:\n'
-    +'- TEAM: a country team page (e.g. Mexico, Argentina, England). Has 20 numbered slots.\n'
-    +'- FWC: a FIFA World Cup general page (stadiums, host cities, trophy, history). Slots start with FWC.\n'
-    +'- CC: Coca-Cola special page — red background, 11 slots coded CC1-CC11.\n'
-    +'- UNKNOWN: anything else.\n\n'
-    +'STEP 2 — For TEAM pages, read every slot. The layout is ALWAYS:\n'
-    +'- Slot 1: Club Crest — name is null\n'
-    +'- Slot 2: Goalkeeper — surname printed in the empty slot background\n'
-    +'- Slots 3-12: Outfield players — surname printed in slot background\n'
-    +'- Slot 13: Team Photo — name is null\n'
-    +'- Slots 14-20: Outfield players — surname printed in slot background\n\n'
-    +'CRITICAL RULES FOR NAMES:\n'
-    +'1. ONLY include a name if you can LITERALLY READ the text printed in that slot on the page.\n'
-    +'2. Do NOT use your football knowledge to guess or infer player names.\n'
-    +'3. If a slot is empty and you cannot clearly read the printed surname, set name to null.\n'
-    +'4. Names are printed in small text inside the slot shape — look carefully at empty slots.\n'
-    +'5. Slot 1 and slot 13 always have name: null regardless of what you see.\n\n'
-    +'RESPOND WITH ONLY RAW JSON — no explanation, no markdown, no backticks:\n'
-    +'{"pageType":"TEAM","teamCode":"ENG","teamName":"England","slots":['
-    +'{"n":1,"filled":true,"name":null},'
-    +'{"n":2,"filled":false,"name":"Pickford"},'
-    +'{"n":3,"filled":false,"name":"Stones"},'
-    +'{"n":4,"filled":false,"name":null},'
-    +'{"n":13,"filled":true,"name":null},'
-    +'{"n":14,"filled":true,"name":"Rashford"}]}\n\n'
-    +'Include ALL 20 slots for TEAM pages. For FWC include only visible slots. For CC include all 11.';
+  var apiKey = getApiKey();
+  if (!apiKey) { alert('Please enter your Anthropic API key first.'); return; }
+  var base64 = dataUrl.split(',')[1];
+  var loadEl = document.getElementById('scan-loading');
+  document.getElementById('scan-result').style.display = 'none';
 
   try {
-    var resp;
-    try {
-      resp = await fetch('https://api.anthropic.com/v1/messages',{
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json',
-          'x-api-key':apiKey,
-          'anthropic-version':'2023-06-01',
-          'anthropic-dangerous-direct-browser-access':'true'
-        },
-        body:JSON.stringify({
-          model:'claude-sonnet-4-6',
-          max_tokens:1000,
-          messages:[{role:'user',content:[
-            {type:'image',source:{type:'base64',media_type:mimeType,data:base64}},
-            {type:'text',text:prompt}
-          ]}]
-        })
-      });
-    } catch(fe){ throw new Error('Network error: '+fe.message); }
+    // ── PASS 1: page type + filled/empty ──
+    loadEl.style.display = 'block';
+    loadEl.innerHTML = '<span class="spinner"></span>Pass 1 — detecting stickers…';
 
-    document.getElementById('scan-loading').style.display='none';
+    var p1 = 'You are analysing a Panini FIFA World Cup 2026 sticker album page.
 
-    if(!resp.ok){ var ed=await resp.json(); throw new Error('API error: '+(ed.error?ed.error.message:'HTTP '+resp.status)); }
+'
+      +'Identify the PAGE TYPE:
+'
+      +'- TEAM: a country team page. Has exactly 20 numbered slots.
+'
+      +'- FWC: a FIFA World Cup general page (stadiums, host cities, trophy, history etc).
+'
+      +'- CC: Coca-Cola special page — red background, 11 slots coded CC1-CC11.
+'
+      +'- UNKNOWN: anything else.
 
-    var data=await resp.json();
-    if(data.error) throw new Error(data.error.message);
+'
+      +'For each slot determine ONLY whether it is FILLED (sticker photo card placed in it) or EMPTY (slot outline visible, no photo card).
 
-    var text=data.content.map(function(b){return b.text||'';}).join('');
-    var parsed;
-    try {
-      var clean=text.replace(/```json|```/g,'').trim();
-      if(!clean.startsWith('{')){ var m=clean.match(/\{[\s\S]*\}/); if(m) clean=m[0]; }
-      parsed=JSON.parse(clean);
-    } catch(e){ throw new Error('Could not parse response: '+text.substring(0,200)); }
+'
+      +'RESPOND WITH ONLY RAW JSON, no explanation, no markdown:
+'
+      +'{"pageType":"TEAM","teamCode":"ENG","teamName":"England","slots":[{"n":1,"filled":true},{"n":2,"filled":false}]}
 
-    handleScanResult(parsed);
+'
+      +'Include ALL 20 slots for TEAM pages. For FWC/CC include all visible slots.';
 
-  } catch(err){
-    document.getElementById('scan-loading').style.display='none';
-    alert('Scan failed:\n\n'+err.message);
+    var t1 = await callClaude(apiKey, base64, mimeType, p1, 800);
+    var pass1;
+    try { pass1 = parseJSON(t1); }
+    catch(e) { throw new Error('Pass 1 parse failed: ' + t1.substring(0,200)); }
+
+    var pageType = pass1.pageType || 'UNKNOWN';
+    var slots1 = pass1.slots || [];
+    if (pageType === 'UNKNOWN' || slots1.length === 0) {
+      throw new Error('Could not identify this page. Try a clearer photo with the full page visible.');
+    }
+
+    // ── PASS 2: read printed names (TEAM and CC pages only) ──
+    var names = {};
+    if (pageType === 'TEAM' || pageType === 'CC') {
+      loadEl.innerHTML = '<span class="spinner"></span>Pass 2 — reading player names…';
+      var isCC = pageType === 'CC';
+
+      var p2 = 'You are looking at a Panini FIFA World Cup 2026 sticker album page for '
+        + (pass1.teamName || pass1.teamCode) + '.
+
+'
+        + 'Each slot has a player NAME or SURNAME printed in small text inside the slot shape. '
+        + 'This text is printed on the page itself and is visible whether or not a sticker card has been placed there.
+
+'
+        + (isCC
+          ? 'This is the Coca-Cola page with 11 slots. Read the name printed in each slot.
+
+'
+          : 'SLOT LAYOUT:
+'
+            + '- Slot 1: Club Crest — always null, no name
+'
+            + '- Slot 2: Goalkeeper — surname printed in slot
+'
+            + '- Slots 3-12: Outfield players — surname printed in slot
+'
+            + '- Slot 13: Team Photo — always null, no name
+'
+            + '- Slots 14-20: Outfield players — surname printed in slot
+
+'
+        )
+        + 'RULES:
+'
+        + '1. ONLY return names you can LITERALLY SEE as printed text on this image. Do not use football knowledge.
+'
+        + '2. If you cannot clearly read the text in a slot, set it to null.
+'
+        + '3. Return surnames exactly as printed — usually in CAPITALS.
+'
+        + '4. Slot 1 and slot 13 must ALWAYS be null.
+
+'
+        + 'RESPOND WITH ONLY RAW JSON, no explanation, no markdown:
+'
+        + '{"names":{"2":"PICKFORD","3":"STONES","4":"TRIPPIER","5":null,"6":"WALKER","13":null}}
+
+'
+        + 'Use the slot number as the key. Include every slot from 1 to ' + (isCC ? '11' : '20') + '.';
+
+      try {
+        var t2 = await callClaude(apiKey, base64, mimeType, p2, 600);
+        var pass2 = parseJSON(t2);
+        names = pass2.names || {};
+      } catch(e) {
+        console.warn('Pass 2 name reading failed (non-fatal):', e.message);
+      }
+    }
+
+    loadEl.style.display = 'none';
+    loadEl.innerHTML = '<span class="spinner"></span>Analysing page…';
+
+    // Merge: slots from pass1 + names from pass2
+    var merged = slots1.map(function(s) {
+      var name = (s.n === 1 || s.n === 13) ? null : (names[String(s.n)] || null);
+      return { n: s.n, filled: s.filled, name: name };
+    });
+
+    handleScanResult({ pageType:pageType, teamCode:pass1.teamCode, teamName:pass1.teamName, slots:merged });
+
+  } catch(err) {
+    loadEl.style.display = 'none';
+    loadEl.innerHTML = '<span class="spinner"></span>Analysing page…';
+    alert('Scan failed:
+
+' + err.message);
   }
 }
 
