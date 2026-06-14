@@ -188,6 +188,12 @@ main{padding:12px;max-width:700px;margin:0 auto;}
     <button class="btn sec" onclick="document.getElementById('ia').style.display='none'">Cancel</button>
   </div>
   <div class="divider"></div>
+  <div class="sh">&#9989; Mark from list</div>
+  <p style="font-size:0.75rem;color:var(--muted);margin-bottom:10px;line-height:1.5;">Paste a list of sticker codes to mark as owned. One per line or comma separated. e.g. ARG-3, ARG-7 or ARG-3\nARG-7. Existing stickers are never removed.</p>
+  <textarea class="ib" id="mfl-box" placeholder="ARG-3, ARG-7, ARG-15&#10;ENG-9, ENG-10&#10;MEX-6"></textarea>
+  <div id="mfl-result" style="font-size:0.75rem;color:var(--muted);margin-bottom:6px;"></div>
+  <button class="btn" onclick="markFromList()">&#9989; Apply list</button>
+  <div class="divider"></div>
   <div class="sh">&#128203; Missing list</div>
   <div style="font-size:0.8rem;color:var(--muted);margin-bottom:8px;">Copy to share with swap partners:</div>
   <div id="sml" class="swapbox"></div>
@@ -898,22 +904,22 @@ var PLAYER_NAMES = {
   RSA_7:'Khulumani Ndamane',
   RSA_8:'Siyabonga Ngezana',
   RSA_9:'Khuliso Mudau',
-  SAU_10:'Nasser Al-Dawsari',
+  SAU_10:'Ziyad Aljohani',
   SAU_11:'Salman Al-Faraj',
   SAU_12:'Mohamed Kanno',
   SAU_14:'Hattan Bahebri',
   SAU_15:'Sami Al-Najei',
-  SAU_16:'Abdullah Al-Hamdan',
-  SAU_17:'Firas Al-Buraikan',
+  SAU_16:'Hason Aldumsari',
+  SAU_17:'Abdulilah Alibud',
   SAU_18:'Mohammed Maran',
   SAU_19:'Saleh Al-Shehri',
   SAU_2:'Mohammed Al-Owais',
-  SAU_20:'Salem Al-Dawsari',
+  SAU_20:'Abdullah Alhamdan',
   SAU_3:'Mohammed Al Rubaie',
-  SAU_4:'Ali Al-Bulayhi',
+  SAU_4:'Saud Abdulhamid',
   SAU_5:'Sultan Al-Ghannam',
   SAU_6:'Abdulellah Al-Malki',
-  SAU_7:'Saud Abdulhamid',
+  SAU_7:'Moteb Alharbi',
   SAU_8:'Hassan Tambakti',
   SAU_9:'Mohammed Al-Khulaif',
   SEN_10:'Idrissa Gana Gueye',
@@ -1006,24 +1012,24 @@ var PLAYER_NAMES = {
   UKR_7:'Ilya Zabarnyi',
   UKR_8:'Vitaliy Mykolenko',
   UKR_9:'Taras Stepanenko',
-  URU_10:'Rodrigo Bentancur',
-  URU_11:'Federico Valverde',
-  URU_12:'Manuel Ugarte',
-  URU_14:'Giorgian de Arrascaeta',
-  URU_15:'Darwin Nunez',
-  URU_16:'Luis Suarez',
-  URU_17:'Facundo Pellistri',
-  URU_18:'Maxi Gomez',
-  URU_19:'Agustin Canobbio',
+  URU_10:'Federico Valverde',
+  URU_11:'Giorgian de Arrascaeta',
+  URU_12:'Rodrigo Bentancur',
+  URU_14:'Manuel Ugarte',
+  URU_15:'Nicolas de la Cruz',
+  URU_16:'Mauro Araujo',
+  URU_17:'Darwin Nunez',
+  URU_18:'Federico Vinas',
+  URU_19:'Rodrigo Aguirre',
   URU_2:'Sergio Rochet',
-  URU_20:'Edinson Cavani',
+  URU_20:'Facundo Pellistri',
   URU_3:'Santiago Mele',
-  URU_4:'Martin Caceres',
-  URU_5:'Sebastian Coates',
-  URU_6:'Jose Maria Gimenez',
-  URU_7:'Ronald Araujo',
+  URU_4:'Ronald Araujo',
+  URU_5:'Jose Maria Gimenez',
+  URU_6:'Sebastian Caceres',
+  URU_7:'Mathias Olivera',
   URU_8:'Nahitan Nandez',
-  URU_9:'Lucas Torreira',
+  URU_9:'Guillermo Varela',
   USA_10:'Weston McKennie',
   USA_11:'Christian Roldan',
   USA_12:'Timothy Weah',
@@ -1189,14 +1195,14 @@ var PLAYER_NAMES = {
   CPV_10:'Kevin Pina',
   CPV_11:'Patrick Andrade',
   CPV_12:'Jamiro Monteiro',
-  CPV_14:'Ryan Mendes',
+  CPV_14:'Deroy Duarte',
   CPV_15:'Garry Rodrigues',
   CPV_16:'Dylan Tavares',
   CPV_17:'Julio Tavares',
-  CPV_18:'Ze Luis',
-  CPV_19:'Willy Semedo',
+  CPV_18:'Dalon Livramento',
+  CPV_19:'Nelly Semedo',
   CPV_2:'Vozinha',
-  CPV_20:'Gilson Tavares',
+  CPV_20:'Rebe',
   CPV_3:'Logan Costa',
   CPV_4:'Pico',
   CPV_5:'Diney',
@@ -1625,6 +1631,33 @@ function updateMissingList(){
 }
 
 function copyMissing(){navigator.clipboard.writeText(document.getElementById('sml').textContent).then(function(){alert('Copied!');}).catch(function(){alert('Select and copy manually.');});}
+
+function markFromList() {
+  var raw = document.getElementById('mfl-box').value;
+  // Split by commas, newlines, spaces - find all CODE-N patterns
+  var matches = raw.match(/[A-Z]+[\s\-]\d+/g);
+  if (!matches || !matches.length) {
+    document.getElementById('mfl-result').textContent = 'No valid sticker codes found. Use format like ARG-3 or ARG 3.';
+    return;
+  }
+  var added = 0, skipped = 0, unknown = 0;
+  matches.forEach(function(m) {
+    var parts = m.trim().split(/[\s\-]/);
+    if (parts.length < 2) { unknown++; return; }
+    var code = parts[0].toUpperCase();
+    var n = parseInt(parts[1]);
+    var team = TEAMS.find(function(t){ return t.code === code; });
+    if (!team || isNaN(n) || n < 0 || n > team.slots) { unknown++; return; }
+    var k = sk(code, n);
+    if (state.have[k]) { skipped++; }
+    else { state.have[k] = true; added++; }
+  });
+  save();
+  buildAllTeams();
+  updateStats();
+  document.getElementById('mfl-result').textContent = added + ' sticker(s) marked as owned. ' + skipped + ' already owned. ' + (unknown ? unknown + ' unrecognised codes.' : '');
+  if (added > 0) document.getElementById('mfl-box').value = '';
+}
 
 function showTab(name){
   document.querySelectorAll('.tv').forEach(function(t){t.classList.remove('active');});
