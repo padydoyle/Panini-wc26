@@ -195,6 +195,17 @@ main{padding:12px;max-width:700px;margin:0 auto;}
   <div id="mfl-result" style="font-size:0.75rem;color:var(--muted);margin-bottom:6px;"></div>
   <button class="btn" onclick="markFromList()">&#9989; Apply list</button>
   <div class="divider"></div>
+  <div class="sh">&#129309; Compare friend swaps</div>
+  <p style="font-size:0.75rem;color:var(--muted);margin-bottom:10px;line-height:1.5;">Paste a friend's WhatsApp swap list, then compare it against your missing stickers. The result only shows stickers you need.</p>
+  <textarea class="ib" id="compare-box" style="height:130px" placeholder="Australia: 3, 20&#10;Brazil: 7&#10;England: 13&#10;Portugal: 3, 6"></textarea>
+  <button class="btn" onclick="compareFriendSwaps()">&#128269; Compare</button>
+  <div id="compare-result" style="font-size:0.75rem;color:var(--muted);margin:8px 0;line-height:1.5;"></div>
+  <div id="compare-reply-wrap" style="display:none;margin-top:10px;">
+    <div class="dtitle">Reply message</div>
+    <div id="compare-reply" class="swapbox"></div>
+    <button class="btn" style="margin-top:8px" onclick="copyCompareReply()">&#128203; Copy reply</button>
+  </div>
+  <div class="divider"></div>
   <div class="sh">&#128203; Missing list</div>
   <div style="font-size:0.8rem;color:var(--muted);margin-bottom:8px;">Copy to share with swap partners:</div>
   <div id="sml" class="swapbox"></div>
@@ -260,9 +271,16 @@ var TEAMS = [
 var TOTAL = TEAMS.reduce(function(a,t){return a+t.slots+(t.code==='FWC'?1:0);},0);
 
 function slotLabel(code, n) {
-  if (code === 'FWC') return 'FWC ' + n;
+  if (code === 'FWC') return n === 0 ? 'Album Cover' : 'Sticker ' + n;
   if (code === 'CC') return CC_KNOWN[n] || ('CC ' + n);
-  return code + ' ' + n;
+  return 'Sticker ' + n;
+}
+
+function stickerText(code, n) {
+  var codeText = code + '-' + n;
+  var label = slotLabel(code, n);
+  if (!label || label === codeText || label === (code + ' ' + n)) return codeText;
+  return codeText + ' ' + label;
 }
 
 var STORE = 'panini_wc26_v5';
@@ -414,9 +432,9 @@ async function doScan(dataUrl, mime) {
     var res=document.getElementById('sres');
     var h='<div class="rt">'+team.name+' - '+added+' new sticker'+(added!==1?'s':'')+' marked</div>';
     h+='<div style="font-size:0.7rem;font-weight:600;color:#95d5b2;margin:6px 0 3px">FILLED ('+filled.length+'):</div><div class="srow">';
-    filled.forEach(function(n){h+='<span class="f">'+teamCode+' '+n+' - '+slotLabel(teamCode,n)+'</span>';});
+    filled.forEach(function(n){h+='<span class="f">'+stickerText(teamCode,n)+'</span>';});
     h+='</div><div style="font-size:0.7rem;font-weight:600;color:var(--accent);margin:6px 0 3px">EMPTY ('+empty.length+'):</div><div class="srow">';
-    empty.forEach(function(n){h+='<span class="e">'+teamCode+' '+n+' - '+slotLabel(teamCode,n)+'</span>';});
+    empty.forEach(function(n){h+='<span class="e">'+stickerText(teamCode,n)+'</span>';});
     h+='</div>'; res.innerHTML=h; res.style.display='block';
   } catch(err) { document.getElementById('sload').style.display='none'; alert('Scan failed: '+err.message); }
 }
@@ -432,7 +450,7 @@ function updateMissing() {
   var h='<div class="sh" style="padding-top:0">&#9888; Missing Stickers</div>';
   rows.forEach(function(row){
     h+='<div class="mb2"><div class="mt2">'+row.team.name+' - '+row.miss.length+' missing</div><div class="ml">';
-    row.miss.forEach(function(s){h+='<span class="mtag" onclick="toggleSticker(\''+row.team.code+'\','+s.n+');updateMissing();">'+row.team.code+' '+s.n+' - '+s.label+'</span>';});
+    row.miss.forEach(function(s){h+='<span class="mtag" onclick="toggleSticker(\''+row.team.code+'\','+s.n+');updateMissing();">'+stickerText(row.team.code,s.n)+'</span>';});
     h+='</div></div>';
   });
   c.innerHTML=h;
@@ -457,7 +475,7 @@ function renderDupes() {
     h+='<div class="dblock"><div class="dtitle">'+row.team.name+'</div><div class="dlist">';
     row.dups.forEach(function(d){
       var k=sk(row.team.code,d.n);
-      h+='<div class="dit">'+row.team.code+'-'+d.n+' '+d.label;
+      h+='<div class="dit">'+stickerText(row.team.code,d.n);
       if(d.count>1) h+=' <span class="dc">x'+(d.count+1)+'</span>';
       h+=' <span class="dr" data-key="'+k+'" onclick="removeDup(this.dataset.key)">&#10005;</span></div>';
     });
@@ -475,7 +493,8 @@ function addDup(){
   if(!m){alert('Enter a code like ARG-15 or ENG 10');return;}
   var code=m[1],n=parseInt(m[2]);
   var team=TEAMS.find(function(t){return t.code===code;});
-  if(!team||n<1||n>team.slots){alert('Unknown sticker: '+code+' '+n);return;}
+  var start = code === 'FWC' ? 0 : 1;
+  if(!team||n<start||n>team.slots){alert('Unknown sticker: '+code+' '+n);return;}
   var k=sk(code,n); state.have[k]=true; state.dups[k]=(state.dups[k]||0)+qty;
   save();refreshEl(code,n);updateStats();renderDupes();
 }
@@ -484,10 +503,10 @@ function buildSwap(){
   var lines=['⚽ *Panini WC26 - My Swaps* ⚽',''];
   TEAMS.forEach(function(t){
     var s=t.code==='FWC'?0:1, dups=[];
-    for(var n=s;n<=t.slots;n++){var k=sk(t.code,n);if(state.dups[k])dups.push(t.code+'-'+n+' '+slotLabel(t.code,n)+(state.dups[k]>1?' x'+(state.dups[k]+1):''));}
+    for(var n=s;n<=t.slots;n++){var k=sk(t.code,n);if(state.dups[k])dups.push(stickerText(t.code,n)+(state.dups[k]>1?' x'+state.dups[k]:''));}
     if(dups.length) lines.push('*'+t.name+':* '+dups.join(', '));
   });
-  lines.push('');lines.push('Reply with your missing list - lets swap!');
+  lines.push('');lines.push("Reply with your missing list - let's swap!");
   document.getElementById('swb').textContent=lines.join('\n');
 }
 
@@ -497,13 +516,145 @@ function updateMissingList(){
   var lines=[];
   TEAMS.forEach(function(t){
     var s=t.code==='FWC'?0:1, miss=[];
-    for(var n=s;n<=t.slots;n++) if(!hasS(t.code,n)) miss.push(t.code+'-'+n+' '+slotLabel(t.code,n));
+    for(var n=s;n<=t.slots;n++) if(!hasS(t.code,n)) miss.push(stickerText(t.code,n));
     if(miss.length) lines.push(miss.join(', '));
   });
   document.getElementById('sml').textContent=lines.join('\n')||'No missing stickers!';
 }
 
 function copyMissing(){navigator.clipboard.writeText(document.getElementById('sml').textContent).then(function(){alert('Copied!');}).catch(function(){alert('Select and copy manually.');});}
+
+function normName(s) {
+  return (s || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '')
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/gi, ' ')
+    .toLowerCase()
+    .trim();
+}
+
+var TEAM_ALIASES = {
+  'introduction':'FWC','intro':'FWC','world cup':'FWC','fifa world cup':'FWC','fwc':'FWC',
+  'mexico':'MEX','mex':'MEX',
+  'south africa':'RSA','rsa':'RSA',
+  'south korea':'KOR','korea':'KOR','kor':'KOR',
+  'czechia':'CZE','czech republic':'CZE','cze':'CZE',
+  'canada':'CAN','can':'CAN',
+  'bosnia and herzegovina':'BIH','bosnia herzegovina':'BIH','bosnia':'BIH','bih':'BIH',
+  'qatar':'QAT','qat':'QAT',
+  'switzerland':'SUI','swiss':'SUI','sui':'SUI',
+  'brazil':'BRA','bra':'BRA',
+  'morocco':'MAR','mar':'MAR',
+  'haiti':'HAI','hai':'HAI','hti':'HAI',
+  'scotland':'SCO','sco':'SCO',
+  'united states':'USA','usa':'USA','us':'USA','america':'USA',
+  'paraguay':'PAR','par':'PAR',
+  'australia':'AUS','aus':'AUS',
+  'turkey':'TUR','turkiye':'TUR','tur':'TUR',
+  'germany':'GER','ger':'GER',
+  'curacao':'CUW','cuw':'CUW',
+  'ivory coast':'CIV','cote d ivoire':'CIV','cote divoire':'CIV','civ':'CIV',
+  'ecuador':'ECU','ecu':'ECU',
+  'netherlands':'NED','holland':'NED','ned':'NED',
+  'japan':'JPN','jpn':'JPN',
+  'sweden':'SWE','swe':'SWE',
+  'tunisia':'TUN','tun':'TUN',
+  'belgium':'BEL','bel':'BEL',
+  'egypt':'EGY','egy':'EGY',
+  'iran':'IRN','irn':'IRN',
+  'new zealand':'NZL','nzl':'NZL',
+  'spain':'ESP','esp':'ESP',
+  'cape verde':'CPV','cpv':'CPV',
+  'saudi arabia':'SAU','ksa':'SAU','sau':'SAU',
+  'uruguay':'URU','uru':'URU',
+  'france':'FRA','fra':'FRA',
+  'senegal':'SEN','sen':'SEN',
+  'iraq':'IRQ','irq':'IRQ',
+  'norway':'NOR','nor':'NOR',
+  'argentina':'ARG','arg':'ARG',
+  'algeria':'ALG','alg':'ALG','dza':'ALG',
+  'austria':'AUT','aut':'AUT',
+  'jordan':'JOR','jor':'JOR',
+  'portugal':'POR','por':'POR',
+  'dr congo':'COD','congo dr':'COD','congo':'COD','democratic republic of congo':'COD','cod':'COD',
+  'uzbekistan':'UZB','uzb':'UZB',
+  'colombia':'COL','col':'COL',
+  'england':'ENG','eng':'ENG',
+  'croatia':'CRO','cro':'CRO',
+  'ghana':'GHA','gha':'GHA',
+  'panama':'PAN','pan':'PAN',
+  'coca cola stars':'CC','coca cola':'CC','cc':'CC'
+};
+
+function teamFromText(name) {
+  var n = normName(name);
+  if (TEAM_ALIASES[n]) return TEAM_ALIASES[n];
+  var found = TEAMS.find(function(t){ return normName(t.name) === n || t.code.toLowerCase() === n; });
+  return found ? found.code : null;
+}
+
+function parseFriendSwapList(raw) {
+  var found = [];
+  raw.split(/\n+/).forEach(function(line) {
+    if (line.indexOf(':') < 0) return;
+    var parts = line.split(':');
+    var code = teamFromText(parts[0]);
+    if (!code) return;
+    var team = TEAMS.find(function(t){ return t.code === code; });
+    var nums = (parts.slice(1).join(':').match(/\d+/g) || []).map(function(x){ return parseInt(x, 10); });
+    nums.forEach(function(n) {
+      var start = code === 'FWC' ? 0 : 1;
+      if (team && !isNaN(n) && n >= start && n <= team.slots) found.push({code:code, n:n});
+    });
+  });
+  return found;
+}
+
+function compareFriendSwaps() {
+  var raw = document.getElementById('compare-box').value || '';
+  var parsed = parseFriendSwapList(raw);
+  var result = document.getElementById('compare-result');
+  var wrap = document.getElementById('compare-reply-wrap');
+  var reply = document.getElementById('compare-reply');
+  wrap.style.display = 'none';
+  reply.textContent = '';
+
+  if (!raw.trim()) { result.textContent = 'Paste a friend\'s swap list first.'; return; }
+  if (!parsed.length) { result.textContent = 'No recognised stickers found. Use lines like Australia: 3, 20 or Brazil: 7.'; return; }
+
+  var seen = {}, need = [];
+  parsed.forEach(function(item) {
+    var k = sk(item.code, item.n);
+    if (!seen[k] && !hasS(item.code, item.n)) { seen[k] = true; need.push(item); }
+  });
+
+  if (!need.length) {
+    result.textContent = 'None needed from this list.';
+    reply.textContent = 'Thanks, I checked your swaps and I do not need any of those ones 👍';
+    wrap.style.display = 'block';
+    return;
+  }
+
+  var byTeam = [];
+  TEAMS.forEach(function(t) {
+    var nums = need.filter(function(x){ return x.code === t.code; }).map(function(x){ return x.n; });
+    if (nums.length) byTeam.push({team:t, nums:nums});
+  });
+
+  var html = '<strong style="color:var(--gold)">' + need.length + ' sticker' + (need.length !== 1 ? 's' : '') + ' needed:</strong><br>';
+  byTeam.forEach(function(row) { html += row.team.name + ': ' + row.nums.join(', ') + '<br>'; });
+  result.innerHTML = html;
+
+  var lines = ['Nice one, I need these from your swaps:', ''];
+  byTeam.forEach(function(row) { lines.push(row.team.name + ': ' + row.nums.join(', ')); });
+  lines.push('');
+  lines.push('I can check mine against your missing list too 👍');
+  reply.textContent = lines.join('\n');
+  wrap.style.display = 'block';
+}
+
+function copyCompareReply(){navigator.clipboard.writeText(document.getElementById('compare-reply').textContent).then(function(){alert('Reply copied!');}).catch(function(){alert('Select and copy manually.');});}
 
 function markFromList() {
   var raw = document.getElementById('mfl-box').value;
@@ -520,7 +671,8 @@ function markFromList() {
     var code = parts[0].toUpperCase();
     var n = parseInt(parts[1]);
     var team = TEAMS.find(function(t){ return t.code === code; });
-    if (!team || isNaN(n) || n < 0 || n > team.slots) { unknown++; return; }
+    var start = code === 'FWC' ? 0 : 1;
+    if (!team || isNaN(n) || n < start || n > team.slots) { unknown++; return; }
     var k = sk(code, n);
     if (state.have[k]) { skipped++; }
     else { state.have[k] = true; added++; }
