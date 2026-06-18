@@ -100,6 +100,20 @@ main{padding:12px;max-width:700px;margin:0 auto;}
 .es{text-align:center;color:var(--muted);padding:40px 16px;font-size:0.85rem;}
 .es .big{font-size:2.5rem;margin-bottom:8px;}
 @media(max-width:400px){.sgrid{grid-template-columns:repeat(4,1fr);}}
+
+.statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:8px 0 14px;}
+.statcard{background:var(--surface);border:1px solid #333;border-radius:var(--r);padding:10px;}
+.statcard .stval{font-family:"Bebas Neue",cursive;font-size:1.35rem;color:var(--gold);line-height:1;}
+.statcard .stlbl{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:3px;}
+.gstat{margin:7px 0;}
+.gtop{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted);margin-bottom:3px;}
+.gbar{height:5px;background:#222;border-radius:4px;overflow:hidden;}
+.gfill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:4px;}
+.qtybtn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.15);color:#ffd166;border-radius:4px;font-size:0.75rem;font-weight:800;line-height:1;padding:2px 6px;cursor:pointer;}
+.qtybtn:active{transform:scale(0.94);}
+.numtag{background:var(--surface);border:1px solid #333;border-radius:4px;padding:4px 8px;font-size:0.75rem;font-weight:700;color:var(--text);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.numtag:active{background:var(--have);color:#95d5b2;border-color:var(--have-b);}
+@media(max-width:400px){.statgrid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -174,6 +188,7 @@ main{padding:12px;max-width:700px;margin:0 auto;}
 </div>
 <div class="tv" id="tab-tools">
   <div class="sh" style="padding-top:0">&#9881; Tools</div>
+  <div id="stats-dash"></div>
   <div class="tr">
     <button class="btn sec" onclick="resetAll()">&#128465; Reset all</button>
     <button class="btn sec" onclick="markAll()">&#9989; Mark all owned</button>
@@ -448,14 +463,14 @@ function updateMissing() {
   var c=document.getElementById('mc'), rows=[];
   TEAMS.forEach(function(t){
     var s=t.code==='FWC'?0:1, miss=[];
-    for(var n=s;n<=t.slots;n++) if(!hasS(t.code,n)) miss.push({n:n,label:slotLabel(t.code,n)});
+    for(var n=s;n<=t.slots;n++) if(!hasS(t.code,n)) miss.push(n);
     if(miss.length) rows.push({team:t,miss:miss});
   });
   if(!rows.length){c.innerHTML='<div class="es"><div class="big">&#127942;</div>Collection complete!</div>';return;}
-  var h='<div class="sh" style="padding-top:0">&#9888; Missing Stickers</div>';
+  var h='<div class="sh" style="padding-top:0">&#9888; Missing Stickers</div><div class="di">Grouped by team. Tap a number to mark it as owned.</div>';
   rows.forEach(function(row){
-    h+='<div class="mb2"><div class="mt2">'+row.team.name+' - '+row.miss.length+' missing</div><div class="ml">';
-    row.miss.forEach(function(s){h+='<span class="mtag" onclick="toggleSticker(\''+row.team.code+'\','+s.n+');updateMissing();">'+stickerText(row.team.code,s.n)+'</span>';});
+    h+='<div class="mb2"><div class="mt2">'+row.team.name+': '+row.miss.join(', ')+'</div><div class="ml">';
+    row.miss.forEach(function(n){h+='<span class="numtag" onclick="toggleSticker(&apos;'+row.team.code+'&apos;,'+n+');updateMissing();">'+n+'</span>';});
     h+='</div></div>';
   });
   c.innerHTML=h;
@@ -480,16 +495,14 @@ function renderDupes() {
     h+='<div class="dblock"><div class="dtitle">'+row.team.name+'</div><div class="dlist">';
     row.dups.forEach(function(d){
       var k=sk(row.team.code,d.n);
-      h+='<div class="dit">'+d.n;
-      if(d.count>1) h+=' <span class="dc">x'+d.count+'</span>';
-      h+=' <span class="dr" data-key="'+k+'" onclick="removeDup(this.dataset.key)">&#10005;</span></div>';
+      h+='<div class="dit"><button class="qtybtn" data-key="'+k+'" onclick="adjustDup(this.dataset.key,-1)">−</button> '+d.n+' <span class="dc">x'+d.count+'</span> <button class="qtybtn" data-key="'+k+'" onclick="adjustDup(this.dataset.key,1)">+</button> <span class="dr" data-key="'+k+'" onclick="removeDup(this.dataset.key)">&#10005;</span></div>';
     });
     h+='</div></div>';
   });
   c.innerHTML=h;
 }
 
-function removeDup(k){delete state.dups[k];save();var p=k.split('-');if(p.length>=2)refreshEl(p[0],parseInt(p[1]));updateStats();renderDupes();}
+function adjustDup(k){delete state.dups[k];save();var p=k.split('-');if(p.length>=2)refreshEl(p[0],parseInt(p[1]));updateStats();renderDupes();}
 
 function addDup(){
   var q=(document.getElementById('ds').value||'').trim().toUpperCase();
@@ -603,18 +616,28 @@ function teamFromText(name) {
 }
 
 function parseFriendSwapList(raw) {
-  var found = [];
-  raw.split(/\n+/).forEach(function(line) {
-    if (line.indexOf(':') < 0) return;
-    var parts = line.split(':');
-    var code = teamFromText(parts[0]);
-    if (!code) return;
+  var found = [], seen = {};
+  function add(code,n){
     var team = TEAMS.find(function(t){ return t.code === code; });
-    var nums = (parts.slice(1).join(':').match(/\d+/g) || []).map(function(x){ return parseInt(x, 10); });
-    nums.forEach(function(n) {
-      var start = code === 'FWC' ? 0 : 1;
-      if (team && !isNaN(n) && n >= start && n <= team.slots) found.push({code:code, n:n});
-    });
+    var start = code === 'FWC' ? 0 : 1;
+    var k = code + '-' + n;
+    if (team && !isNaN(n) && n >= start && n <= team.slots && !seen[k]) { seen[k]=true; found.push({code:code,n:n}); }
+  }
+
+  // Supports direct codes anywhere: ARG-3, ARG 3, FWC-7
+  (raw.match(/\b[A-Z]{2,4}[\s\-]\d{1,2}\b/g) || []).forEach(function(m){
+    var parts = m.trim().split(/[\s\-]/);
+    var code = parts[0].toUpperCase();
+    if (TEAMS.some(function(t){return t.code===code;})) add(code, parseInt(parts[1],10));
+  });
+
+  // Supports WhatsApp/team lines: 🇧🇷 Brazil: 7, 12 or Brazil - 7, 12
+  raw.split(/\n+/).forEach(function(line) {
+    var m = line.match(/^\s*(.*?)[：:\-–]\s*(.+)$/);
+    if (!m) return;
+    var code = teamFromText(m[1]);
+    if (!code) return;
+    (m[2].match(/\d+/g) || []).forEach(function(x){ add(code, parseInt(x,10)); });
   });
   return found;
 }
@@ -692,6 +715,42 @@ function markFromList() {
   if (added > 0) document.getElementById('mfl-box').value = '';
 }
 
+function groupStats() {
+  var groups = {};
+  TEAMS.forEach(function(t){
+    var g = t.group === 'Special' ? 'Special' : 'Group ' + t.group;
+    if(!groups[g]) groups[g] = {total:0, have:0, missing:0};
+    var total = teamTotal(t), have = teamHave(t);
+    groups[g].total += total; groups[g].have += have; groups[g].missing += (total-have);
+  });
+  return groups;
+}
+
+function renderStatsDashboard() {
+  var el=document.getElementById('stats-dash'); if(!el) return;
+  var most=null, least=null;
+  TEAMS.forEach(function(t){
+    var total=teamTotal(t), have=teamHave(t), pct=total?have/total:0;
+    var row={team:t,total:total,have:have,pct:pct};
+    if(!most || row.pct>most.pct || (row.pct===most.pct && row.have>most.have)) most=row;
+    if(!least || row.pct<least.pct || (row.pct===least.pct && row.have<least.have)) least=row;
+  });
+  var groups=groupStats();
+  var totalSwaps=countDups();
+  var html='<div class="sp"><h3>Stats Dashboard</h3><div class="statgrid">';
+  html+='<div class="statcard"><div class="stval">'+(most?most.team.name:'-')+'</div><div class="stlbl">Most complete '+(most?Math.round(most.pct*100)+'%':'')+'</div></div>';
+  html+='<div class="statcard"><div class="stval">'+(least?least.team.name:'-')+'</div><div class="stlbl">Least complete '+(least?Math.round(least.pct*100)+'%':'')+'</div></div>';
+  html+='<div class="statcard"><div class="stval">'+totalSwaps+'</div><div class="stlbl">Total swaps</div></div>';
+  html+='<div class="statcard"><div class="stval">'+(TOTAL-countHave())+'</div><div class="stlbl">Still missing</div></div>';
+  html+='</div><div class="dtitle">Completion by group</div>';
+  Object.keys(groups).forEach(function(g){
+    var x=groups[g], pct=x.total?Math.round(x.have/x.total*100):0;
+    html+='<div class="gstat"><div class="gtop"><span>'+g+'</span><span>'+x.have+'/'+x.total+' • '+pct+'% • '+x.missing+' missing</span></div><div class="gbar"><div class="gfill" style="width:'+pct+'%"></div></div></div>';
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
 function showTab(name){
   document.querySelectorAll('.tv').forEach(function(t){t.classList.remove('active');});
   document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('active');});
@@ -699,7 +758,7 @@ function showTab(name){
   document.getElementById('nav-'+name).classList.add('active');
   if(name==='missing') updateMissing();
   if(name==='dupes') renderDupes();
-  if(name==='tools') updateMissingList();
+  if(name==='tools') { updateMissingList(); renderStatsDashboard(); }
 }
 
 function resetAll(){if(!confirm('Reset all data?'))return;state={have:{},dups:{}};save();buildAllTeams();updateMissing();renderDupes();updateMissingList();}
