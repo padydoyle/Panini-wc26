@@ -556,7 +556,7 @@ function normName(s) {
 }
 
 var TEAM_ALIASES = {
-  'introduction':'FWC','intro':'FWC','world cup':'FWC','fifa world cup':'FWC','fwc':'FWC',
+  'introduction':'FWC','intro':'FWC','world cup':'FWC','world cup history':'FWC','fifa world cup':'FWC','fwc':'FWC',
   'mexico':'MEX','mex':'MEX',
   'south africa':'RSA','rsa':'RSA',
   'south korea':'KOR','korea':'KOR','kor':'KOR',
@@ -615,6 +615,14 @@ function teamFromText(name) {
   return found ? found.code : null;
 }
 
+function parseFriendSwapNumbers(text) {
+  // Remove quantity markers like (x2), x2, ×2 so they are not read as sticker numbers.
+  var cleaned = (text || '')
+    .replace(/\(\s*[x×]\s*\d+\s*\)/gi, '')
+    .replace(/\b[x×]\s*\d+\b/gi, '');
+  return (cleaned.match(/\d{1,2}/g) || []).map(function(x){ return parseInt(x,10); });
+}
+
 function parseFriendSwapList(raw) {
   var found = [], seen = {};
   function add(code,n){
@@ -624,20 +632,20 @@ function parseFriendSwapList(raw) {
     if (team && !isNaN(n) && n >= start && n <= team.slots && !seen[k]) { seen[k]=true; found.push({code:code,n:n}); }
   }
 
-  // Supports direct codes anywhere: ARG-3, ARG 3, FWC-7
+  // Supports direct codes anywhere: ARG-3, ARG 3, FWC-7. Quantity notes after the code are ignored.
   (raw.match(/\b[A-Z]{2,4}[\s\-]\d{1,2}\b/g) || []).forEach(function(m){
     var parts = m.trim().split(/[\s\-]/);
     var code = parts[0].toUpperCase();
     if (TEAMS.some(function(t){return t.code===code;})) add(code, parseInt(parts[1],10));
   });
 
-  // Supports WhatsApp/team lines: 🇧🇷 Brazil: 7, 12 or Brazil - 7, 12
+  // Supports WhatsApp/team lines: 🇧🇷 Brazil: 7, 12 or Brazil - 7 (x2), 12.
   raw.split(/\n+/).forEach(function(line) {
     var m = line.match(/^\s*(.*?)[：:\-–]\s*(.+)$/);
     if (!m) return;
     var code = teamFromText(m[1]);
     if (!code) return;
-    (m[2].match(/\d+/g) || []).forEach(function(x){ add(code, parseInt(x,10)); });
+    parseFriendSwapNumbers(m[2]).forEach(function(n){ add(code, n); });
   });
   return found;
 }
