@@ -502,7 +502,17 @@ function renderDupes() {
   c.innerHTML=h;
 }
 
-function adjustDup(k){delete state.dups[k];save();var p=k.split('-');if(p.length>=2)refreshEl(p[0],parseInt(p[1]));updateStats();renderDupes();}
+function adjustDup(k, delta){
+  var current = parseInt(state.dups[k], 10) || 0;
+  var next = current + delta;
+  if (next <= 0) delete state.dups[k];
+  else state.dups[k] = next;
+  save();
+  var p = k.split('-');
+  if (p.length >= 2) refreshEl(p[0], parseInt(p[1], 10));
+  updateStats();
+  renderDupes();
+}
 
 function addDup(){
   var q=(document.getElementById('ds').value||'').trim().toUpperCase();
