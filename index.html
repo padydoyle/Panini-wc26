@@ -149,7 +149,7 @@ main{padding:12px;max-width:700px;margin:0 auto;}
   <div class="leg">
     <span><span class="ld" style="background:var(--have)"></span>Owned (1 tap)</span>
     <span><span class="ld" style="background:var(--dup)"></span>Duplicate (2 taps)</span>
-    <span><span class="ld" style="background:var(--incoming)"></span>Incoming swap</span>
+    <span><span class="ld" style="background:var(--incoming)"></span>Incoming swap (long-press missing)</span>
     <span><span class="ld" style="background:#333"></span>Missing (3 taps resets)</span>
   </div>
   <input type="text" id="sb" placeholder="&#128269; Search team..." oninput="filterTeams(this.value)">
@@ -344,8 +344,16 @@ function hasS(c,n) { return !!state.have[sk(c,n)]; }
 function isIncoming(c,n) { return !!state.incoming[sk(c,n)]; }
 function countIncoming() { return Object.keys(state.incoming).length; }
 
+var longPressSuppressKey = '';
+var longPressSuppressUntil = 0;
+
 function toggleSticker(c,n) {
   var k=sk(c,n);
+  if (k===longPressSuppressKey && Date.now()<longPressSuppressUntil) {
+    longPressSuppressKey='';
+    longPressSuppressUntil=0;
+    return;
+  }
   if (state.incoming[k]) { delete state.incoming[k]; state.have[k]=true; delete state.dups[k]; }
   else if (!state.have[k]) { state.have[k]=true; delete state.dups[k]; }
   else if (!state.dups[k]) { state.dups[k]=1; }
@@ -422,7 +430,45 @@ function buildAllTeams() {
     }
     html+='</div></div>';
   });
-  c.innerHTML=html; updateStats();
+  c.innerHTML=html;
+  bindStickerLongPress();
+  updateStats();
+}
+
+function bindStickerLongPress() {
+  document.querySelectorAll('#tc .sticker').forEach(function(el) {
+    var m=el.id.match(/^s-([A-Z]+)-(\d+)$/);
+    if(!m) return;
+    var code=m[1], n=parseInt(m[2],10), key=sk(code,n);
+    var timer=null, startX=0, startY=0;
+
+    function cancelLongPress(){
+      if(timer){ clearTimeout(timer); timer=null; }
+    }
+
+    el.addEventListener('pointerdown', function(e){
+      if(e.pointerType==='mouse' && e.button!==0) return;
+      startX=e.clientX; startY=e.clientY;
+      cancelLongPress();
+      timer=setTimeout(function(){
+        timer=null;
+        if(!state.have[key] && !state.incoming[key]){
+          longPressSuppressKey=key;
+          longPressSuppressUntil=Date.now()+1000;
+          markIncoming(code,n);
+          if(navigator.vibrate) navigator.vibrate(40);
+        }
+      },650);
+    });
+
+    el.addEventListener('pointermove', function(e){
+      if(Math.abs(e.clientX-startX)>12 || Math.abs(e.clientY-startY)>12) cancelLongPress();
+    });
+    el.addEventListener('pointerup', cancelLongPress);
+    el.addEventListener('pointercancel', cancelLongPress);
+    el.addEventListener('pointerleave', cancelLongPress);
+    el.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  });
 }
 
 function filterTeams(q) {
