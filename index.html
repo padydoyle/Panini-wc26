@@ -11,7 +11,7 @@
 <title>Panini WC26</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap');
-:root{--bg:#0f0f1a;--surface:#1a1a2e;--surface2:#16213e;--accent:#e63946;--gold:#ffd60a;--text:#f1f1f1;--muted:#888;--have:#2d6a4f;--have-b:#40916c;--dup:#7b4f00;--dup-b:#c87f00;--cc:#6d0f3a;--cc-b:#b01f5e;--r:6px;}
+:root{--bg:#0f0f1a;--surface:#1a1a2e;--surface2:#16213e;--accent:#e63946;--gold:#ffd60a;--text:#f1f1f1;--muted:#888;--have:#2d6a4f;--have-b:#40916c;--dup:#7b4f00;--dup-b:#c87f00;--incoming:#164e63;--incoming-b:#38bdf8;--cc:#6d0f3a;--cc-b:#b01f5e;--r:6px;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:Inter,sans-serif;min-height:100vh;}
 header{background:var(--surface);border-bottom:2px solid var(--accent);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
@@ -33,12 +33,14 @@ main{padding:12px;max-width:700px;margin:0 auto;}
 .sticker:active{transform:scale(0.94);}
 .sticker.have{background:var(--have);border-color:var(--have-b);}
 .sticker.dup{background:var(--dup);border-color:var(--dup-b);}
+.sticker.incoming{background:var(--incoming);border-color:var(--incoming-b);}
 .sticker.cch{background:var(--cc);border-color:var(--cc-b);}
 .sn{font-size:0.6rem;font-weight:600;color:var(--muted);line-height:1;}
 .have .sn,.dup .sn,.cch .sn{color:#95d5b2;}
+.incoming .sn{color:#bae6fd;}
 .sl{font-size:0.62rem;font-weight:500;color:var(--text);line-height:1.2;margin-top:2px;word-break:break-word;}
 .sc{font-size:0.9rem;line-height:1;margin-top:2px;opacity:0;}
-.have .sc,.dup .sc,.cch .sc{opacity:1;}
+.have .sc,.dup .sc,.cch .sc,.incoming .sc{opacity:1;}
 .dbadge{position:absolute;top:2px;right:2px;background:var(--gold);color:#000;font-size:0.5rem;font-weight:700;border-radius:3px;padding:1px 3px;line-height:1;}
 .divider{height:1px;background:#222;margin:16px 0;}
 .sbar{background:var(--surface);border-radius:var(--r);padding:10px 14px;margin-bottom:12px;display:flex;gap:16px;flex-wrap:wrap;}
@@ -113,6 +115,11 @@ main{padding:12px;max-width:700px;margin:0 auto;}
 .qtybtn:active{transform:scale(0.94);}
 .numtag{background:var(--surface);border:1px solid #333;border-radius:4px;padding:4px 8px;font-size:0.75rem;font-weight:700;color:var(--text);cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .numtag:active{background:var(--have);color:#95d5b2;border-color:var(--have-b);}
+.inbtn{background:var(--incoming);border:1px solid var(--incoming-b);border-radius:4px;color:#bae6fd;padding:4px 7px;font-size:0.72rem;font-weight:700;cursor:pointer;}
+.inrow{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--surface);border:1px solid #333;border-radius:var(--r);padding:8px 10px;margin-bottom:6px;}
+.inname{font-size:0.78rem;font-weight:700;}
+.inactions{display:flex;gap:5px;flex-shrink:0;}
+.btn.incomingbtn{background:var(--incoming);border:1px solid var(--incoming-b);color:#bae6fd;}
 @media(max-width:400px){.statgrid{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -125,6 +132,7 @@ main{padding:12px;max-width:700px;margin:0 auto;}
   <button class="nb active" onclick="showTab('all')" id="nav-all">All Teams</button>
   <button class="nb" onclick="showTab('scan')" id="nav-scan">&#128247; Scan</button>
   <button class="nb" onclick="showTab('missing')" id="nav-missing">&#9888; Missing</button>
+  <button class="nb" onclick="showTab('incoming')" id="nav-incoming">&#128230; Incoming</button>
   <button class="nb" onclick="showTab('dupes')" id="nav-dupes">&#128260; Dupes</button>
   <button class="nb" onclick="showTab('tools')" id="nav-tools">&#9881; Tools</button>
 </nav>
@@ -133,6 +141,7 @@ main{padding:12px;max-width:700px;margin:0 auto;}
   <div class="sbar">
     <div class="ss"><div class="val" id="sh">0</div><div class="lbl">Have</div></div>
     <div class="ss"><div class="val" id="sm">0</div><div class="lbl">Missing</div></div>
+    <div class="ss"><div class="val" id="si">0</div><div class="lbl">Incoming</div></div>
     <div class="ss"><div class="val" id="sd">0</div><div class="lbl">Dupes</div></div>
     <div class="ss"><div class="val" id="sp">0%</div><div class="lbl">Done</div></div>
   </div>
@@ -140,6 +149,7 @@ main{padding:12px;max-width:700px;margin:0 auto;}
   <div class="leg">
     <span><span class="ld" style="background:var(--have)"></span>Owned (1 tap)</span>
     <span><span class="ld" style="background:var(--dup)"></span>Duplicate (2 taps)</span>
+    <span><span class="ld" style="background:var(--incoming)"></span>Incoming swap</span>
     <span><span class="ld" style="background:#333"></span>Missing (3 taps resets)</span>
   </div>
   <input type="text" id="sb" placeholder="&#128269; Search team..." oninput="filterTeams(this.value)">
@@ -171,6 +181,15 @@ main{padding:12px;max-width:700px;margin:0 auto;}
   </div>
 </div>
 <div class="tv" id="tab-missing"><div id="mc"></div></div>
+<div class="tv" id="tab-incoming">
+  <div class="sh" style="padding-top:0">&#128230; Incoming Swaps</div>
+  <div class="di">Stickers agreed in a swap but not received yet. They are removed from your missing list and shown in blue, but do not count as owned until marked received.</div>
+  <div class="dsr">
+    <input type="text" id="incoming-code" placeholder="e.g. BRA-7 or ENG 13">
+    <button class="btn incomingbtn" onclick="addIncomingFromInput()">+ Add incoming</button>
+  </div>
+  <div id="incoming-list"></div>
+</div>
 <div class="tv" id="tab-dupes">
   <div class="sh" style="padding-top:0">&#128260; Duplicates</div>
   <div class="di">Your swap stickers. Tap once = owned, twice = duplicate, three times = reset.</div>
@@ -304,7 +323,7 @@ function numbersOnly(items) {
 }
 
 var STORE = 'panini_wc26_v5';
-var state = {have:{}, dups:{}};
+var state = {have:{}, dups:{}, incoming:{}};
 
 function load() {
   try {
@@ -312,19 +331,23 @@ function load() {
     if (r) { state = JSON.parse(r); }
     if (!state.have) state.have = {};
     if (!state.dups) state.dups = {};
+    if (!state.incoming) state.incoming = {};
     if (!r) {
       var old = localStorage.getItem('panini_wc26_v4');
-      if (old) { var o = JSON.parse(old); state.have=o.have||{}; state.dups=o.dups||{}; save(); }
+      if (old) { var o = JSON.parse(old); state.have=o.have||{}; state.dups=o.dups||{}; state.incoming=o.incoming||{}; save(); }
     }
-  } catch(e) { state={have:{},dups:{}}; }
+  } catch(e) { state={have:{},dups:{},incoming:{}}; }
 }
 function save() { localStorage.setItem(STORE, JSON.stringify(state)); }
 function sk(c,n) { return c+'-'+n; }
 function hasS(c,n) { return !!state.have[sk(c,n)]; }
+function isIncoming(c,n) { return !!state.incoming[sk(c,n)]; }
+function countIncoming() { return Object.keys(state.incoming).length; }
 
 function toggleSticker(c,n) {
   var k=sk(c,n);
-  if (!state.have[k]) { state.have[k]=true; delete state.dups[k]; }
+  if (state.incoming[k]) { delete state.incoming[k]; state.have[k]=true; delete state.dups[k]; }
+  else if (!state.have[k]) { state.have[k]=true; delete state.dups[k]; }
   else if (!state.dups[k]) { state.dups[k]=1; }
   else { delete state.have[k]; delete state.dups[k]; }
   save(); refreshEl(c,n); updateStats();
@@ -343,6 +366,9 @@ function refreshEl(c,n) {
   } else if (state.have[k]) {
     el.classList.add(c==='CC'?'cch':'have');
     el.querySelector('.sc').textContent='✓';
+  } else if (state.incoming[k]) {
+    el.classList.add('incoming');
+    el.querySelector('.sc').textContent='↘';
   }
 }
 
@@ -356,12 +382,13 @@ function teamHave(t) {
 }
 
 function updateStats() {
-  var have=countHave(), miss=TOTAL-have, dups=countDups(), pct=Math.round(have/TOTAL*100);
+  var have=countHave(), incoming=countIncoming(), miss=TOTAL-have-incoming, dups=countDups(), pct=Math.round(have/TOTAL*100);
   document.getElementById('hh').textContent=have;
   document.getElementById('ht').textContent=TOTAL;
   document.getElementById('hp').textContent=pct+'%';
   document.getElementById('sh').textContent=have;
   document.getElementById('sm').textContent=miss;
+  document.getElementById('si').textContent=incoming;
   document.getElementById('sd').textContent=dups;
   document.getElementById('sp').textContent=pct+'%';
   document.getElementById('pb').style.width=pct+'%';
@@ -387,6 +414,7 @@ function buildAllTeams() {
       var k=sk(t.code,n), cls='sticker', chk='', badge='';
       if (state.have[k]&&state.dups[k]) { cls+=t.code==='CC'?' cch':' dup'; chk='✓'; badge='<div class="dbadge">+'+state.dups[k]+'</div>'; }
       else if (state.have[k]) { cls+=t.code==='CC'?' cch':' have'; chk='✓'; }
+      else if (state.incoming[k]) { cls+=' incoming'; chk='↘'; }
       html+='<div class="'+cls+'" id="s-'+t.code+'-'+n+'" onclick="toggleSticker(&apos;'+t.code+'&apos;,'+n+')">'
         +'<div class="sn">'+t.code+' '+n+'</div>'
         +'<div class="sl">'+slotLabel(t.code,n)+'</div>'
@@ -447,7 +475,7 @@ async function doScan(dataUrl, mime) {
     var filled=(parsed.filled||[]).filter(function(n){return n>=1&&n<=20;});
     var empty=(parsed.empty||[]).filter(function(n){return n>=1&&n<=20;});
     var added=0;
-    filled.forEach(function(n){var k=sk(teamCode,n); if(!state.have[k]){state.have[k]=true;added++;}});
+    filled.forEach(function(n){var k=sk(teamCode,n); if(!state.have[k]){state.have[k]=true;delete state.incoming[k];added++;}});
     save(); updateStats();
     var res=document.getElementById('sres');
     var h='<div class="rt">'+team.name+' - '+added+' new sticker'+(added!==1?'s':'')+' marked</div>';
@@ -463,15 +491,68 @@ function updateMissing() {
   var c=document.getElementById('mc'), rows=[];
   TEAMS.forEach(function(t){
     var s=t.code==='FWC'?0:1, miss=[];
-    for(var n=s;n<=t.slots;n++) if(!hasS(t.code,n)) miss.push(n);
+    for(var n=s;n<=t.slots;n++) if(!hasS(t.code,n) && !isIncoming(t.code,n)) miss.push(n);
     if(miss.length) rows.push({team:t,miss:miss});
   });
-  if(!rows.length){c.innerHTML='<div class="es"><div class="big">&#127942;</div>Collection complete!</div>';return;}
-  var h='<div class="sh" style="padding-top:0">&#9888; Missing Stickers</div><div class="di">Grouped by team. Tap a number to mark it as owned.</div>';
+  if(!rows.length){c.innerHTML='<div class="es"><div class="big">&#127942;</div>No unassigned missing stickers!</div>';return;}
+  var h='<div class="sh" style="padding-top:0">&#9888; Missing Stickers</div><div class="di">Tap the number to mark it owned, or tap the blue arrow to mark it as an incoming swap.</div>';
   rows.forEach(function(row){
     h+='<div class="mb2"><div class="mt2">'+row.team.name+': '+row.miss.join(', ')+'</div><div class="ml">';
-    row.miss.forEach(function(n){h+='<span class="numtag" onclick="toggleSticker(&apos;'+row.team.code+'&apos;,'+n+');updateMissing();">'+n+'</span>';});
+    row.miss.forEach(function(n){h+='<span style="display:inline-flex;gap:2px"><span class="numtag" onclick="markOwned(&apos;'+row.team.code+'&apos;,'+n+')">'+n+'</span><button class="inbtn" onclick="markIncoming(&apos;'+row.team.code+'&apos;,'+n+')">↘</button></span>';});
     h+='</div></div>';
+  });
+  c.innerHTML=h;
+}
+
+function markOwned(c,n){
+  var k=sk(c,n); state.have[k]=true; delete state.incoming[k]; delete state.dups[k];
+  save(); refreshEl(c,n); updateStats(); updateMissing();
+}
+
+function markIncoming(c,n){
+  var k=sk(c,n);
+  if(state.have[k]) return;
+  state.incoming[k]=true;
+  save(); refreshEl(c,n); updateStats(); updateMissing(); renderIncoming();
+}
+
+function cancelIncoming(k){
+  delete state.incoming[k]; save();
+  var p=k.split('-'); refreshEl(p[0],parseInt(p[1],10)); updateStats(); renderIncoming(); updateMissing();
+}
+
+function receiveIncoming(k){
+  delete state.incoming[k]; state.have[k]=true; delete state.dups[k]; save();
+  var p=k.split('-'); refreshEl(p[0],parseInt(p[1],10)); updateStats(); renderIncoming(); updateMissing();
+}
+
+function addIncomingFromInput(){
+  var q=(document.getElementById('incoming-code').value||'').trim().toUpperCase();
+  var m=q.match(/^([A-Z]+)[\s\-](\d+)$/);
+  if(!m){alert('Enter a code like BRA-7 or ENG 13');return;}
+  var code=m[1], n=parseInt(m[2],10), team=TEAMS.find(function(t){return t.code===code;});
+  var start=code==='FWC'?0:1;
+  if(!team || n<start || n>team.slots){alert('Unknown sticker: '+q);return;}
+  var k=sk(code,n);
+  if(state.have[k]){alert('You already own this sticker.');return;}
+  state.incoming[k]=true; save(); document.getElementById('incoming-code').value='';
+  refreshEl(code,n); updateStats(); renderIncoming(); updateMissing();
+}
+
+function renderIncoming(){
+  var c=document.getElementById('incoming-list'); if(!c) return;
+  var rows=[];
+  TEAMS.forEach(function(t){
+    var s=t.code==='FWC'?0:1, nums=[];
+    for(var n=s;n<=t.slots;n++) if(isIncoming(t.code,n)) nums.push(n);
+    if(nums.length) rows.push({team:t,nums:nums});
+  });
+  if(!rows.length){c.innerHTML='<div class="es"><div class="big">&#128230;</div>No incoming swaps.</div>';return;}
+  var h='';
+  rows.forEach(function(row){
+    h+='<div class="dblock"><div class="dtitle">'+row.team.name+'</div>';
+    row.nums.forEach(function(n){var k=sk(row.team.code,n);h+='<div class="inrow"><span class="inname">'+n+'</span><span class="inactions"><button class="btn" onclick="receiveIncoming(&apos;'+k+'&apos;)">Received</button><button class="btn sec" onclick="cancelIncoming(&apos;'+k+'&apos;)">Cancel</button></span></div>';});
+    h+='</div>';
   });
   c.innerHTML=h;
 }
@@ -523,7 +604,7 @@ function addDup(){
   var team=TEAMS.find(function(t){return t.code===code;});
   var start = code === 'FWC' ? 0 : 1;
   if(!team||n<start||n>team.slots){alert('Unknown sticker: '+code+' '+n);return;}
-  var k=sk(code,n); state.have[k]=true; state.dups[k]=(state.dups[k]||0)+qty;
+  var k=sk(code,n); state.have[k]=true; delete state.incoming[k]; state.dups[k]=(state.dups[k]||0)+qty;
   save();refreshEl(code,n);updateStats();renderDupes();
 }
 
@@ -547,7 +628,7 @@ function updateMissingList(){
   var lines=[];
   TEAMS.forEach(function(t){
     var s=t.code==='FWC'?0:1, miss=[];
-    for(var n=s;n<=t.slots;n++) if(!hasS(t.code,n)) miss.push({n:n});
+    for(var n=s;n<=t.slots;n++) if(!hasS(t.code,n) && !isIncoming(t.code,n)) miss.push({n:n});
     if(miss.length) lines.push(t.name + ': ' + numbersOnly(miss));
   });
   document.getElementById('sml').textContent=lines.join('\n')||'No missing stickers!';
@@ -675,7 +756,7 @@ function compareFriendSwaps() {
   var seen = {}, need = [];
   parsed.forEach(function(item) {
     var k = sk(item.code, item.n);
-    if (!seen[k] && !hasS(item.code, item.n)) { seen[k] = true; need.push(item); }
+    if (!seen[k] && !hasS(item.code, item.n) && !isIncoming(item.code, item.n)) { seen[k] = true; need.push(item); }
   });
 
   if (!need.length) {
@@ -724,7 +805,7 @@ function markFromList() {
     if (!team || isNaN(n) || n < start || n > team.slots) { unknown++; return; }
     var k = sk(code, n);
     if (state.have[k]) { skipped++; }
-    else { state.have[k] = true; added++; }
+    else { state.have[k] = true; delete state.incoming[k]; added++; }
   });
   save();
   buildAllTeams();
@@ -733,13 +814,19 @@ function markFromList() {
   if (added > 0) document.getElementById('mfl-box').value = '';
 }
 
+function countTeamIncoming(t) {
+  var s=t.code==='FWC'?0:1, c=0;
+  for(var n=s;n<=t.slots;n++) if(isIncoming(t.code,n)) c++;
+  return c;
+}
+
 function groupStats() {
   var groups = {};
   TEAMS.forEach(function(t){
     var g = t.group === 'Special' ? 'Special' : 'Group ' + t.group;
     if(!groups[g]) groups[g] = {total:0, have:0, missing:0};
     var total = teamTotal(t), have = teamHave(t);
-    groups[g].total += total; groups[g].have += have; groups[g].missing += (total-have);
+    groups[g].total += total; groups[g].have += have; groups[g].missing += (total-have-countTeamIncoming(t));
   });
   return groups;
 }
@@ -759,7 +846,8 @@ function renderStatsDashboard() {
   html+='<div class="statcard"><div class="stval">'+(most?most.team.name:'-')+'</div><div class="stlbl">Most complete '+(most?Math.round(most.pct*100)+'%':'')+'</div></div>';
   html+='<div class="statcard"><div class="stval">'+(least?least.team.name:'-')+'</div><div class="stlbl">Least complete '+(least?Math.round(least.pct*100)+'%':'')+'</div></div>';
   html+='<div class="statcard"><div class="stval">'+totalSwaps+'</div><div class="stlbl">Total swaps</div></div>';
-  html+='<div class="statcard"><div class="stval">'+(TOTAL-countHave())+'</div><div class="stlbl">Still missing</div></div>';
+  html+='<div class="statcard"><div class="stval">'+(TOTAL-countHave()-countIncoming())+'</div><div class="stlbl">Still missing</div></div>';
+  html+='<div class="statcard"><div class="stval">'+countIncoming()+'</div><div class="stlbl">Incoming swaps</div></div>';
   html+='</div><div class="dtitle">Completion by group</div>';
   Object.keys(groups).forEach(function(g){
     var x=groups[g], pct=x.total?Math.round(x.have/x.total*100):0;
@@ -775,14 +863,15 @@ function showTab(name){
   document.getElementById('tab-'+name).classList.add('active');
   document.getElementById('nav-'+name).classList.add('active');
   if(name==='missing') updateMissing();
+  if(name==='incoming') renderIncoming();
   if(name==='dupes') renderDupes();
   if(name==='tools') { updateMissingList(); renderStatsDashboard(); }
 }
 
-function resetAll(){if(!confirm('Reset all data?'))return;state={have:{},dups:{}};save();buildAllTeams();updateMissing();renderDupes();updateMissingList();}
-function markAll(){if(!confirm('Mark all as owned?'))return;TEAMS.forEach(function(t){var s=t.code==='FWC'?0:1;for(var n=s;n<=t.slots;n++)state.have[sk(t.code,n)]=true;});save();buildAllTeams();}
+function resetAll(){if(!confirm('Reset all data?'))return;state={have:{},dups:{},incoming:{}};save();buildAllTeams();updateMissing();renderDupes();updateMissingList();}
+function markAll(){if(!confirm('Mark all as owned?'))return;TEAMS.forEach(function(t){var s=t.code==='FWC'?0:1;for(var n=s;n<=t.slots;n++){state.have[sk(t.code,n)]=true;delete state.incoming[sk(t.code,n)];}});save();buildAllTeams();}
 function exportData(){var b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='panini-wc26-backup.json';a.click();}
-function importData(){try{var p=JSON.parse(document.getElementById('ibox').value.trim());if(!p.have)throw new Error('Invalid');state=p;if(!state.dups)state.dups={};save();buildAllTeams();updateMissing();renderDupes();updateMissingList();document.getElementById('ia').style.display='none';alert('Imported!');}catch(e){alert('Import failed: '+e.message);}}
+function importData(){try{var p=JSON.parse(document.getElementById('ibox').value.trim());if(!p.have)throw new Error('Invalid');state=p;if(!state.dups)state.dups={};if(!state.incoming)state.incoming={};save();buildAllTeams();updateMissing();renderDupes();updateMissingList();document.getElementById('ia').style.display='none';alert('Imported!');}catch(e){alert('Import failed: '+e.message);}}
 
 load();buildAllTeams();buildTeamSelect();
 if(getKey()) document.getElementById('aks').textContent='✓ Key saved';

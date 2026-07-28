@@ -1,4 +1,4 @@
-const CACHE_NAME = 'panini-wc26-v24';
+const CACHE_NAME = 'panini-wc26-v25';
 const APP_SHELL = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
